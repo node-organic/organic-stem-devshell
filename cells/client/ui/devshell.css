@@ -1,0 +1,30 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 40px auto auto 40px;
+  grid-template-rows: auto auto auto auto auto;
+}
+
+.project {
+  grid-column: 2 / 4;
+  grid-row: 1;
+}
+
+.groups {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.cells {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+command-input {
+  grid-column: 2 / 4;
+  grid-row: 4;
+}
+
+command-output {
+  grid-column: 2 / 4;
+  grid-row: 5;
+}

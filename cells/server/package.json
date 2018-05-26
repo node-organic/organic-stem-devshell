@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "scripts": {
+    "develop": "PRJ_ROOT=../../__test__/project node ./index.js"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "organic-express-server": "^0.1.0",
+    "organic-socketio-handlers": "^1.0.1",
+    "organic-socketio-server": "^2.0.1",
+    "organic-stem-cell": "^2.0.3",
+    "socket.io": "^2.1.0",
+    "userhome": "^1.0.0"
+  }
+}

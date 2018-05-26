@@ -1,0 +1,36 @@
+{
+  "name": "organic-stem-devshell",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "devshell": "./bin/devshell"
+  },
+  "scripts": {
+    "test": "jest",
+    "develop": "angel repo cells -- npm run develop",
+    "build": "angel repo cell client -- npm run build"
+  },
+  "author": "Boris Filipov",
+  "license": "MIT",
+  "dependencies": {
+    "angelabilities-package-scripts": "^0.1.0",
+    "angelscripts-help": "^0.2.0",
+    "angelscripts-monorepo": "^1.1.1",
+    "opn": "^5.3.0",
+    "organic-angel": "^0.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.2",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1"
+  },
+  "stackUpgrades": {
+    "organic-stem-core-template": "1.0.0",
+    "organic-stem-socketio-server-cell-template": "1.0.0",
+    "organic-stem-oval-spa-cell-template": "1.0.0"
+  }
+}

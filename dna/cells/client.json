@@ -1,0 +1,15 @@
+{
+  "groups": [
+    "default"
+  ],
+  "mountPoint": "/",
+  "build": {
+    "socketio-client": {
+      "source": "./plasma/socketio-client",
+      "port": "@cell-ports.server"
+    },
+    "organic-oval": {
+      "source": "./plasma/organic-oval"
+    }
+  }
+}

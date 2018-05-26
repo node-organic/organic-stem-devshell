@@ -1,0 +1,9 @@
+command-input {
+  display: flex;
+  flex-direction: row;
+  margin: 25px;
+}
+
+command-input input {
+  flex-grow: 1;
+}

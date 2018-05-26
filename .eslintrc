@@ -1,0 +1,10 @@
+{
+  "extends": "standard",
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+  "rules": {
+    "comma-dangle": [0],
+    "camelcase": [0]
+  }
+}

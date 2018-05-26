@@ -1,0 +1,33 @@
+command-output {
+  display: flex;
+  flex-direction: column;
+}
+command-output .tabs {
+  display: flex;
+  flex-direction: row;
+}
+command-output .commandOutputTab {
+  margin: 10px;
+  background-color: silver;
+  border-radius: 5px;
+  padding: 5px;
+  user-select: none;
+  align-self: center;
+}
+command-output .commandOutputTab .material-icons {
+  display: block;
+}
+command-output .commandOutputTab:hover {
+  background-color: pink;
+}
+command-output .commandOutputTab.selected {
+  background-color: green;
+  color: white;
+}
+command-output .outputBuffer {
+  background-color: black;
+  min-height: 480px;
+  width: 100%;
+  display: block;
+  margin-bottom: 150px;
+}

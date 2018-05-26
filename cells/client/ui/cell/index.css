@@ -1,0 +1,17 @@
+cell {
+  display: block;
+  padding: 15px;
+  margin: 3px;
+  border-radius: 3px;
+  background-color: silver;
+  white-space: nowrap;
+  user-select: none;
+}
+
+cell:hover {
+  background-color: pink;
+}
+
+cell.selected {
+  background-color: green;
+}

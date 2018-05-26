@@ -1,0 +1,20 @@
+{
+  "server": {
+    "build": {
+      "organic-express-server": {
+        "source": "organic-express-server",
+        "forceConnectionsDestroyOnClose": true,
+        "port": "@cell-ports.server",
+        "emitReady": "ExpressServer",
+        "initScript": "init-express-app"
+      },
+      "organic-socketio-server": {
+        "port": null,
+        "attachToChemical": {
+          "type": "ExpressServer",
+          "propertyName": "server"
+        }
+      }
+    }
+  }
+}
