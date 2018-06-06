@@ -1,9 +1,9 @@
-command-input {
+ui-command-input {
   display: flex;
   flex-direction: row;
   margin: 25px;
 }
 
-command-input input {
+ui-command-input input {
   flex-grow: 1;
 }

@@ -1,12 +1,12 @@
-command-output {
+ui-command-output {
   display: flex;
   flex-direction: column;
 }
-command-output .tabs {
+ui-command-output .tabs {
   display: flex;
   flex-direction: row;
 }
-command-output .commandOutputTab {
+ui-command-output .commandOutputTab {
   margin: 10px;
   background-color: silver;
   border-radius: 5px;
@@ -14,20 +14,28 @@ command-output .commandOutputTab {
   user-select: none;
   align-self: center;
 }
-command-output .commandOutputTab .material-icons {
+ui-command-output .commandOutputTab .material-icons {
   display: block;
 }
-command-output .commandOutputTab:hover {
+ui-command-output .commandOutputTab:hover {
   background-color: pink;
 }
-command-output .commandOutputTab.selected {
+ui-command-output .commandOutputTab.selected {
   background-color: green;
   color: white;
 }
-command-output .outputBuffer {
+ui-command-output .outputBuffer {
   background-color: black;
   min-height: 480px;
   width: 100%;
   display: block;
   margin-bottom: 150px;
+  color: white;
+}
+
+.outputBuffer .bufferTab {
+  display: none;
+}
+.outputBuffer .bufferTab.selected {
+  display: block;
 }

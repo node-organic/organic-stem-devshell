@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "develop": "PRJ_ROOT=../../__test__/project node ./index.js"
+    "develop": "PRJ_ROOT=../../__test__/project nodemon ./index.js"
   },
   "dependencies": {
     "express": "^4.16.3",
@@ -11,6 +11,15 @@
     "organic-socketio-server": "^2.0.1",
     "organic-stem-cell": "^2.0.3",
     "socket.io": "^2.1.0",
+    "terminate": "^2.1.0",
     "userhome": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "node_modules/*"
+    ]
   }
 }

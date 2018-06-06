@@ -1,4 +1,4 @@
-<devshell class="container is-fluid">
+<ui-devshell class="container is-fluid">
   <script>
     require('./cell-group')
     require('./cell')
@@ -13,89 +13,106 @@
         return {name: name}
       })
     }
-    let project = null
-    let groups = []
-    let cells = []
-    let selectedCellGroups = new Map()
-    let selectedCells = new Map()
-    let commands = []
+
+    this.state.project = null
+    this.state.groups = []
+    this.state.cells = []
+    this.state.selectedCellGroups = new Map()
+    this.state.selectedCells = new Map()
+    this.state.commands = []
 
     let terminateCmd = (cmd) => {
-      // TODO
+      window.plasma.io.emit('terminate-command', cmd.child.pid)
     }
     let terminateRunningCommands = () => {
-      if (commands.length) {
-        commands.forEach(terminateCmd)
+      if (this.state.commands.length) {
+        this.state.commands.forEach(terminateCmd)
       }
-      commands = []
     }
 
-    let onCellSelected = (cell) => {
+    this.onCellSelected = (e) => {
       terminateRunningCommands()
+      let cell = e.detail
       if (cell.selected) {
-        selectedCells.set(cell.name, cell)
+        this.state.selectedCells.set(cell.name, cell)
       } else {
-        selectedCells.delete(cell.name)
+        this.state.selectedCells.delete(cell.name)
       }
       this.update()
     }
-    let onCellGroupSelected = (group) => {
+    this.onCellGroupSelected = (e) => {
       terminateRunningCommands()
+      let group = e.detail
       if (group.selected) {
-        selectedCellGroups.set(group.name, group)
+        this.state.selectedCellGroups.set(group.name, group)
       } else {
-        selectedCellGroups.delete(group.name)
+        this.state.selectedCellGroups.delete(group.name)
       }
-      cells.forEach(cell => {
+      this.state.cells.forEach(cell => {
         if (cell.groups.indexOf(group.name) === -1) return
         if (group.selected) {
           cell.selected = true
-          selectedCells.set(cell.name, cell)
+          this.state.selectedCells.set(cell.name, cell)
         } else {
           cell.selected = false
-          selectedCells.delete(cell.name)
+          this.state.selectedCells.delete(cell.name)
         }
       })
       this.update()
     }
-    let execute = cmd => (e) => {
+    this.onExecute = (e) => {
+      let cmd = e.detail
       terminateRunningCommands()
-      commands = Array.from(selectedCells.values()).map((cell) => {
+      let executeCommands = Array.from(this.state.selectedCells.values()).map((cell) => {
         return {
           cellName: cell.name,
           value: cmd
         }
       })
-      this.update()
-    }
-    this.on('mount', () => {
-      this.plasma.io.on('ProjectChemical', (c) => {
-        project = c
-        cells = project.cells
-        groups = extractUniqueGroups(cells)
+      window.plasma.io.emit('execute-commands', executeCommands, (err, results) => {
+        if (err) return console.error(err)
+        this.state.commands = results
         this.update()
       })
-      this.plasma.io.emit('fetch-project')
+    }
+    this.on('mounted', () => {
+      window.plasma.io.on('ProjectChemical', (c) => {
+        this.state.project = c
+        this.state.cells = this.state.project.cells
+        this.state.groups = extractUniqueGroups(this.state.cells)
+        this.state.commands = this.state.project.runningCommands
+        this.update()
+      })
+      window.plasma.io.emit('fetch-project')
     })
   </script>
-  <div if={project} class='wrapper'>
-    <div class='project'>
-      <h1>{project.cwd.replace(project.userhome, '~')}</h1>
+  <virtual>
+    <div if=${this.state.project} class='wrapper'>
+      <div class='project'>
+        <h1>${this.state.project.cwd.replace(this.state.project.userhome, '~')}</h1>
+      </div>
+      <div class='groups'>
+        <h2>Groups</h2>
+        <each group, index in {this.state.groups}>
+          <ui-cell-group key=${index} data=${group} selected=${this.onCellGroupSelected}>
+          </ui-cell-group>
+        </each>
+      </div>
+      <div class='cells'>
+        <h2>Cells</h2>
+        <each cell, index in {this.state.cells}>
+          <ui-cell key=${index} data=${cell} selected=${this.onCellSelected}>
+            ${{'myText': this.html`<h3>${cell.name}</h3>`}}
+          </ui-cell>
+        </each>
+      </div>
+      <div class='command-input'>
+        <ui-command-input if=${Array.from(this.state.selectedCells.values()).length > 0}
+          execute=${this.onExecute} />
+      </div>
+      <div class='command-output'>
+        <ui-command-output if=${this.state.commands.length > 0} cmds=${this.state.commands} />
+      </div>
     </div>
-    <div class='groups'>
-      <h2>Groups</h2>
-      <each group in {groups}>
-        <cell-group prop-data={group} prop-onselected={onCellGroupSelected}/>
-      </each>
-    </div>
-    <div class='cells'>
-      <h2>Cells</h2>
-      <each cell in {cells}>
-        <cell prop-data={cell} prop-onselected={onCellSelected}/>
-      </each>
-    </div>
-    <command-input if={Array.from(selectedCells.values()).length > 0}
-      prop-execute={execute} />
-    <command-output if={commands.length > 0} prop-data={commands} />
-  </div>
-</devshell>
+  </virtual>
+</ui-devshell>

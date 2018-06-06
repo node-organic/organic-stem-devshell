@@ -1,3 +1,5 @@
+require('./index.css')
+
 const DNA = window.DNA
 const Cell = require('organic-stem-cell')
 
@@ -6,8 +8,11 @@ let cellInstance = new Cell({
   buildBranch: 'build',
   defaultKillChemical: 'kill'
 })
+
+window.plasma = cellInstance.plasma
+
 cellInstance.plasma.on('oval-ready', function () {
-  require('./index.css')
   require('./ui/devshell')
 })
+
 cellInstance.start()

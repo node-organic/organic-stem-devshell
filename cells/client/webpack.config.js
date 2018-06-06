@@ -1,5 +1,6 @@
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webcell = require('webpack-organic-webcell-configurator')
 const path = require('path')
 
@@ -35,17 +36,21 @@ module.exports = webcell({
     },
     'resolve': {
       'extensions': ['.webpack.js', '.web.js', '.tag', '.js'],
-      'modules': globalModules.concat(localModules)
+      'modules': globalModules.concat(localModules).concat(['node_modules'])
     },
     'plugins': [
       new HtmlWebpackPlugin({ template: 'index.html' }),
-      new webpack.ProvidePlugin({
-        'oval': 'organic-oval'
-      }),
       new MiniCssExtractPlugin({
         filename: '[name].css',
         chunkFilename: '[id].css'
-      })
+      }),
+      new CopyWebpackPlugin([
+        {
+          from: 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+          to: 'webcomponents-bundle.js',
+          toType: 'file'
+        },
+      ])
     ],
     'module': {
       'rules': [
@@ -71,32 +76,6 @@ module.exports = webcell({
               }
             }
           ]
-        },
-        {
-          test: /\.js$|.tag$/,
-          include: /node_modules\/organic-oval/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: [require.resolve('babel-preset-es2015')]
-            }
-          }
-        },
-        {
-          test: /\.js$|\.tag$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              plugins: [
-                [
-                  require.resolve('babel-plugin-transform-react-jsx'),
-                  { pragma: 'createElement' }
-                ]
-              ],
-              presets: [require.resolve('babel-preset-es2015')]
-            }
-          }
         },
         {
           test: /\.tag$/,

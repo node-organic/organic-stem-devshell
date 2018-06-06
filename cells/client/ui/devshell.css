@@ -19,12 +19,12 @@
   grid-row: 2;
 }
 
-command-input {
+.command-input {
   grid-column: 2 / 4;
   grid-row: 4;
 }
 
-command-output {
+.command-output {
   grid-column: 2 / 4;
   grid-row: 5;
 }

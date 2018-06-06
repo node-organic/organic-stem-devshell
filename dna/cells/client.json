@@ -8,8 +8,8 @@
       "source": "./plasma/socketio-client",
       "port": "@cell-ports.server"
     },
-    "organic-oval": {
-      "source": "./plasma/organic-oval"
+    "oval": {
+      "source": "organic-oval"
     }
   }
 }

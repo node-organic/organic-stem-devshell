@@ -1,4 +1,4 @@
-cell-group {
+ui-cell-group {
   display: block;
   padding: 25px;
   margin: 5px;
@@ -8,10 +8,10 @@ cell-group {
   user-select: none;
 }
 
-cell-group:hover {
+ui-cell-group:hover {
   background-color: pink;
 }
 
-cell-group.selected {
+ui-cell-group.selected {
   background-color: green;
 }

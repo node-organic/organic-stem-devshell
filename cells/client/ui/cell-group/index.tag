@@ -1,18 +1,23 @@
-<cell-group>
+<ui-cell-group>
   <script>
     require('./index.css')
-    this.props.data.selected = false
+    this.state = {
+      data: {
+        name: '',
+        selected: false
+      }
+    }
     this.on('click', () => {
-      this.props.data.selected = !this.props.data.selected
-      this.props.onselected(this.props.data)
+      this.state.data.selected = !this.state.data.selected
+      this.emit('selected', this.state.data)
     })
     this.on('update', () => {
-      if (this.props.data.selected) {
-        this.root.className = 'selected'
+      if (this.state.data.selected) {
+        this.className = 'selected'
       } else {
-        this.root.className = ''
+        this.className = ''
       }
     })
   </script>
-  <name>{props.data.name}</name>
-</cell-group>
+  <span>${this.state.data.name}</span>
+</ui-cell-group>
