@@ -4,18 +4,6 @@
   ],
   "mountPoint": "/",
   "build": {
-    "organic-socketio-handlers": {
-      "source": "organic-socketio-handlers",
-      "reactOn": {
-        "type": "SocketIOConnection",
-        "propertyName": "socket"
-      },
-      "basedir": "handlers",
-      "patterns": [
-        "/**/*.js"
-      ],
-      "log": true
-    },
     "organic-socketio-server": {
       "source": "organic-socketio-server",
       "port": "@cell-ports.server",
@@ -25,15 +13,16 @@
         "connection": "SocketIOConnection"
       }
     },
-    "organic-socketio-plasma-pipe": {
-      "source": "./plasma/organic-socketio-plasma-pipe",
+    "socketio-channel": {
+      "source": "organic-plasma-socketio-channel",
       "reactOnConnection": "SocketIOConnection",
       "transportChemicalsShape": {
         "transportType": "socketio"
       }
     },
-    "project-devshell": {
-      "source": "./plasma/project-devshell"
+    "client-state": {
+      "source": "./plasma/client-state",
+      "PRJROOT": "{$PRJROOT}"
     }
   }
 }

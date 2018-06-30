@@ -4,12 +4,18 @@
   ],
   "mountPoint": "/",
   "build": {
-    "socketio-client": {
-      "source": "./plasma/socketio-client",
-      "port": "@cell-ports.server"
+    "socketio-channel": {
+      "source": "organic-plasma-socketio-channel/env/client",
+      "port": "@cell-ports.server",
+      "transportChemicalsShape": {
+        "transportType": "socketio"
+      }
     },
-    "oval": {
-      "source": "organic-oval"
+    "combokeys-organelle": {
+      "source": "./plasma/combokeys"
+    },
+    "cell-ready": {
+      "source": "./plasma/cell-ready"
     }
   }
 }

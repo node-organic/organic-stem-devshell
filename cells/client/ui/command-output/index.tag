@@ -1,51 +1,108 @@
 <ui-command-output>
   <script>
     require('./index.css')
-    window.plasma.io.on('CommandOutput', (c) => {
-      console.log(c)
-      this.refs['tabBuffer-$all-list'].innerHTML += c.chunk
-      this.refs['tabBuffer-' + c.cellName].innerHTML += c.chunk
+    require('els')(this)
+    require('io-component')(this)
+
+    const XTerm = require('xterm/dist/xterm')
+
+    this.state.cells = []
+    this.state.terminals = [{
+      name: '$all-list$',
+      allList: true
+    }, /*{
+      name: String,
+      cellName: String
+    }*/]
+    this.state.selectedTerminal = this.state.terminals[0]
+    this.state.terminals.contains = function (name) {
+      for (let i = 0; i < this.length; i++) {
+        if (this[i].name === name) return this[i]
+      }
+    }
+
+    this.appendTextToSelectedTerminal = function (value) {
+      let elName = 'buffer-' + this.state.selectedTerminal.name
+      if (!this.els(elName)) throw new Error(elName + ' not found')
+      let el = this.els(elName)
+      el.xterm.writeln(value)
+    }
+    this.onIO('CommandOutput', (c) => {
+      if (this.state.selectedTerminal.allList) {
+        this.appendTextToSelectedTerminal(c.cellName + '$> ' + c.chunk)
+      } else {
+        this.appendTextToSelectedTerminal(c.chunk)
+      }
     })
-    window.plasma.io.on('CommandTerminated', (c) => {
-      console.log(c)
-      this.refs['tabBuffer-$all-list'].innerHTML += 'Terminated: ' + c.cellName
-      this.refs['tabBuffer-' + c.cellName].innerHTML += 'Terminated: ' + c.cellName
+    this.onIO('CommandTerminated', (c) => {
+
     })
-    this.selectedTab = '$all-list'
-    this.selectTab = (cellName) => {
+
+    this.initTerminalBuffer = function (term) {
+      let el = this.els('buffer-' + term.name)
+      if (!el) throw new Error('Element for Terminal buffer "' + 'buffer-' + term.name + '" not found in dom during xterm initialization')
+      if (!el.xterm) {
+        let term = new XTerm({
+          cols: 80,
+          rows: 24
+        })
+        el.xterm = term
+        term.open(el, false)
+      }
+    }
+
+    this.selectTerminal = (term) => {
       return (e) => {
-        console.log('select', cellName)
-        this.selectedTab = cellName
+        console.log('select', term)
+        this.initTerminalBuffer(term)
+        this.state.selectedTerminal = term
         this.update()
       }
     }
-    this.on('updated', () => {
-      for (let key in this.refs) {
-        this.refs[key].classList.remove('selected')
+
+    this.on('update', () => {
+      let visitedNames = ['$all-list$']
+      this.state.cells.forEach((cell) => {
+        if (!this.state.terminals.contains(cell.name)) {
+          this.state.terminals.push({
+            name: cell.name,
+            cellName: cell.name
+          })
+          visitedNames.push(cell.name)
+        } else {
+          visitedNames.push(cell.name)
+        }
+      })
+      for (let i = 0; i < this.state.terminals.length; i++) {
+        let term = this.state.terminals[i]
+        if (visitedNames.indexOf(term.name) === -1) {
+          this.state.terminals.splice(i, 1)
+          i -= 1
+        }
       }
-      this.refs['tabBtn-' + this.selectedTab].classList.add('selected')
-      this.refs['tabBuffer-' + this.selectedTab].classList.add('selected')
+    })
+    this.on('mounted', function () {
+      // this.initTerminalBuffer(this.state.terminals[0])
     })
   </script>
   <virtual>
     <div class='tabs'>
-      <div key='all' class="commandOutputTab" click=${this.selectTab('$all-list')}
-        ref='tabBtn-$all-list' freeze>
-        <i class="material-icons">list</i>
-      </div>
-      <each cmd, index in {this.state.cmds}>
-        <div key=${index} class="commandOutputTab" click=${this.selectTab(cmd.cmdInfo.cellName)}
-          ref=${'tabBtn-' + cmd.cmdInfo.cellName} freeze>
-          ${cmd.cmdInfo.cellName}
+      <each term in ${this.state.terminals}>
+        <div class="commandOutputTab ${term.name === this.state.selectedTerminal.name ? 'selected' : ''}"
+          click=${this.selectTerminal(term)}
+          els=${'tab-' + term.name}>
+          <virtual if=${term.cellName}>
+            ${term.cellName}
+          </virtual>
+          <virtual if=${term.allList}>
+            <i class="material-icons">list</i>
+          </virtual>
         </div>
       </each>
     </div>
     <div class='outputBuffer'>
-      <div key='all' class='bufferTab' ref='tabBuffer-$all-list' freeze>
-        Combined output:
-      </div>
-      <each cmd, index in {this.state.cmds}>
-        <div key=${index} class='bufferTab' ref=${'tabBuffer-' + cmd.cmdInfo.cellName} freeze></div>
+      <each term in ${this.state.terminals}>
+        <div class='bufferTab' els=${'buffer-' + term.name}></div>
       </each>
     </div>
   </virtual>

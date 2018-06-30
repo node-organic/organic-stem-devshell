@@ -4,6 +4,12 @@ ui-command-input {
   margin: 25px;
 }
 
+ui-command-input span {
+  font-size: 2em;
+  align-self: center;
+}
+
 ui-command-input input {
   flex-grow: 1;
+  font-size: 2em;
 }

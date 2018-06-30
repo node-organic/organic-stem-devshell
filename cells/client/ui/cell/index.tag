@@ -19,5 +19,7 @@
       }
     })
   </script>
-  ${this.kids[0]['myText']}
+  <div>
+    <slot name='myText' />
+  </div>
 </ui-cell>

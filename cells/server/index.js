@@ -9,7 +9,6 @@ let cellInstance = new Cell({
   buildBranch: 'cells.server.build',
   cellRoot: __dirname
 })
-
 if (module.parent) {
   module.exports = cellInstance
 } else {

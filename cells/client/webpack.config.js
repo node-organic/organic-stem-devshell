@@ -1,6 +1,4 @@
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webcell = require('webpack-organic-webcell-configurator')
 const path = require('path')
 
@@ -11,10 +9,10 @@ const postcssImport = require('postcss-import')
 const postcssReporter = require('postcss-reporter')
 const postcssCssnext = require('postcss-cssnext')
 
-const globalModules = ['web_modules', 'node_modules', 'lib/client'].map((v) => {
+const globalModules = ['web_modules', 'node_modules', 'lib/client', 'lib'].map((v) => {
   return path.join(path.resolve(__dirname, '../../'), v)
 })
-const localModules = ['web_modules', 'node_modules'].map((v) => {
+const localModules = ['web_modules', 'node_modules', 'lib'].map((v) => {
   return path.join(__dirname, v)
 })
 
@@ -39,18 +37,14 @@ module.exports = webcell({
       'modules': globalModules.concat(localModules).concat(['node_modules'])
     },
     'plugins': [
-      new HtmlWebpackPlugin({ template: 'index.html' }),
+      new HtmlWebpackPlugin({
+        template: 'index.html',
+        favicon: 'favicon.png'
+      }),
       new MiniCssExtractPlugin({
         filename: '[name].css',
         chunkFilename: '[id].css'
-      }),
-      new CopyWebpackPlugin([
-        {
-          from: 'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
-          to: 'webcomponents-bundle.js',
-          toType: 'file'
-        },
-      ])
+      })
     ],
     'module': {
       'rules': [
