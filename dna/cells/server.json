@@ -23,6 +23,10 @@
     "client-state": {
       "source": "./plasma/client-state",
       "PRJROOT": "{$PRJROOT}"
+    },
+    "terminals": {
+      "source": "./plasma/terminals",
+      "PRJROOT": "{$PRJROOT}"
     }
   }
 }

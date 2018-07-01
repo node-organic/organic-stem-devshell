@@ -10,6 +10,6 @@
   </script>
   <virtual>
     <span><i class="material-icons">last_page</i></span>
-    <input type='text' els='input' />
+    <input type='text' els='input' value=${this.getAttribute("value")}/>
   </virtual>
 </ui-command-input>

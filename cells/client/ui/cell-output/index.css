@@ -1,0 +1,7 @@
+ui-cell-output {
+  display: block;
+  flex-grow: 1;
+}
+ui-xterm.hidden {
+  display: none;
+}

@@ -1,54 +1,57 @@
-const ProjectChemical = require('../chemicals/project')
-const ExecuteProjectCommands = require('../chemicals/execute-project-commands')
-const CommandOutput = require('../chemicals/command-output')
-const CommandTerminated = require('../chemicals/command-terminated')
-const RunningCommand = require('../chemicals/running-command')
-const TerminateCommand = require('../chemicals/terminate-command')
-
 const pty = require('node-pty')
+const path = require('path')
+
+const {
+  RunAll,
+  RunningCommand,
+  CommandOutput,
+  CommandTerminated
+} = require('../../../lib/chemicals/terminals')
 
 module.exports = class TerminalsOrganelle {
-  executeCommands (c, callback) {
-    let commands = c.commands
-    commands.forEach(cmdInfo => {
-      let parts = cmdInfo.value.split(' ')
+  constructor (plasma, dna) {
+    if (!dna.PRJROOT || dna.PRJROOT === 'undefined') throw new Error('missing dna.PRJROOT')
+    this.plasma = plasma
+    this.dna = dna
+    this.runningCommands = []
+    this.projectRoot = path.resolve(dna.PRJROOT)
+    this.plasma.on(RunAll.type, (c) => {
+      this.runningCommands = c.terminals.map(this.executeCommand(c.value))
+    })
+  }
+
+  executeCommand (value) {
+    return (terminal) => {
+      let parts = value.split(' ')
       let cmd = parts.shift()
       let args = parts
+      let cwd = path.join(this.projectRoot, 'cells', terminal.cellName)
       let child = pty.spawn(cmd, args, {
-        name: cmdInfo.cellName,
+        name: terminal.name,
         cols: 80,
         rows: 24,
-        cwd: path.join(this.projectRoot, 'cells', cmdInfo.cellName),
+        cwd: cwd,
         env: process.env
       })
-      let runningCommand = new RunningCommand({
-        cmdInfo: cmdInfo,
-        child: child
+      let runningCommand = RunningCommand.create({
+        terminal: terminal,
+        child: child,
+        value: value
       })
-      this.runningCommands.push(runningCommand)
-      this.plasma.emit(runningCommand)
       child.on('data', (chunk) => {
-        this.plasma.emit(new CommandOutput({
-          cellName: cmdInfo.cellName,
+        this.plasma.emit(CommandOutput.create({
+          terminal: terminal,
           chunk: chunk
         }))
       })
       child.on('close', (statusCode) => {
         this.runningCommands.splice(this.runningCommands.indexOf(runningCommand), 1)
-        this.plasma.emit(new CommandTerminated({
-          cellName: cmdInfo.cellName,
+        this.plasma.emit(CommandTerminated.create({
+          terminal: terminal,
           statusCode: statusCode
         }))
       })
-    })
-    callback(null, this.runningCommands)
-  }
-
-  terminateCommand (c) {
-    this.runningCommands.forEach(cmd => {
-      if (cmd.child.pid === c.pid) {
-        cmd.terminate()
-      }
-    })
+      return runningCommand
+    }
   }
 }

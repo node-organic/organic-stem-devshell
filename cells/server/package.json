@@ -2,7 +2,8 @@
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "develop": "PRJROOT=../../__test__/project nodemon ./index.js"
+    "develop": "PRJROOT=../../__test__/project nodemon ./index.js",
+    "build": "echo done"
   },
   "dependencies": {
     "express": "^4.16.3",
