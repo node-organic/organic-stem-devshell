@@ -13,3 +13,7 @@ ui-command-input input {
   flex-grow: 1;
   font-size: 2em;
 }
+
+ui-command-input .hidden {
+  display: none;
+}

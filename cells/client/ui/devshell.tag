@@ -8,30 +8,48 @@
     require('./command-input')
 
     const {FetchClientState, ClientState, ChangeClientState} = require('chemicals')
+    const {TerminateAll} = require('chemicals/terminals')
     /* this.state === lib/chemicals.ClientState */
 
     this.onCellSelected = (e) => {
       let cell = e.detail
+      let isFirstSelectedCell = true
+      this.state.cells.forEach((c) => {
+        if (c.selected) isFirstSelectedCell = false
+      })
       cell.selected = !cell.selected
-      if (!cell.selected) cell.focused = false
+      if (isFirstSelectedCell) cell.focused = true
       window.plasma.emit(ChangeClientState.create(this.state))
     }
     this.onCellFocused = (e) => {
       this.state.cells.forEach((cell) => {
-        cell.focused = false
+        if (cell.name !== e.detail.name) {
+          cell.focused = false
+        } else {
+          cell.focused = !cell.focused
+        }
       })
-      let cell = e.detail
-      cell.focused = true
-      this.update()
+      window.plasma.emit(ChangeClientState.create(this.state))
     }
     this.onCellGroupSelected = (e) => {
       let group = e.detail
+      group.selected = !group.selected
       window.plasma.emit(ChangeClientState.create(this.state))
     }
     this.onExecute = function (e) {
       window.plasma.emit(ChangeClientState.create({
         runningCommand: e.detail
       }))
+    }
+    this.onTerminateAll = function (e) {
+      window.plasma.emit(TerminateAll.create())
+    }
+    this.hasSelectedCell = function () {
+      let result = false
+      this.state.cells.forEach(c => {
+        if (c.selected) result = true
+      })
+      return result
     }
     window.plasma.on(ClientState.type, (c) => {
       this.shouldUpdate(c)
@@ -47,25 +65,28 @@
       </div>
       <div class='groups'>
         <each group in ${this.state.groups}>
-          <ui-cell-group data=${group} selected=${this.onCellGroupSelected} />
+          <ui-cell-group group=${group} selected=${this.onCellGroupSelected} />
         </each>
       </div>
       <div class='cells'>
         <div class='cell-tabs'>
           <each cell in ${this.state.cells}>
-            <ui-cell-tab data=${cell}
+            <ui-cell-tab cell=${cell}
               selected=${this.onCellSelected}
               focused=${this.onCellFocused} />
           </each>
         </div>
         <div class='cell-outputs'>
           <each cell in ${this.state.cells}>
-            <ui-cell-output data=${cell} />
+            <ui-cell-output cell=${cell} />
           </each>
         </div>
       </div>
-      <div class='command-input'>
-        <ui-command-input execute=${this.onExecute} value=${this.state.runningCommand} />
+      <div class='command-input' if=${this.hasSelectedCell() === true}>
+        <ui-command-input
+          execute=${this.onExecute}
+          terminateAll=${this.onTerminateAll}
+          value=${this.state.runningCommand} />
       </div>
     </div>
   </virtual>

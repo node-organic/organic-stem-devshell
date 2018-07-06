@@ -9,8 +9,22 @@ ui-cell-tab {
   user-select: none;
 }
 
+ui-cell-tab .tab {
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+ui-cell-tab .cell-name {
+  font-size: 2em;
+}
+
 ui-cell-tab .checkbox {
   display: inline;
+}
+
+ui-cell-tab .checkbox.selected {
+  color: green;
 }
 
 ui-cell-tab .checkbox [els="selectedCheck"] {
@@ -22,5 +36,5 @@ ui-cell-tab:hover {
 }
 
 ui-cell-tab div.focused {
-  background-color: green;
+  border-bottom: 10px solid green;
 }

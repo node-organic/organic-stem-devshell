@@ -6,18 +6,26 @@ const _ = require('lodash')
 const {
   ClientState,
   FetchClientState,
-  ChangeClientState
+  ChangeClientState,
+  Cell,
+  Group
 } = require('../../../lib/chemicals')
 
 const {
   TerminateAll,
-  RunAll
+  RunCommand,
+  RunAll,
+  AllRunningCommandsTerminated,
+  TerminateCommand
 } = require('../../../lib/chemicals/terminals')
 
 let extractUniqueGroups = function (cells) {
   let names = _.uniq(_.flatten(cells.map(v => v.groups)))
   return names.map(name => {
-    return {name: name, selected: false}
+    return Group.create({
+      name: name,
+      selected: false
+    })
   })
 }
 
@@ -31,10 +39,15 @@ module.exports = class ClientStateOrganelle {
       cwd: path.resolve(dna.PRJROOT),
       runningCommand: '',
       cells: [],
-      groups: []
+      groups: [],
+      resolved: false
     })
     this.plasma.on(FetchClientState.type, this.fetch, this)
     this.plasma.on(ChangeClientState.type, this.change, this)
+    this.plasma.on(AllRunningCommandsTerminated.type, () => {
+      this.currentState.runningCommand = ''
+      this.plasma.emit(this.currentState)
+    })
     console.log('looking after', this.currentState.cwd)
   }
 
@@ -53,6 +66,13 @@ module.exports = class ClientStateOrganelle {
               group.selected = false
             }
           })
+          this.plasma.emit(TerminateCommand.byCell(cell))
+        }
+        if (cell.selected && !cellHasBeenSelected && this.currentState.runningCommand) {
+          this.plasma.emit(RunCommand.create({
+            value: this.currentState.runningCommand,
+            cell: cell
+          }))
         }
       })
       newState.groups.forEach((group) => {
@@ -77,23 +97,31 @@ module.exports = class ClientStateOrganelle {
           })
         }
       })
+      newState.cells.forEach((cell) => {
+        let cellHasBeenSelected = false
+        this.currentState.cells.forEach((oldCell) => {
+          if (oldCell.name === cell.name && oldCell.selected) {
+            cellHasBeenSelected = true
+          }
+        })
+        if (!cell.selected && cellHasBeenSelected) {
+          this.plasma.emit(TerminateCommand.byCell(cell))
+        }
+        if (cell.selected && !cellHasBeenSelected && this.currentState.runningCommand) {
+          this.plasma.emit(RunCommand.create({
+            value: this.currentState.runningCommand,
+            cell: cell
+          }))
+        }
+      })
     }
-    if (newState.runningCommand) {
+    if (newState.runningCommand !== this.currentState.runningCommand) {
       if (this.currentState.runningCommand) {
         this.plasma.emit(TerminateAll.create())
       }
-      Object.assign(this.currentState, newState)
-      let terminals
-      if (this.currentState.cells.length === 0) {
-        terminals = [{name: '$all-list$'}]
-      } else {
-        terminals = _.filter(this.currentState.cells, 'selected').map(c => {
-          return {name: c.name, cellName: c.name}
-        })
-      }
       this.plasma.emit(RunAll.create({
         value: newState.runningCommand,
-        terminals: terminals
+        cells: _.filter(this.currentState.cells, 'selected')
       }))
     }
     Object.assign(this.currentState, ClientState.create(newState))
@@ -101,6 +129,7 @@ module.exports = class ClientStateOrganelle {
   }
 
   fetch () {
+    if (this.currentState.resolved) return this.plasma.emit(this.currentState)
     loadDNA({
       dnaSourcePaths: [
         path.join(this.currentState.cwd, 'dna')
@@ -112,17 +141,18 @@ module.exports = class ClientStateOrganelle {
       }
       let cells = []
       for (let key in dna.cells) {
-        cells.push({
+        cells.push(Cell.create({
           name: key,
           groups: dna.cells[key].groups,
           selected: false,
           focused: false
-        })
+        }))
       }
       let groups = extractUniqueGroups(cells)
       Object.assign(this.currentState, ClientState.create({
         cells: cells,
-        groups: groups
+        groups: groups,
+        resolved: true
       }))
       this.plasma.emit(this.currentState)
     })

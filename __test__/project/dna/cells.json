@@ -4,5 +4,8 @@
   },
   "test-cell2": {
     "groups": []
+  },
+  "test-cell3": {
+    "groups": ["test-group", "test-group2"]
   }
 }

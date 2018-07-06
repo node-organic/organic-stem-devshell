@@ -12,6 +12,6 @@ ui-cell-group:hover {
   background-color: pink;
 }
 
-ui-cell-group.selected {
+ui-cell-group span.selected {
   background-color: green;
 }

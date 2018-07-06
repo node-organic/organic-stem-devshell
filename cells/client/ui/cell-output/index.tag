@@ -1,11 +1,17 @@
 <ui-cell-output>
   <script>
+    const {
+      CommandOutput,
+      CommandTerminated
+    } = require('chemicals/terminals')
     require('./index.css')
     require('./xterm')
     require('els')(this)
     this.xtermReady = () => {
       setTimeout(() => {
-        this.hide()
+        if (!this.state.cell.focused) {
+          this.hide()
+        }
       }, 100)
     }
     this.show = function () {
@@ -16,11 +22,16 @@
     }
     this.on('updated', () => {
       if (!this.mounted) return
-      if (this.state.data.focused) {
+      if (this.state.cell.focused) {
         this.show()
       } else {
         this.hide()
       }
+    })
+    this.on('mounted', () => {
+      window.plasma.on(CommandOutput.byCell(this.state.cell), (c) => {
+        this.els('xterm').write(c.chunk)
+      })
     })
   </script>
   <ui-xterm els='xterm' ready=${this.xtermReady} />

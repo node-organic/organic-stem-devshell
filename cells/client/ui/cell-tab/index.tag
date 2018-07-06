@@ -3,24 +3,21 @@
     require('./index.css')
     require('els')(this)
     this.on('click', (e) => {
-      if (this.state.data.selected) {
-        if (e.target === this.els('selectedCheck')) {
-          e.preventDefault()
-          this.emit('selected', this.state.data)
-        } else {
-          this.emit('focused', this.state.data)
-        }
+      if (e.target === this.els('selectedCheck')) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.emit('selected', this.state.cell)
       } else {
-        this.emit('selected', this.state.data)
+        this.emit('focused', this.state.cell)
       }
     })
   </script>
-  <div class=${this.state.data.focused ? 'focused' : ''}>
-    <div class='checkbox'>
+  <div class="tab ${this.state.cell.focused ? 'focused' : ''}">
+    <div class='checkbox ${this.state.cell.selected ? 'selected': ''}'>
       <i class='material-icons' els='selectedCheck'>
-        ${this.state.data.selected ? 'check_circle' : 'label'}
+        ${this.state.cell.selected ? 'check_circle' : 'blur_circular'}
       </i>
     </div>
-    <span>${this.state.data.name}</span>
+    <span class='cell-name'>${this.state.cell.name}</span>
   </div>
 </ui-cell-tab>
