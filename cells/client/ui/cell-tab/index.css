@@ -23,7 +23,7 @@ ui-cell-tab .checkbox {
   display: inline;
 }
 
-ui-cell-tab .checkbox.selected {
+ui-cell-tab .checkbox.running {
   color: green;
 }
 

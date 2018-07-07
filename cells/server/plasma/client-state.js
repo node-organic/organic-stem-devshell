@@ -145,7 +145,8 @@ module.exports = class ClientStateOrganelle {
           name: key,
           groups: dna.cells[key].groups,
           selected: false,
-          focused: false
+          focused: false,
+          commandRunning: false
         }))
       }
       let groups = extractUniqueGroups(cells)

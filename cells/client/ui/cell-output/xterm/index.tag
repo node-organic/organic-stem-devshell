@@ -15,6 +15,10 @@
         this.xterm = xterm
         xterm.open(container, false)
         xterm.fit()
+        xterm.on('data', (c) => {
+          console.log('DATA', c)
+          this.emit('keypressed', c)
+        })
         this.shouldRender = false
         this.emit('ready')
       }, 10)

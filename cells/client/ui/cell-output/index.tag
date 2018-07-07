@@ -1,8 +1,10 @@
 <ui-cell-output>
   <script>
     const {
+      CommandInput,
       CommandOutput,
-      CommandTerminated
+      CommandTerminated,
+      CommandStarted
     } = require('chemicals/terminals')
     require('./index.css')
     require('./xterm')
@@ -20,6 +22,12 @@
     this.hide = function () {
       this.els('xterm').classList.add('hidden')
     }
+    this.handleKeypress = (e) => {
+      window.plasma.emit(CommandInput.create({
+        char: e.detail,
+        cell: this.state.cell
+      }))
+    }
     this.on('updated', () => {
       if (!this.mounted) return
       if (this.state.cell.focused) {
@@ -29,10 +37,13 @@
       }
     })
     this.on('mounted', () => {
+      window.plasma.on(CommandStarted.byCell(this.state.cell), (c) => {
+        this.els('xterm').write(c.chunk)
+      })
       window.plasma.on(CommandOutput.byCell(this.state.cell), (c) => {
         this.els('xterm').write(c.chunk)
       })
     })
   </script>
-  <ui-xterm els='xterm' ready=${this.xtermReady} />
+  <ui-xterm els='xterm' ready=${this.xtermReady} keypressed=${this.handleKeypress} />
 </ui-cell-output>

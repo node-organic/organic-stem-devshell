@@ -7,6 +7,8 @@ const {
   RunAll,
   RunCommand,
   RunningCommand,
+  CommandStarted,
+  CommandInput,
   CommandOutput,
   CommandTerminated,
   TerminateAll,
@@ -30,7 +32,7 @@ module.exports = class TerminalsOrganelle {
       })
     })
     this.plasma.on(TerminateCommand.type, (c) => {
-      this.runningCommands.forEach((r, index) => {
+      this.runningCommands.forEach((r) => {
         if (r.cell.name === c.cell.name) {
           terminate(r.child.pid)
         }
@@ -39,6 +41,19 @@ module.exports = class TerminalsOrganelle {
     this.plasma.on(RunCommand.type, (c) => {
       let cmd = this.executeCommand(c.value)(c.cell)
       this.runningCommands.push(cmd)
+    })
+    this.plasma.on(CommandInput.type, (c) => {
+      this.runningCommands.forEach((r) => {
+        if (r.cell.name === c.cell.name) {
+          console.log(c)
+          r.child.write(c.char)
+        }
+      })
+    })
+    this.plasma.on('kill', () => {
+      this.runningCommands.forEach((r) => {
+        terminate(r.child.pid)
+      })
     })
   }
 
@@ -80,7 +95,7 @@ module.exports = class TerminalsOrganelle {
           this.plasma.emit(AllRunningCommandsTerminated.create())
         }
       })
-      this.plasma.emit(CommandOutput.create({
+      this.plasma.emit(CommandStarted.create({
         cell: cell,
         chunk: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss') + ' >| ' + value + '\n\r'
       }))
