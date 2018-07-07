@@ -45,7 +45,6 @@ module.exports = class TerminalsOrganelle {
     this.plasma.on(CommandInput.type, (c) => {
       this.runningCommands.forEach((r) => {
         if (r.cell.name === c.cell.name) {
-          console.log(c)
           r.child.write(c.char)
         }
       })

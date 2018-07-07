@@ -7,8 +7,15 @@
     require('./cell-output')
     require('./command-input')
 
-    const {FetchClientState, ClientState, ChangeClientState} = require('chemicals')
-    const {TerminateAll} = require('chemicals/terminals')
+    const {
+      FetchClientState,
+      ClientState,
+      ChangeClientState
+    } = require('chemicals')
+    const {
+      TerminateAll,
+      RunCommand
+    } = require('chemicals/terminals')
     /* this.state === lib/chemicals.ClientState */
 
     this.onCellSelected = (e) => {
@@ -36,15 +43,25 @@
       group.selected = !group.selected
       window.plasma.emit(ChangeClientState.create(this.state))
     }
-    this.onExecute = function (e) {
+    this.onExecuteToAll = function (e) {
       window.plasma.emit(ChangeClientState.create({
         runningCommand: e.detail
       }))
     }
+    this.onExecuteToFocused = (e) => {
+      this.state.cells.forEach((cell) => {
+        if (cell.focused) {
+          window.plasma.emit(RunCommand.create({
+            value: e.detail,
+            cell: cell
+          }))
+        }
+      })
+    }
     this.onTerminateAll = function (e) {
       window.plasma.emit(TerminateAll.create())
     }
-    this.hasSelectedCell = function () {
+    this.hasSelectedCell = () => {
       let result = false
       this.state.cells.forEach(c => {
         if (c.selected) result = true
@@ -84,7 +101,8 @@
       </div>
       <div class='command-input' if=${this.hasSelectedCell() === true}>
         <ui-command-input
-          execute=${this.onExecute}
+          executeToAll=${this.onExecuteToAll}
+          executeToFocused=${this.onExecuteToFocused}
           terminateAll=${this.onTerminateAll}
           value=${this.state.runningCommand} />
       </div>

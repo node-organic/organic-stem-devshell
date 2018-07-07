@@ -6,7 +6,6 @@
       CommandStarted,
       CommandTerminated
     } = require('chemicals/terminals')
-    this.state.commandRunning = false
     this.on('click', (e) => {
       if (e.target === this.els('selectedCheck')) {
         e.preventDefault()
@@ -16,20 +15,10 @@
         this.emit('focused', this.state.cell)
       }
     })
-    this.on('mounted', () => {
-      window.plasma.on(CommandStarted.byCell(this.state.cell), () => {
-        this.state.commandRunning = true
-        this.update()
-      })
-      window.plasma.on(CommandTerminated.byCell(this.state.cell), () => {
-        this.state.commandRunning = false
-        this.update()
-      })
-    })
     this.getCheckboxClasses = () => {
       return [
         this.state.cell.selected ? 'selected': '',
-        this.state.commandRunning ? 'running': ''
+        this.state.cell.commandRunning ? 'running': ''
       ].join(' ')
     }
   </script>

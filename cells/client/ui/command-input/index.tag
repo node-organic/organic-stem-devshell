@@ -2,36 +2,60 @@
   <script>
     require('./index.css')
     require('els')(this)
-    this.on('keypress', (e) => {
-      if (e.keyCode === 13) {
-        this.emit('execute', this.els('input').value)
+    this.on('keyup', (e) => {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        this.onExecuteToFocused()
       }
-      if (this.els('input').value !== this.getAttribute('value')) {
-        this.els('goBtn').classList.remove('hidden')
-      } else {
-        this.els('goBtn').classList.add('hidden')
+      if (e.keyCode === 13 && e.shiftKey) {
+        this.onExecuteToAll()
       }
+      this.update()
     })
-    this.hasChanged = function () {
-      if (!this.els('input')) return false // during first render input is not present
-      return
+    this.onExecuteToAll = () => {
+      this.emit('executeToAll', this.els('input').value)
     }
-    this.onExecute = () => {
-      this.emit('execute', this.els('input').value)
+    this.onExecuteToFocused = () => {
+      this.emit('executeToFocused', this.els('input').value)
+      this.els('input').value = this.getAttribute('value')
+      this.state.value = this.getAttribute('value')
     }
     this.onTerminateAll = (e) => {
       this.emit('terminateAll')
     }
+    this.getExecuteBtnsClassState = () => {
+      if (!this.els('input')) return 'hidden'
+      if (this.els('input').value !== this.getAttribute('value')) {
+        return ''
+      } else {
+        return 'hidden'
+      }
+    }
+    /* @WORKAROUND
+       when doing re-render initiated by the parent component
+       it sets `value` attribute to different value
+       however rendering the component doesnt occurs because it
+       already exists in the dom rendered previously by incremental-dom
+       therefore we need to:
+       1. buffer the passed `value` property
+       2. forcebly set input's state to the new `value` property
+    */
     this.on('updated', () => {
-      this.els('input').value = this.getAttribute('value')
-      this.els('goBtn').classList.add('hidden')
+      if (this.mounted && this.state.value !== this.getAttribute('value')) {
+        this.els('input').value = this.getAttribute('value')
+      }
+      this.state.value = this.getAttribute('value')
     })
   </script>
   <virtual>
     <span><i class="material-icons">last_page</i></span>
     <input type='text' els='input' value=${this.getAttribute("value")}/>
-    <button els='goBtn' click=${this.onExecute}>
+    <button tooltip='execute to all selected'
+      class=${this.getExecuteBtnsClassState()} click=${this.onExecuteToAll}>
       <i class="material-icons">keyboard_arrow_right</i>
+    </button>
+    <button tooltip='execute'
+      class=${this.getExecuteBtnsClassState()} click=${this.onExecuteToFocused}>
+      <i class="material-icons">last_page</i>
     </button>
     <button if={this.getAttribute('value')} els='terminateBtn'
       click=${this.onTerminateAll}>

@@ -15,6 +15,8 @@ const {
   TerminateAll,
   RunCommand,
   RunAll,
+  CommandStarted,
+  CommandTerminated,
   AllRunningCommandsTerminated,
   TerminateCommand
 } = require('../../../lib/chemicals/terminals')
@@ -48,6 +50,22 @@ module.exports = class ClientStateOrganelle {
       this.currentState.runningCommand = ''
       this.plasma.emit(this.currentState)
     })
+    this.plasma.on(CommandStarted.type, (c) => {
+      this.currentState.cells.forEach(cell => {
+        if (cell.name === c.cell.name) {
+          cell.commandRunning = true
+        }
+      })
+      this.plasma.emit(this.currentState)
+    })
+    this.plasma.on(CommandTerminated.type, (c) => {
+      this.currentState.cells.forEach(cell => {
+        if (cell.name === c.cell.name) {
+          cell.commandRunning = false
+        }
+      })
+      this.plasma.emit(this.currentState)
+    })
     console.log('looking after', this.currentState.cwd)
   }
 
@@ -66,13 +84,6 @@ module.exports = class ClientStateOrganelle {
               group.selected = false
             }
           })
-          this.plasma.emit(TerminateCommand.byCell(cell))
-        }
-        if (cell.selected && !cellHasBeenSelected && this.currentState.runningCommand) {
-          this.plasma.emit(RunCommand.create({
-            value: this.currentState.runningCommand,
-            cell: cell
-          }))
         }
       })
       newState.groups.forEach((group) => {
@@ -141,13 +152,14 @@ module.exports = class ClientStateOrganelle {
       }
       let cells = []
       for (let key in dna.cells) {
-        cells.push(Cell.create({
+        let cell = Cell.create({
           name: key,
           groups: dna.cells[key].groups,
           selected: false,
           focused: false,
           commandRunning: false
-        }))
+        })
+        cells.push(cell)
       }
       let groups = extractUniqueGroups(cells)
       Object.assign(this.currentState, ClientState.create({
