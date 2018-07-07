@@ -23,3 +23,9 @@ $ git clone
 $ cd organic-stem-devshell
 $ npm install
 ```
+
+## use
+
+```
+npx node-organic/devshell
+```

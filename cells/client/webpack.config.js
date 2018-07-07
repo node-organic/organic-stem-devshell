@@ -5,7 +5,6 @@ const path = require('path')
 // css
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const postcssImport = require('postcss-import')
-// const stylelint = require('stylelint')
 const postcssReporter = require('postcss-reporter')
 const postcssCssnext = require('postcss-cssnext')
 
@@ -63,7 +62,6 @@ module.exports = webcell({
                 sourceMap: 'inline',
                 plugins: () => [
                   postcssImport(),
-                  // stylelint(),
                   postcssReporter(),
                   postcssCssnext()
                 ]
