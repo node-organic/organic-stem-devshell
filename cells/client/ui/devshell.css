@@ -13,6 +13,7 @@
   grid-column: 2 / 4;
   grid-row: 2;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
 }
 
@@ -23,6 +24,7 @@
 .cell-tabs {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 .cell-outputs {
 }
@@ -30,4 +32,8 @@
 .command-input {
   grid-column: 2 / 4;
   grid-row: 4;
+}
+
+ui-devshell {
+  display: block;
 }

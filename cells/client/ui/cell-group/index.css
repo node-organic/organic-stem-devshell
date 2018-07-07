@@ -1,6 +1,6 @@
 ui-cell-group {
   display: block;
-  padding: 25px;
+  padding: 10px;
   margin: 5px;
   border-radius: 5px;
   background-color: silver;
@@ -13,5 +13,5 @@ ui-cell-group:hover {
 }
 
 ui-cell-group span.selected {
-  background-color: green;
+  border-bottom: 10px solid green;
 }

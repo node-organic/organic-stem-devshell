@@ -74,6 +74,9 @@
     this.on('mounted', () => {
       window.plasma.emit(FetchClientState.create())
     })
+    this.getCellTabClass = () => {
+      return this.state.cells.length > 3 ? '' : 'flexAutoGrow'
+    }
   </script>
   <virtual>
     <div if=${this.state.cwd} class='wrapper'>
@@ -89,6 +92,7 @@
         <div class='cell-tabs'>
           <each cell in ${this.state.cells}>
             <ui-cell-tab cell=${cell}
+              class=${this.getCellTabClass()}
               selected=${this.onCellSelected}
               focused=${this.onCellFocused} />
           </each>
@@ -99,7 +103,7 @@
           </each>
         </div>
       </div>
-      <div class='command-input' if=${this.hasSelectedCell() === true}>
+      <div class='command-input'>
         <ui-command-input
           executeToAll=${this.onExecuteToAll}
           executeToFocused=${this.onExecuteToFocused}

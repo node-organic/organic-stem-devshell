@@ -2,6 +2,9 @@
   <script>
     require('./index.css')
     require('els')(this)
+    window.plasma.combokeys.bind('ctrl+space', () => {
+      this.els('input').focus()
+    })
     this.on('keyup', (e) => {
       if (e.keyCode === 13 && !e.shiftKey) {
         this.onExecuteToFocused()
