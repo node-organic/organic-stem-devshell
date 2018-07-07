@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "bin": {
-    "devshell": "./bin/devshell"
+    "devshell": "./bin/devshell.js"
   },
   "scripts": {
     "test": "jest",
