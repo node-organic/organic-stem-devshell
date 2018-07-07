@@ -3,13 +3,17 @@ ui-cell-group {
   padding: 10px;
   margin: 5px;
   border-radius: 5px;
-  background-color: silver;
+  color: silver;
   white-space: nowrap;
   user-select: none;
 }
 
 ui-cell-group:hover {
-  background-color: pink;
+  background-color: black;
+}
+
+ui-cell-group span {
+  font-size: 1.5em;
 }
 
 ui-cell-group span.selected {

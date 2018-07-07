@@ -8,7 +8,7 @@
 [x] running/not running status indicator
 [x] execute a command towards the cwd
 [x] new output status indicator
-[] better style/design and shortcuts
+[x] better style/design and shortcuts
 ? [] all commands output combined in single tab
 ? [] run commands towards the repo as well
 ? [] kill port/process tool
