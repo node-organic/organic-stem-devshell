@@ -1,6 +1,6 @@
 # organic-stem-devshell
 
-A tool to ease development of organic distributed systems.
+A tool to ease development of organic [distributed] systems.
 
 ## features & todo
 
