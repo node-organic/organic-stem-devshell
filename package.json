@@ -8,8 +8,8 @@
   "scripts": {
     "test": "jest",
     "develop": "angel repo cells -- npm run develop",
-    "build": "angel repo cell client -- npm run build",
-    "postinstall": "angel repo cells -- npm install && npm run build"
+    "build": "cd ./cells/client && npm run build",
+    "postinstall": "cd ./cells/server && npm install && cd ../client && cd ../../ npm install && npm run build"
   },
   "author": "Boris Filipov",
   "license": "MIT",
