@@ -9,7 +9,7 @@
     "test": "jest",
     "develop": "angel repo cells -- npm run develop",
     "build": "angel repo cells -- npm run build && git add --all ./cells/client",
-    "release-patch": "npm run build && npm version path && git push --tags && git push origin master",
+    "release-patch": "npm run build && npm version patch && git push --tags && git push origin master",
     "release-minor": "npm run build && npm version minor && git push --tags && git push origin master",
     "release-major": "npm run build && npm version major && git push --tags && git push origin master"
   },
