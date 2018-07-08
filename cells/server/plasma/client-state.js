@@ -154,7 +154,7 @@ module.exports = class ClientStateOrganelle {
       for (let key in dna.cells) {
         let cell = Cell.create({
           name: key,
-          groups: dna.cells[key].groups,
+          groups: dna.cells[key].groups || [],
           selected: false,
           focused: false,
           commandRunning: false
