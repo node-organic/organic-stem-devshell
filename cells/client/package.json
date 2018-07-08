@@ -12,7 +12,9 @@
     "organic-oval": "github:node-organic/organic-oval#v5.0.0-web-components",
     "organic-stem-cell": "^2.0.3",
     "socket.io-client": "^2.1.1",
-    "xterm": "^2.9.2",
+    "xterm": "^2.9.2"
+  },
+  "devDependencies": {
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
