@@ -10,40 +10,39 @@
     require('./xterm')
     require('els')(this)
     this.xtermReady = () => {
-      setTimeout(() => {
-        if (!this.state.cell.focused) {
-          this.hide()
-        }
-      }, 100)
+      if (!this.props.cell.focused) {
+        this.hide()
+      }
     }
     this.show = function () {
-      this.els('xterm').classList.remove('hidden')
+      if (!this.shadowRoot) return
+      this.shadowRoot.classList.remove('hidden')
     }
     this.hide = function () {
-      this.els('xterm').classList.add('hidden')
+      if (!this.shadowRoot) return
+      this.shadowRoot.classList.add('hidden')
     }
-    this.handleKeypress = (e) => {
+    this.handleKeypress = (char) => {
       window.plasma.emit(CommandInput.create({
-        char: e.detail,
-        cell: this.state.cell
+        char: char,
+        cell: this.props.cell
       }))
     }
     this.on('updated', () => {
-      if (!this.mounted) return
-      if (this.state.cell.focused) {
+      if (this.props.cell.focused) {
         this.show()
       } else {
         this.hide()
       }
     })
     this.on('mounted', () => {
-      window.plasma.on(CommandStarted.byCell(this.state.cell), (c) => {
-        this.els('xterm').write(c.chunk)
+      window.plasma.on(CommandStarted.byCell(this.props.cell), (c) => {
+        this.shadowRoot.component.write(c.chunk)
       })
-      window.plasma.on(CommandOutput.byCell(this.state.cell), (c) => {
-        this.els('xterm').write(c.chunk)
+      window.plasma.on(CommandOutput.byCell(this.props.cell), (c) => {
+        this.shadowRoot.component.write(c.chunk)
       })
     })
   </script>
-  <ui-xterm els='xterm' ready=${this.xtermReady} keypressed=${this.handleKeypress} />
+  <ui-xterm ready={this.xtermReady} keypressed={this.handleKeypress} />
 </ui-cell-output>

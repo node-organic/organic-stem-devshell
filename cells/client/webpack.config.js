@@ -71,6 +71,16 @@ module.exports = webcell({
         },
         {
           test: /\.tag$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              plugins: ['babel-plugin-transform-react-jsx']
+            }
+          }
+        },
+        {
+          test: /\.tag$/,
           exclude: /node_modules/,
           use: [
             {loader: 'organic-oval/webpack/oval-loader'},

@@ -5,64 +5,37 @@
     window.plasma.combokeys.bind('ctrl+space', () => {
       this.els('input').focus()
     })
-    this.on('keyup', (e) => {
+    this.onKeyUp = (e) => {
       if (e.keyCode === 13 && !e.shiftKey) {
         this.onExecuteToFocused()
       }
       if (e.keyCode === 13 && e.shiftKey) {
         this.onExecuteToAll()
       }
-      this.update()
-    })
+    }
     this.onExecuteToAll = () => {
       this.emit('executeToAll', this.els('input').value)
     }
     this.onExecuteToFocused = () => {
       this.emit('executeToFocused', this.els('input').value)
-      this.els('input').value = this.getAttribute('value')
-      this.state.value = this.getAttribute('value')
+      this.update()
     }
     this.onTerminateAll = (e) => {
       this.emit('terminateAll')
     }
-    this.getExecuteBtnsClassState = () => {
-      if (!this.els('input')) return 'hidden'
-      if (this.els('input').value !== this.getAttribute('value')) {
-        return ''
-      } else {
-        return 'hidden'
-      }
-    }
-    /* @WORKAROUND
-       when doing re-render initiated by the parent component
-       it sets `value` attribute to different value
-       however rendering the component doesnt occurs because it
-       already exists in the dom rendered previously by incremental-dom
-       therefore we need to:
-       1. buffer the passed `value` property
-       2. forcebly set input's state to the new `value` property
-    */
-    this.on('updated', () => {
-      if (this.mounted && this.state.value !== this.getAttribute('value')) {
-        this.els('input').value = this.getAttribute('value')
-      }
-      this.state.value = this.getAttribute('value')
-    })
   </script>
-  <virtual>
+  <div>
     <span><i class="material-icons">last_page</i></span>
-    <input type='text' els='input' value=${this.getAttribute("value")}/>
-    <button tooltip='execute to all selected'
-      class=${this.getExecuteBtnsClassState()} click=${this.onExecuteToAll}>
+    <input type='text' els='input' onkeyup={this.onKeyUp} value={this.props.value}/>
+    <button tooltip='execute to all selected' onclick={this.onExecuteToAll}>
       <i class="material-icons">keyboard_arrow_right</i>
     </button>
-    <button tooltip='execute'
-      class=${this.getExecuteBtnsClassState()} click=${this.onExecuteToFocused}>
+    <button tooltip='execute' onclick={this.onExecuteToFocused}>
       <i class="material-icons">last_page</i>
     </button>
-    <button if={this.getAttribute('value')} els='terminateBtn'
-      click=${this.onTerminateAll}>
+    <button if={this.props.value} els='terminateBtn'
+      onclick={this.onTerminateAll}>
       <i class="material-icons">block</i>
     </button>
-  </virtual>
+  </div>
 </ui-command-input>

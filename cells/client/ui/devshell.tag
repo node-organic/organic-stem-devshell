@@ -18,8 +18,7 @@
     } = require('chemicals/terminals')
     /* this.state === lib/chemicals.ClientState */
 
-    this.onCellSelected = (e) => {
-      let cell = e.detail
+    this.onCellSelected = (cell) => {
       let isFirstSelectedCell = true
       this.state.cells.forEach((c) => {
         if (c.selected) isFirstSelectedCell = false
@@ -28,9 +27,9 @@
       if (isFirstSelectedCell) cell.focused = true
       window.plasma.emit(ChangeClientState.create(this.state))
     }
-    this.onCellFocused = (e) => {
+    this.onCellFocused = (focusedCell) => {
       this.state.cells.forEach((cell) => {
-        if (cell.name !== e.detail.name) {
+        if (cell.name !== focusedCell.name) {
           cell.focused = false
         } else {
           cell.focused = !cell.focused
@@ -38,21 +37,20 @@
       })
       window.plasma.emit(ChangeClientState.create(this.state))
     }
-    this.onCellGroupSelected = (e) => {
-      let group = e.detail
+    this.onCellGroupSelected = (group) => {
       group.selected = !group.selected
       window.plasma.emit(ChangeClientState.create(this.state))
     }
-    this.onExecuteToAll = function (e) {
+    this.onExecuteToAll = function (value) {
       window.plasma.emit(ChangeClientState.create({
-        runningCommand: e.detail
+        runningCommand: value
       }))
     }
-    this.onExecuteToFocused = (e) => {
+    this.onExecuteToFocused = (value) => {
       this.state.cells.forEach((cell) => {
         if (cell.focused) {
           window.plasma.emit(RunCommand.create({
-            value: e.detail,
+            value: value,
             cell: cell
           }))
         }
@@ -69,7 +67,7 @@
       return result
     }
     window.plasma.on(ClientState.type, (c) => {
-      this.shouldUpdate(c)
+      this.setState(c)
     })
     this.on('mounted', () => {
       window.plasma.emit(FetchClientState.create())
@@ -78,38 +76,36 @@
       return this.state.cells.length > 3 ? '' : 'flexAutoGrow'
     }
   </script>
-  <virtual>
-    <div if=${this.state.cwd} class='wrapper'>
-      <div class='project'>
-        <h1>${this.state.cwd.replace(this.state.userhome, '~')}</h1>
-      </div>
-      <div class='groups'>
-        <each group in ${this.state.groups}>
-          <ui-cell-group group=${group} selected=${this.onCellGroupSelected} />
+  <div if={this.state.cwd} class='wrapper'>
+    <div class='project'>
+      <h1>{this.state.cwd.replace(this.state.userhome, '~')}</h1>
+    </div>
+    <div class='groups'>
+      <each group in {this.state.groups}>
+        <ui-cell-group key={group.name} group={group} selected={this.onCellGroupSelected} />
+      </each>
+    </div>
+    <div class='cells'>
+      <div class='cell-tabs'>
+        <each cell in {this.state.cells}>
+          <ui-cell-tab cell={cell}
+            class={this.getCellTabClass()}
+            selected={this.onCellSelected}
+            focused={this.onCellFocused} />
         </each>
       </div>
-      <div class='cells'>
-        <div class='cell-tabs'>
-          <each cell in ${this.state.cells}>
-            <ui-cell-tab cell=${cell}
-              class=${this.getCellTabClass()}
-              selected=${this.onCellSelected}
-              focused=${this.onCellFocused} />
-          </each>
-        </div>
-        <div class='cell-outputs'>
-          <each cell in ${this.state.cells}>
-            <ui-cell-output cell=${cell} />
-          </each>
-        </div>
-      </div>
-      <div class='command-input'>
-        <ui-command-input
-          executeToAll=${this.onExecuteToAll}
-          executeToFocused=${this.onExecuteToFocused}
-          terminateAll=${this.onTerminateAll}
-          value=${this.state.runningCommand} />
+      <div class='cell-outputs'>
+        <each cell in {this.state.cells}>
+          <ui-cell-output cell={cell} />
+        </each>
       </div>
     </div>
-  </virtual>
+    <div class='command-input'>
+      <ui-command-input
+        executeToAll={this.onExecuteToAll}
+        executeToFocused={this.onExecuteToFocused}
+        terminateAll={this.onTerminateAll}
+        value={this.state.runningCommand} />
+    </div>
+  </div>
 </ui-devshell>

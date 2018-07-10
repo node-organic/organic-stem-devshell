@@ -8,36 +8,36 @@
       CommandOutput
     } = require('chemicals/terminals')
     this.state.hasOutput = false
-    this.on('click', (e) => {
+    this.onClick = (e) => {
       this.state.hasOutput = false
       if (e.target === this.els('selectedCheck')) {
         e.preventDefault()
         e.stopPropagation()
-        this.emit('selected', this.state.cell)
+        this.emit('selected', this.props.cell)
       } else {
-        this.emit('focused', this.state.cell)
+        this.emit('focused', this.props.cell)
       }
-    })
+    }
     this.getCheckboxClasses = () => {
       return [
-        this.state.cell.selected ? 'selected': '',
-        this.state.cell.commandRunning ? 'running': '',
-        this.state.hasOutput && !this.state.cell.focused ? 'hasOutput' : ''
+        this.props.cell.selected ? 'selected': '',
+        this.props.cell.commandRunning ? 'running': '',
+        this.state.hasOutput && !this.props.cell.focused ? 'hasOutput' : ''
       ].join(' ')
     }
     this.on('mounted', () => {
-      window.plasma.on(CommandOutput.byCell(this.state.cell), () => {
+      window.plasma.on(CommandOutput.byCell(this.props.cell), () => {
         this.state.hasOutput = true
         this.update()
       })
     })
   </script>
-  <div class="tab ${this.state.cell.focused ? 'focused' : ''}">
-    <div class='checkbox ${this.getCheckboxClasses()}'>
+  <div class={"tab " + (this.props.cell.focused ? 'focused' : '')} onclick={this.onClick}>
+    <div class={"checkbox " + this.getCheckboxClasses()}>
       <i class='material-icons' els='selectedCheck'>
-        ${this.state.cell.selected ? 'check_circle' : 'blur_circular'}
+        {this.props.cell.selected ? 'check_circle' : 'blur_circular'}
       </i>
     </div>
-    <span class='cell-name'>${this.state.cell.name}</span>
+    <span class='cell-name'>{this.props.cell.name}</span>
   </div>
 </ui-cell-tab>
