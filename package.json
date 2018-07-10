@@ -8,7 +8,7 @@
   "scripts": {
     "test": "jest",
     "develop": "angel repo cells -- npm run develop",
-    "build": "angel repo cells -- npm run build && git add --all ./cells/client",
+    "build": "angel repo cells -- npm run build && git add --all ./ && git commit -m 'release build'",
     "postinstall": "cd ./cells/server && npm install",
     "release-patch": "npm run build && npm version patch && git push --tags && git push origin master",
     "release-minor": "npm run build && npm version minor && git push --tags && git push origin master",
