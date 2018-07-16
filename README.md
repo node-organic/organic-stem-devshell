@@ -7,10 +7,10 @@ A tool to ease development of organic [distributed] systems.
 ## features & todo
 
 - [x] automatically parse dna in cwd and present cells & cell groups
-- [x] execute a command towards all selected cells
+- [x] execute a command towards all selected cells (type command and hit `shift+enter`)
 - [x] terminate a command previously executed towards all selected cells
 - [x] running/not running status indicator
-- [x] execute a command towards the focused cell
+- [x] execute a command towards the focused cell (type command and hit `enter`)
 - [x] new output status indicator per cell
 - ? all commands output combined in single output tab
 - ? run commands towards the repo as well
