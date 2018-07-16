@@ -1252,7 +1252,8 @@ iframe.heightSet{overflow:hidden}
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
 body {
-  background-color: gray;
+  background-color: black;
+  color: white;
 }
 .wrapper {
   display: grid;
@@ -1321,7 +1322,8 @@ ui-cell-group {
 }
 
 ui-cell-group:hover {
-  background-color: black;
+  background-color: grey;
+  color: black;
 }
 
 ui-cell-group span {
@@ -1375,8 +1377,8 @@ ui-cell-tab .checkbox [els="selectedCheck"] {
   font-size: 38px;
 }
 ui-cell-tab:hover {
-  color: gray;
-  background-color: black;
+  color: white;
+  background-color: grey;
 }
 ui-cell-tab div.focused {
   border-bottom: 10px solid green;
@@ -1393,6 +1395,7 @@ ui-xterm.hidden {
 ui-xterm {
   display: block;
   background-color: black;
+  border: 1px solid grey;
 }
 ui-xterm .container {
   min-height: 400px;
