@@ -1,0 +1,6 @@
+{
+  "name": "landing-v2",
+  "scripts": {
+    "develop": "node index"
+  }
+}

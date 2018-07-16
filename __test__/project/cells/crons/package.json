@@ -1,0 +1,6 @@
+{
+  "name": "crons",
+  "scripts": {
+    "develop": "node index"
+  }
+}

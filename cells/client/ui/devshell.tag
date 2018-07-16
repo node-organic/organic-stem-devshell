@@ -19,12 +19,7 @@
     /* this.state === lib/chemicals.ClientState */
 
     this.onCellSelected = (cell) => {
-      let isFirstSelectedCell = true
-      this.state.cells.forEach((c) => {
-        if (c.selected) isFirstSelectedCell = false
-      })
       cell.selected = !cell.selected
-      if (isFirstSelectedCell) cell.focused = true
       window.plasma.emit(ChangeClientState.create(this.state))
     }
     this.onCellFocused = (focusedCell) => {
@@ -38,8 +33,18 @@
       window.plasma.emit(ChangeClientState.create(this.state))
     }
     this.onCellGroupSelected = (group) => {
-      group.selected = !group.selected
-      window.plasma.emit(ChangeClientState.create(this.state))
+      return () => {
+        // cant use the group as reference
+        // seems JS passes it as cloned object
+        // therefore `group.selected = !group.selected`
+        // wont work here and instead we need to do
+        this.state.groups.forEach((g) => {
+          if (g.name === group.name) {
+            g.selected = !g.selected
+          }
+        })
+        window.plasma.emit(ChangeClientState.create(this.state))
+      }
     }
     this.onExecuteToAll = function (value) {
       window.plasma.emit(ChangeClientState.create({
@@ -82,7 +87,7 @@
     </div>
     <div class='groups'>
       <each group in {this.state.groups}>
-        <ui-cell-group key={group.name} group={group} selected={this.onCellGroupSelected} />
+        <ui-cell-group key={group.name} group={group} onclick={this.onCellGroupSelected(group)} />
       </each>
     </div>
     <div class='cells'>

@@ -1,0 +1,6 @@
+{
+  "name": "landing-webapp",
+  "scripts": {
+    "develop": "node index"
+  }
+}

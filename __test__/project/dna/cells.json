@@ -1,17 +1,17 @@
 {
-  "test-cell1": {
-    "groups": ["test-group"]
+  "api-v1": {
+    "groups": ["backend", "landing-v1"]
   },
-  "test-cell2": {
-    "groups": []
+  "api-v2": {
+    "groups": ["backend", "landing-v2"]
   },
-  "test-cell3": {
-    "groups": ["test-group", "test-group2"]
+  "landing-webapp": {
+    "groups": ["webapps", "landing-v1"]
   },
-  "very-looooooooooooooong-cell-name": {
-    "groups": ["non-existing-directory"]
+  "landing-v2": {
+    "groups": ["webapps", "landing-v2"]
   },
-  "very-looooooooooooooong^2^2^2^2^2^2^2^2-cell-name": {
-    "groups": ["group-with-loooooooooooooooooooooooong-name"]
+  "crons": {
+    "groups": ["backend"]
   }
 }

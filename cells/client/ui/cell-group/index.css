@@ -9,7 +9,8 @@ ui-cell-group {
 }
 
 ui-cell-group:hover {
-  background-color: black;
+  background-color: grey;
+  color: black;
 }
 
 ui-cell-group span {

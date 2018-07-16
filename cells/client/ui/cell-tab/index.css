@@ -39,8 +39,8 @@ ui-cell-tab .checkbox [els="selectedCheck"] {
 }
 
 ui-cell-tab:hover {
-  color: gray;
-  background-color: black;
+  color: white;
+  background-color: grey;
 }
 
 ui-cell-tab div.focused {

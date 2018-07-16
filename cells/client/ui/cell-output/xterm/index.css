@@ -1,6 +1,7 @@
 ui-xterm {
   display: block;
   background-color: black;
+  border: 1px solid grey;
 }
 ui-xterm .container {
   min-height: 400px;

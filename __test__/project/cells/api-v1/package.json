@@ -1,0 +1,6 @@
+{
+  "name": "apiv1",
+  "scripts": {
+    "develop": "node index"
+  }
+}
