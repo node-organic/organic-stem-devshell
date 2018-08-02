@@ -15,11 +15,9 @@
       }
     }
     this.show = function () {
-      if (!this.shadowRoot) return
       this.shadowRoot.classList.remove('hidden')
     }
     this.hide = function () {
-      if (!this.shadowRoot) return
       this.shadowRoot.classList.add('hidden')
     }
     this.handleKeypress = (char) => {

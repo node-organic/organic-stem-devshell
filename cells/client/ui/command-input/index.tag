@@ -24,18 +24,16 @@
       this.emit('terminateAll')
     }
   </script>
-  <div>
-    <span><i class="material-icons">last_page</i></span>
-    <input type='text' els='input' onkeyup={this.onKeyUp} value={this.props.value}/>
-    <button tooltip='execute to all selected' onclick={this.onExecuteToAll}>
-      <i class="material-icons">keyboard_arrow_right</i>
-    </button>
-    <button tooltip='execute' onclick={this.onExecuteToFocused}>
-      <i class="material-icons">last_page</i>
-    </button>
-    <button if={this.props.value} els='terminateBtn'
-      onclick={this.onTerminateAll}>
-      <i class="material-icons">block</i>
-    </button>
-  </div>
+  <span><i class="material-icons">last_page</i></span>
+  <input type='text' els='input' onkeyup={this.onKeyUp} value={this.props.value}/>
+  <button tooltip='execute to all selected' onclick={this.onExecuteToAll}>
+    <i class="material-icons">keyboard_arrow_right</i>
+  </button>
+  <button tooltip='execute' onclick={this.onExecuteToFocused}>
+    <i class="material-icons">last_page</i>
+  </button>
+  <button if={this.props.value} els='terminateBtn'
+    onclick={this.onTerminateAll}>
+    <i class="material-icons">block</i>
+  </button>
 </ui-command-input>

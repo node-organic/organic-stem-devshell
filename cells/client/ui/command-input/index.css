@@ -4,7 +4,7 @@ ui-command-input {
   margin: 25px;
 }
 
-ui-command-input div {
+ui-command-input shadow-root {
   display: flex;
   width: 100%;
 }
