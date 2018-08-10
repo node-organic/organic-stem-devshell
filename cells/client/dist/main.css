@@ -3675,7 +3675,7 @@ ui-command-input {
   margin: 25px;
 }
 
-ui-command-input div {
+ui-command-input shadow-root {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
