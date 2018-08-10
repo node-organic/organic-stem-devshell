@@ -27,6 +27,10 @@
     "terminals": {
       "source": "./plasma/terminals",
       "PRJROOT": "{$PRJROOT}"
+    },
+    "devproxy": {
+      "source": "./plasma/dev-proxy",
+      "port": 1337
     }
   }
 }

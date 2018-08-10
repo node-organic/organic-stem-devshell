@@ -35,12 +35,12 @@
     })
     this.on('mounted', () => {
       window.plasma.on(CommandStarted.byCell(this.props.cell), (c) => {
-        this.shadowRoot.component.write(c.chunk)
+        this.els('xterm').component.write(c.chunk)
       })
       window.plasma.on(CommandOutput.byCell(this.props.cell), (c) => {
-        this.shadowRoot.component.write(c.chunk)
+        this.els('xterm').component.write(c.chunk)
       })
     })
   </script>
-  <ui-xterm ready={this.xtermReady} keypressed={this.handleKeypress} />
+  <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} />
 </ui-cell-output>

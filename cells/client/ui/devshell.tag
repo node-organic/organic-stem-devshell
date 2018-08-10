@@ -110,7 +110,7 @@
         executeToAll={this.onExecuteToAll}
         executeToFocused={this.onExecuteToFocused}
         terminateAll={this.onTerminateAll}
-        value={this.state.runningCommand} />
+        prop-value={this.state.runningCommand} />
     </div>
   </div>
 </ui-devshell>

@@ -8,6 +8,7 @@
   "dependencies": {
     "dateformat": "^3.0.3",
     "express": "^4.16.3",
+    "http-proxy": "^1.17.0",
     "node-pty": "^0.7.4",
     "organic-express-server": "^0.1.0",
     "organic-socketio-server": "^2.0.1",

@@ -11,7 +11,7 @@
         rows: 24
       })
       this.xterm = xterm
-      xterm.open(this.shadowRoot, false)
+      xterm.open(this.els('container'), false)
       xterm.fit()
       xterm.on('data', (c) => {
         this.emit('keypressed', c)
@@ -23,5 +23,5 @@
       this.xterm.write(chunk)
     }
   </script>
-  <div class='container'></div>
+  <div els='container' class='container'></div>
 </ui-xterm>

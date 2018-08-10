@@ -157,7 +157,9 @@ module.exports = class ClientStateOrganelle {
           groups: dna.cells[key].groups || [],
           selected: false,
           focused: false,
-          commandRunning: false
+          commandRunning: false,
+          port: dna['cell-ports'] ? dna['cell-ports'][key] : false,
+          mountPoint: dna['cell-mountpoints'] ? dna['cell-mountpoints'][key] : false
         })
         cells.push(cell)
       }
