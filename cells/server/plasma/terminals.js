@@ -2,6 +2,7 @@ const pty = require('node-pty')
 const path = require('path')
 const terminate = require('terminate')
 const dateFormat = require('dateformat')
+const _ = require('lodash')
 
 const {
   RunAll,
@@ -86,9 +87,14 @@ module.exports = class TerminalsOrganelle {
           cell: cell,
           chunk: '\n\r' + dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss') + ' <| terminated. \n\r'
         }))
+        let cellHasMoreCommands = false
+        this.runningCommands.forEach(r => {
+          if (r.cell.name === cell.name) cellHasMoreCommands = true
+        })
         this.plasma.emit(CommandTerminated.create({
           cell: cell,
-          statusCode: statusCode
+          statusCode: statusCode,
+          cellHasMoreCommands: cellHasMoreCommands
         }))
         if (this.runningCommands.length === 0) {
           this.plasma.emit(AllRunningCommandsTerminated.create())

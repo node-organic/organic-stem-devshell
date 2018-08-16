@@ -9,6 +9,21 @@
   grid-row: 1;
 }
 
+.project .proxyurl {
+  background-color: green;
+  text-align: center;
+  font-size: 2em;
+  padding: 5px;
+}
+
+.proxyurl a {
+  color: white;
+}
+
+.proxyurl a:hover {
+  color: white;
+}
+
 .groups {
   grid-column: 2 / 4;
   grid-row: 2;
@@ -32,6 +47,38 @@
 .command-input {
   grid-column: 2 / 4;
   grid-row: 4;
+  display: flex;
+}
+
+.command-input ui-command-input {
+  flex-grow: 1;
+}
+
+.command-input .scripts {
+  display: flex;
+}
+
+.command-input .cellscript {
+  padding: 2px;
+  background-color: grey;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.command-input .cellscript:hover {
+  background-color: white;
+  color: black;
+}
+
+.command-input .scripts.common .cellscript {
+  padding: 10px;
+  background-color: white;
+  color: black;
+}
+
+.command-input .scripts.common .cellscript:hover {
+  background-color: grey;
+  color: white;
 }
 
 ui-devshell {

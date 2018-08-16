@@ -30,7 +30,7 @@
     },
     "devproxy": {
       "source": "./plasma/dev-proxy",
-      "port": 1337
+      "port": 11664
     }
   }
 }

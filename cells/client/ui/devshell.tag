@@ -7,6 +7,8 @@
     require('./cell-output')
     require('./command-input')
 
+    const _ = require('lodash')
+
     const {
       FetchClientState,
       ClientState,
@@ -16,7 +18,6 @@
       TerminateAll,
       RunCommand
     } = require('chemicals/terminals')
-    /* this.state === lib/chemicals.ClientState */
 
     this.onCellSelected = (cell) => {
       cell.selected = !cell.selected
@@ -31,6 +32,17 @@
         }
       })
       window.plasma.emit(ChangeClientState.create(this.state))
+    }
+    this.getFocusedCell = () => {
+      return _.find(this.state.cells, 'focused')
+    }
+    this.getCommonCellScripts = () => {
+      let filter = _.filter(this.state.cells, 'selected')
+      let arr = _.map(filter, (c) => {
+        return _.keys(c.scripts)
+      })
+      let result = _.intersection.apply(_, arr)
+      return result
     }
     this.onCellGroupSelected = (group) => {
       return () => {
@@ -61,6 +73,11 @@
         }
       })
     }
+    this.onCommonScriptClick = (script) => {
+      return (e) => {
+        this.onExecuteToAll('npm run ' + script)
+      }
+    }
     this.onTerminateAll = function (e) {
       window.plasma.emit(TerminateAll.create())
     }
@@ -83,6 +100,11 @@
   </script>
   <div if={this.state.cwd} class='wrapper'>
     <div class='project'>
+      <div class='proxyurl'>
+        <a href={'http://localhost:' + window.DNA.devproxy.port} target="_blank">
+          http://localhost:{window.DNA.devproxy.port}/
+        </a>
+      </div>
       <h1>{this.state.cwd.replace(this.state.userhome, '~')}</h1>
     </div>
     <div class='groups'>
@@ -101,11 +123,19 @@
       </div>
       <div class='cell-outputs'>
         <each cell in {this.state.cells}>
-          <ui-cell-output cell={cell} />
+          <ui-cell-output
+            cell={cell}
+            executeToAll={this.onExecuteToAll}
+            executeToFocused={this.onExecuteToFocused} />
         </each>
       </div>
     </div>
-    <div class='command-input'>
+    <div if={this.hasSelectedCell()} class='command-input'>
+      <div if={!this.state.runningCommand} class='scripts common'>
+        <each script in {this.getCommonCellScripts()}>
+          <div class='cellscript' onclick={this.onCommonScriptClick(script)}>{script}</div>
+        </each>
+      </div>
       <ui-command-input
         executeToAll={this.onExecuteToAll}
         executeToFocused={this.onExecuteToFocused}

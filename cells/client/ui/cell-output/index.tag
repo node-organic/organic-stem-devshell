@@ -1,6 +1,7 @@
 <ui-cell-output>
   <script>
     const {
+      TerminateCommand,
       CommandInput,
       CommandOutput,
       CommandTerminated,
@@ -33,6 +34,30 @@
         this.hide()
       }
     })
+
+    this.getCellScripts = () => {
+      let cellScripts = this.props.cell.scripts
+      let result = []
+      for (let key in cellScripts) {
+        result.push({name: key, value: cellScripts[key]})
+      }
+      return result
+    }
+
+    this.onTerminateCellCommands = () => {
+      window.plasma.emit(TerminateCommand.byCell(this.props.cell))
+    }
+
+    this.onCellScriptClick = (script) => {
+      return (e) => {
+        if (!e.shiftKey) {
+          this.props.executeToFocused('npm run ' + script.name)
+        } else {
+          this.props.executeToAll('npm run ' + script.name)
+        }
+      }
+    }
+
     this.on('mounted', () => {
       window.plasma.on(CommandStarted.byCell(this.props.cell), (c) => {
         this.els('xterm').component.write(c.chunk)
@@ -42,5 +67,16 @@
       })
     })
   </script>
+  <div>
+    port: {this.props.cell.port} | mount point: {this.props.cell.mountPoint}
+    <div if={!this.state.runningCommand} class='scripts'>
+      <div if={this.props.cell.commandRunning} class='cellscript' onclick={this.onTerminateCellCommands}>
+        <i class="material-icons">block</i>
+      </div>
+      <each script in {this.getCellScripts()}>
+        <div class='cellscript' onclick={this.onCellScriptClick(script)}>{script.name}</div>
+      </each>
+    </div>
+  </div>
   <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} />
 </ui-cell-output>

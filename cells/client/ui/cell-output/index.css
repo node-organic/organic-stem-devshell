@@ -5,3 +5,19 @@ ui-cell-output {
 ui-xterm.hidden {
   display: none;
 }
+
+ui-cell-output .scripts {
+  display: flex;
+}
+
+ui-cell-output .cellscript {
+  padding: 2px;
+  background-color: grey;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+ui-cell-output .cellscript:hover {
+  background-color: white;
+  color: black;
+}

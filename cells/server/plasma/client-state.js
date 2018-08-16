@@ -60,7 +60,7 @@ module.exports = class ClientStateOrganelle {
     })
     this.plasma.on(CommandTerminated.type, (c) => {
       this.currentState.cells.forEach(cell => {
-        if (cell.name === c.cell.name) {
+        if (cell.name === c.cell.name && !c.cellHasMoreCommands) {
           cell.commandRunning = false
         }
       })
@@ -70,62 +70,54 @@ module.exports = class ClientStateOrganelle {
   }
 
   change (newState) {
-    if (newState.cells) {
-      newState.cells.forEach((cell) => {
-        let cellHasBeenSelected = false
-        this.currentState.cells.forEach((oldCell) => {
-          if (oldCell.name === cell.name && oldCell.selected) {
-            cellHasBeenSelected = true
-          }
+    if (newState.groups) {
+      newState.groups.forEach(group => {
+        let groupHasBeenSelected = _.find(this.currentState.groups, (g) => {
+          return g.name === group.name && g.selected
         })
-        if (!cell.selected && cellHasBeenSelected) {
-          newState.groups.forEach((group) => {
-            if (cell.groups.indexOf(group.name) !== -1) {
-              group.selected = false
-            }
-          })
-        }
-      })
-      newState.groups.forEach((group) => {
-        if (group.selected) {
-          newState.cells.forEach((cell) => {
+        // if group has been selected -> select its cells
+        if (group.selected && !groupHasBeenSelected) {
+          newState.cells.forEach(cell => {
             if (cell.groups.indexOf(group.name) !== -1) {
               cell.selected = true
             }
           })
         }
-        let groupHasBeenSelected = false
-        this.currentState.groups.forEach((oldGroup) => {
-          if (oldGroup.name === group.name && oldGroup.selected) {
-            groupHasBeenSelected = true
-          }
-        })
+        // if group has been unselected -> unselect its cells
         if (!group.selected && groupHasBeenSelected) {
-          newState.cells.forEach((cell) => {
+          newState.cells.forEach(cell => {
             if (cell.groups.indexOf(group.name) !== -1) {
               cell.selected = false
             }
           })
         }
       })
-      newState.cells.forEach((cell) => {
-        let cellHasBeenSelected = false
-        this.currentState.cells.forEach((oldCell) => {
-          if (oldCell.name === cell.name && oldCell.selected) {
-            cellHasBeenSelected = true
-          }
+    }
+    if (newState.cells) {
+      newState.cells.forEach(cell => {
+        let cellHasBeenSelected = _.find(this.currentState.cells, (c) => {
+          return c.name === cell.name && c.selected
         })
-        if (!cell.selected && cellHasBeenSelected) {
-          this.plasma.emit(TerminateCommand.byCell(cell))
-        }
+        // if cell has been selected and there is runningCommand -> run the command at cell
         if (cell.selected && !cellHasBeenSelected && this.currentState.runningCommand) {
+          // needed to properly update currentState
+          // otherwise the CommandStarted chemical's effect get lost due currentState override
+          cell.commandRunning = true
           this.plasma.emit(RunCommand.create({
             value: this.currentState.runningCommand,
             cell: cell
           }))
         }
+        // if cell has been deselected and it runs a command(s) -> terminate its command(s)
+        if (!cell.selected && cellHasBeenSelected) {
+          // needed to properly update currentState
+          // otherwise the CommandTerminated chemical's effect get lost due currentState override
+          cell.commandRunning = false
+          this.plasma.emit(TerminateCommand.byCell(cell))
+        }
       })
     }
+    // if a new command is set -> terminate all running commands and run new command to selected cells
     if (newState.runningCommand !== this.currentState.runningCommand) {
       if (this.currentState.runningCommand) {
         this.plasma.emit(TerminateAll.create())
@@ -134,6 +126,22 @@ module.exports = class ClientStateOrganelle {
         value: newState.runningCommand,
         cells: _.filter(this.currentState.cells, 'selected')
       }))
+    }
+    if (newState.groups && newState.cells) {
+      newState.groups.forEach(group => {
+        let allCount = 0
+        let count = 0
+        newState.cells.forEach(cell => {
+          if (cell.groups.indexOf(group.name) !== -1) {
+            allCount += 1
+            if (cell.selected) count += 1
+          }
+        })
+        // if all cells of a group are selected -> select the group
+        if (allCount === count) group.selected = true
+        // if all cells of a group are unselected and there is no running command -> unselect the group
+        if (count === 0) group.selected = false
+      })
     }
     Object.assign(this.currentState, ClientState.create(newState))
     this.plasma.emit(this.currentState)
@@ -159,7 +167,8 @@ module.exports = class ClientStateOrganelle {
           focused: false,
           commandRunning: false,
           port: dna['cell-ports'] ? dna['cell-ports'][key] : false,
-          mountPoint: dna['cell-mountpoints'] ? dna['cell-mountpoints'][key] : false
+          mountPoint: dna['cell-mountpoints'] ? dna['cell-mountpoints'][key] : false,
+          scripts: require(path.join(this.currentState.cwd, 'cells', key, 'package.json')).scripts
         })
         cells.push(cell)
       }
