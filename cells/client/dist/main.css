@@ -1266,6 +1266,21 @@ body {
   grid-row: 1;
 }
 
+.project .proxyurl {
+  background-color: green;
+  text-align: center;
+  font-size: 2em;
+  padding: 5px;
+}
+
+.proxyurl a {
+  color: white;
+}
+
+.proxyurl a:hover {
+  color: white;
+}
+
 .groups {
   grid-column: 2 / 4;
   grid-row: 2;
@@ -1303,6 +1318,44 @@ body {
 .command-input {
   grid-column: 2 / 4;
   grid-row: 4;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.command-input ui-command-input {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.command-input .scripts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.command-input .cellscript {
+  padding: 2px;
+  background-color: grey;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+.command-input .cellscript:hover {
+  background-color: white;
+  color: black;
+}
+
+.command-input .scripts.common .cellscript {
+  padding: 10px;
+  background-color: white;
+  color: black;
+}
+
+.command-input .scripts.common .cellscript:hover {
+  background-color: grey;
+  color: white;
 }
 
 ui-devshell {
@@ -1391,6 +1444,21 @@ ui-cell-output {
 }
 ui-xterm.hidden {
   display: none;
+}
+ui-cell-output .scripts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+ui-cell-output .cellscript {
+  padding: 2px;
+  background-color: grey;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+ui-cell-output .cellscript:hover {
+  background-color: white;
+  color: black;
 }
 ui-xterm {
   display: block;
