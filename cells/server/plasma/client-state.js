@@ -2,6 +2,7 @@ const loadDNA = require('organic-dna-loader')
 const path = require('path')
 const userhome = require('userhome')
 const _ = require('lodash')
+const cellsinfo = require('organic-dna-cells-info')
 
 const {
   ClientState,
@@ -158,20 +159,19 @@ module.exports = class ClientStateOrganelle {
         console.error(err)
         return
       }
-      let cells = []
-      for (let key in dna.cells) {
-        let cell = Cell.create({
-          name: key,
-          groups: dna.cells[key].groups || [],
+      let cells = cellsinfo(dna.cells).map((cellInfo) => {
+        return Cell.create({
+          name: cellInfo.name,
+          groups: cellInfo.groups,
+          cwd: cellInfo.cwd,
           selected: false,
           focused: false,
           commandRunning: false,
-          port: dna['cell-ports'] ? dna['cell-ports'][key] : false,
-          mountPoint: dna['cell-mountpoints'] ? dna['cell-mountpoints'][key] : false,
-          scripts: require(path.join(this.currentState.cwd, 'cells', key, 'package.json')).scripts
+          port: dna['cell-ports'] ? dna['cell-ports'][cellInfo.name] : false,
+          mountPoint: dna['cell-mountpoints'] ? dna['cell-mountpoints'][cellInfo.name] : false,
+          scripts: require(path.join(this.currentState.cwd, cellInfo.cwd, 'package.json')).scripts
         })
-        cells.push(cell)
-      }
+      })
       let groups = extractUniqueGroups(cells)
       Object.assign(this.currentState, ClientState.create({
         cells: cells,

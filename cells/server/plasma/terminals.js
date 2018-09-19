@@ -62,7 +62,7 @@ module.exports = class TerminalsOrganelle {
       let parts = value.split(' ')
       let cmd = parts.shift()
       let args = parts
-      let cwd = path.join(this.projectRoot, 'cells', cell.name)
+      let cwd = path.join(this.projectRoot, cell.cwd)
       let child = pty.spawn(cmd, args, {
         name: cell.name,
         cols: 80,

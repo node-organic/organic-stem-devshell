@@ -6,6 +6,7 @@
   "devproxy":{
     "port": "@cells.server.build.devproxy.port"
   },
+  "cwd": "cells/client",
   "build": {
     "socketio-channel": {
       "source": "organic-plasma-socketio-channel/env/client",

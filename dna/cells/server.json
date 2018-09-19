@@ -3,6 +3,7 @@
     "default"
   ],
   "mountPoint": "/",
+  "cwd": "cells/server",
   "build": {
     "organic-socketio-server": {
       "source": "organic-socketio-server",

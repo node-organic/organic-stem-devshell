@@ -1,17 +1,29 @@
 {
-  "api-v1": {
-    "groups": ["backend", "landing-v1"]
-  },
-  "api-v2": {
-    "groups": ["backend", "landing-v2"]
+  "apis": {
+    "api-v1": {
+      "groups": ["backend", "landing-v1"],
+      "cwd": "cells/api-v1",
+      "build": {}
+    },
+    "api-v2": {
+      "groups": ["backend", "landing-v2"],
+      "cwd": "cells/api-v2",
+      "build": {}
+    }
   },
   "landing-webapp": {
-    "groups": ["webapps", "landing-v1"]
+    "groups": ["webapps", "landing-v1"],
+    "cwd": "cells/landing-webapp",
+    "build": {}
   },
   "landing-v2": {
-    "groups": ["webapps", "landing-v2"]
+    "groups": ["webapps", "landing-v2"],
+    "cwd": "cells/landing-v2",
+    "build": {}
   },
   "crons": {
-    "groups": ["backend"]
+    "groups": ["backend"],
+    "cwd": "cells/crons",
+    "build": {}
   }
 }
