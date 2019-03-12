@@ -1266,21 +1266,6 @@ body {
   grid-row: 1;
 }
 
-.project .proxyurl {
-  background-color: green;
-  text-align: center;
-  font-size: 2em;
-  padding: 5px;
-}
-
-.proxyurl a {
-  color: white;
-}
-
-.proxyurl a:hover {
-  color: white;
-}
-
 .groups {
   grid-column: 2 / 4;
   grid-row: 2;
