@@ -1,6 +1,6 @@
 {
   "name": "organic-stem-devshell",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "",
   "bin": {
     "devshell": "./bin/devshell.js"
