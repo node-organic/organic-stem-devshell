@@ -4,6 +4,8 @@
   ],
   "mountPoint": "/",
   "cwd": "cells/server",
+  "cellKind": "apiCell",
+  "cellInfo": "v1",
   "build": {
     "organic-socketio-server": {
       "source": "organic-socketio-server",
@@ -28,10 +30,6 @@
     "terminals": {
       "source": "./plasma/terminals",
       "PRJROOT": "{$PRJROOT}"
-    },
-    "devproxy": {
-      "source": "./plasma/dev-proxy",
-      "port": 11664
     }
   }
 }

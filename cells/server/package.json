@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "nodemon": "^1.17.5",
-    "organic-dna-cells-info": "^1.0.0"
+    "organic-dna-cells-info": "^2.0.0"
   },
   "nodemonConfig": {
     "ignore": [

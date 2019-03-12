@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "jest",
-    "develop": "PRJROOT=../../__test__/project angel repo cells -- npm run develop",
+    "develop": "PRJROOT=${PWD}/__test__/project angel repo cells -- npm run develop",
     "build": "angel repo cells -- npm run build",
     "postinstall": "cd ./cells/server && npm install",
     "pack": "npm run build && git add --all ./ && git commit -m 'release build'",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "organic-angel": "^0.3.2",
-    "angelscripts-monorepo": "^2.0.0",
+    "angelscripts-monorepo": "^3.0.0",
     "angelabilities-package-scripts": "^0.1.0",
     "angelscripts-help": "^0.2.0",
     "eslint": "^4.18.2",

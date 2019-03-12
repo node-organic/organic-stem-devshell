@@ -1,6 +1,7 @@
 require('./index.css')
 
 const DNA = window.DNA
+DNA.build['socketio-channel'].endpoint = window.location.host + ':' + DNA.build['socketio-channel'].port
 const Cell = require('organic-stem-cell')
 
 let cellInstance = new Cell({

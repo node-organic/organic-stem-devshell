@@ -159,17 +159,29 @@ module.exports = class ClientStateOrganelle {
         console.error(err)
         return
       }
+      if (!dna.cells) {
+        console.log(dna)
+        throw new Error('failed to locate cells in ' + this.currentState.cwd + '/dna')
+      }
       let cells = cellsinfo(dna.cells).map((cellInfo) => {
+        let scripts = []
+        if (cellInfo.dna.cwd) {
+          try {
+            scripts = require(path.join(this.currentState.cwd, cellInfo.dna.cwd, 'package.json')).scripts
+          } catch (e) {
+            // ignore
+          }
+        }
         return Cell.create({
           name: cellInfo.name,
           groups: cellInfo.groups,
-          cwd: cellInfo.cwd,
+          cwd: cellInfo.dna.cwd,
           selected: false,
           focused: false,
           commandRunning: false,
           port: dna['cell-ports'] ? dna['cell-ports'][cellInfo.name] : false,
           mountPoint: dna['cell-mountpoints'] ? dna['cell-mountpoints'][cellInfo.name] : false,
-          scripts: require(path.join(this.currentState.cwd, cellInfo.cwd, 'package.json')).scripts
+          scripts: scripts
         })
       })
       let groups = extractUniqueGroups(cells)

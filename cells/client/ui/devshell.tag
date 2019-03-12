@@ -100,11 +100,6 @@
   </script>
   <div if={this.state.cwd} class='wrapper'>
     <div class='project'>
-      <div class='proxyurl'>
-        <a href={'http://localhost:' + window.DNA.devproxy.port} target="_blank">
-          http://localhost:{window.DNA.devproxy.port}/
-        </a>
-      </div>
       <h1>{this.state.cwd.replace(this.state.userhome, '~')}</h1>
     </div>
     <div class='groups'>

@@ -3,10 +3,9 @@
     "default"
   ],
   "mountPoint": "/",
-  "devproxy":{
-    "port": "@cells.server.build.devproxy.port"
-  },
   "cwd": "cells/client",
+  "cellKind": "webCell",
+  "cellInfo": "v1",
   "build": {
     "socketio-channel": {
       "source": "organic-plasma-socketio-channel/env/client",
