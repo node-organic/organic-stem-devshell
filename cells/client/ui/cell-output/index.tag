@@ -6,7 +6,10 @@
       CommandOutput,
       CommandTerminated,
       CommandStarted
-    } = require('chemicals/terminals')
+    } = require('lib/chemicals/terminals')
+    const {
+      ChangeCellState
+    } = require('lib/chemicals')
     require('./index.css')
     require('./xterm')
     require('els')(this)

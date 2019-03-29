@@ -27,8 +27,16 @@
       "source": "./plasma/client-state",
       "PRJROOT": "{$PRJROOT}"
     },
+    "cell-info-refresh": {
+      "source": "./plasma/cell-info-refresh",
+      "PRJROOT": "{$PRJROOT}"
+    },
     "terminals": {
       "source": "./plasma/terminals",
+      "PRJROOT": "{$PRJROOT}"
+    },
+    "dna-refresh": {
+      "source": "./plasma/dna-refresh",
       "PRJROOT": "{$PRJROOT}"
     }
   }

@@ -1,16 +1,13 @@
-const loadDNA = require('organic-dna-loader')
+const dnaToCells = require('lib/dna-to-cells')
 const path = require('path')
 const userhome = require('userhome')
 const _ = require('lodash')
-const cellsinfo = require('organic-dna-cells-info')
 
 const {
   ClientState,
   FetchClientState,
-  ChangeClientState,
-  Cell,
-  Group
-} = require('../../../lib/chemicals')
+  ChangeClientState
+} = require('lib/chemicals')
 
 const {
   TerminateAll,
@@ -20,17 +17,9 @@ const {
   CommandTerminated,
   AllRunningCommandsTerminated,
   TerminateCommand
-} = require('../../../lib/chemicals/terminals')
+} = require('lib/chemicals/terminals')
 
-let extractUniqueGroups = function (cells) {
-  let names = _.uniq(_.flatten(cells.map(v => v.groups)))
-  return names.map(name => {
-    return Group.create({
-      name: name,
-      selected: false
-    })
-  })
-}
+const extractUniqueGroups = require('lib/cells-to-unique-groups')
 
 module.exports = class ClientStateOrganelle {
   constructor (plasma, dna) {
@@ -148,49 +137,15 @@ module.exports = class ClientStateOrganelle {
     this.plasma.emit(this.currentState)
   }
 
-  fetch () {
+  async fetch () {
     if (this.currentState.resolved) return this.plasma.emit(this.currentState)
-    loadDNA({
-      dnaSourcePaths: [
-        path.join(this.currentState.cwd, 'dna')
-      ]
-    }, (err, dna) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      if (!dna.cells) {
-        console.log(dna)
-        throw new Error('failed to locate cells in ' + this.currentState.cwd + '/dna')
-      }
-      let cells = cellsinfo(dna.cells).map((cellInfo) => {
-        let scripts = []
-        if (cellInfo.dna.cwd) {
-          try {
-            scripts = require(path.join(this.currentState.cwd, cellInfo.dna.cwd, 'package.json')).scripts
-          } catch (e) {
-            // ignore
-          }
-        }
-        return Cell.create({
-          name: cellInfo.name,
-          groups: cellInfo.groups,
-          cwd: cellInfo.dna.cwd,
-          selected: false,
-          focused: false,
-          commandRunning: false,
-          port: dna['cell-ports'] ? dna['cell-ports'][cellInfo.name] : false,
-          mountPoint: dna['cell-mountpoints'] ? dna['cell-mountpoints'][cellInfo.name] : false,
-          scripts: scripts
-        })
-      })
-      let groups = extractUniqueGroups(cells)
-      Object.assign(this.currentState, ClientState.create({
-        cells: cells,
-        groups: groups,
-        resolved: true
-      }))
-      this.plasma.emit(this.currentState)
-    })
+    let cells = await dnaToCells(this.currentState.cwd)
+    let groups = extractUniqueGroups(cells)
+    Object.assign(this.currentState, ClientState.create({
+      cells: cells,
+      groups: groups,
+      resolved: true
+    }))
+    this.plasma.emit(this.currentState)
   }
 }

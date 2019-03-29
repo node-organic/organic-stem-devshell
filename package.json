@@ -9,7 +9,7 @@
     "test": "jest",
     "develop": "PRJROOT=${PWD}/__test__/project angel repo cells -- npm run develop",
     "build": "angel repo cells -- npm run build",
-    "postinstall": "cd ./cells/server && npm install",
+    "postinstall": "cd ./cells/server && npm install && cd ../node_modules/lib && npm install",
     "pack": "npm run build && git add --all ./ && git commit -m 'release build'",
     "release-patch": "npm run pack && npm version patch && git push --tags && git push origin master",
     "release-minor": "npm run pack && npm version minor && git push --tags && git push origin master",

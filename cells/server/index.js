@@ -14,3 +14,6 @@ if (module.parent) {
 } else {
   cellInstance.start(CELL_MODE)
 }
+process.on('unhandledRejection', error => {
+  console.error(error)
+})

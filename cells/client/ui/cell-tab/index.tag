@@ -6,7 +6,7 @@
       CommandStarted,
       CommandTerminated,
       CommandOutput
-    } = require('chemicals/terminals')
+    } = require('lib/chemicals/terminals')
     this.state.hasOutput = false
     this.getCheckboxClasses = () => {
       return [

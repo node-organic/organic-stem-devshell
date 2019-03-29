@@ -2,7 +2,6 @@ const pty = require('node-pty')
 const path = require('path')
 const terminate = require('terminate')
 const dateFormat = require('dateformat')
-const _ = require('lodash')
 
 const {
   RunAll,
@@ -15,7 +14,7 @@ const {
   TerminateAll,
   AllRunningCommandsTerminated,
   TerminateCommand
-} = require('../../../lib/chemicals/terminals')
+} = require('lib/chemicals/terminals')
 
 module.exports = class TerminalsOrganelle {
   constructor (plasma, dna) {

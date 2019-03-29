@@ -13,11 +13,11 @@
       FetchClientState,
       ClientState,
       ChangeClientState
-    } = require('chemicals')
+    } = require('lib/chemicals')
     const {
       TerminateAll,
       RunCommand
-    } = require('chemicals/terminals')
+    } = require('lib/chemicals/terminals')
 
     this.onCellSelected = (cell) => {
       cell.selected = !cell.selected
