@@ -11,6 +11,7 @@
     "http-proxy": "^1.17.0",
     "node-pty": "^0.7.4",
     "organic-express-server": "^0.1.0",
+    "organic-plasma-socketio-channel": "^1.0.0",
     "organic-socketio-server": "^2.0.1",
     "organic-stem-cell": "^2.0.3",
     "socket.io": "^2.1.0",

@@ -11,6 +11,7 @@
     "build": "angel repo cells -- npm run build",
     "postinstall": "cd ./cells/server && npm install && cd ../node_modules/lib && npm install",
     "pack": "npm run build && git add --all ./ && git commit -m 'release build'",
+    "re-install-modules": "rm -rf package-lock.json && rm -rf ./node_modules && npm i && rm -rf ./cells/node_modules/lib/node_modules && rm -f ./cells/node_modules/lib/package-lock.json && angel repo cells -- rm -f package-lock.json && rm -rf ./node_modules && npm i && cd ./cells/node_modules/lib && npm i",
     "release-patch": "npm run pack && npm version patch && git push --tags && git push origin master",
     "release-minor": "npm run pack && npm version minor && git push --tags && git push origin master",
     "release-major": "npm run pack && npm version major && git push --tags && git push origin master"
