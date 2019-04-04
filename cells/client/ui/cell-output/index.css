@@ -6,18 +6,20 @@ ui-xterm.hidden {
   display: none;
 }
 
-ui-cell-output .scripts {
+ui-cell-output .oneline {
   display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-ui-cell-output .cellscript {
+ui-cell-output .stop {
   padding: 2px;
   background-color: grey;
   margin-top: 5px;
   margin-right: 10px;
 }
 
-ui-cell-output .cellscript:hover {
+ui-cell-output .stop:hover {
   background-color: white;
   color: black;
 }

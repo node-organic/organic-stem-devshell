@@ -32,7 +32,7 @@
       }
     })
   </script>
-  <div class={"tab " + (this.props.cell.focused ? 'focused' : '')}>
+  <div class={"tab " + (this.props.cell.focused ? 'focused' : 'blured')}>
     <div class={"checkbox " + this.getCheckboxClasses()}>
       <i class='material-icons' els='selectedCheck'>
         {this.props.cell.selected ? 'check_circle' : 'panorama_fish_eye'}

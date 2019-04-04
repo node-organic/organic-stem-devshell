@@ -66,6 +66,17 @@
   color: white;
 }
 
+.command-input .scripts.cell .cellscript {
+  padding: 10px;
+  background-color: lightgrey;
+  color: black;
+}
+
+.command-input .scripts.cell .cellscript:hover {
+  background-color: grey;
+  color: white;
+}
+
 ui-devshell {
   display: block;
 }

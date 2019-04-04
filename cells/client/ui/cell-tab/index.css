@@ -46,3 +46,7 @@ ui-cell-tab:hover {
 ui-cell-tab div.focused {
   border-bottom: 10px solid green;
 }
+
+ui-cell-tab div.blured {
+  border-bottom: 10px solid gray;
+}

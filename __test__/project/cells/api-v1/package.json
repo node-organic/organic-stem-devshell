@@ -1,6 +1,7 @@
 {
   "name": "apiv1",
   "scripts": {
-    "develop": "node index"
+    "develop": "node index",
+    "test": "echo missing"
   }
 }

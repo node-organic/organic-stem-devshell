@@ -1,6 +1,6 @@
 @import "vendor/material.min.css";
 @import "vendor/material-icons.css";
 body {
-  background-color: black;
-  color: white;
+  background-color: #282c34;
+  color: #aeb1b8;
 }

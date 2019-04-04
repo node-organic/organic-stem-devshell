@@ -19,6 +19,8 @@
       RunCommand
     } = require('lib/chemicals/terminals')
 
+    this.executeToAllCells = false
+
     this.onCellSelected = (cell) => {
       cell.selected = !cell.selected
       window.plasma.emit(ChangeClientState.create(this.state))
@@ -35,6 +37,11 @@
     }
     this.getFocusedCell = () => {
       return _.find(this.state.cells, 'focused')
+    }
+    this.getFocusedCellScripts = () => {
+      let focusedCell = this.getFocusedCell()
+      if (!focusedCell) return []
+      return _.keys(focusedCell.scripts)
     }
     this.getCommonCellScripts = () => {
       let filter = _.filter(this.state.cells, 'selected')
@@ -58,6 +65,14 @@
         window.plasma.emit(ChangeClientState.create(this.state))
       }
     }
+    this.onExecute = (value) => {
+      console.log(this.executeToAllCells, value)
+      if (this.executeToAllCells) {
+        this.onExecuteToAll(value)
+      } else {
+        this.onExecuteToFocused(value)
+      }
+    }
     this.onExecuteToAll = function (value) {
       window.plasma.emit(ChangeClientState.create({
         runningCommand: value
@@ -78,6 +93,11 @@
         this.onExecuteToAll('npm run ' + script)
       }
     }
+    this.onCellScriptClick = (script) => {
+      return (e) => {
+        this.onExecuteToFocused('npm run ' + script)
+      }
+    }
     this.onTerminateAll = function (e) {
       window.plasma.emit(TerminateAll.create())
     }
@@ -93,6 +113,14 @@
     })
     this.on('mounted', () => {
       window.plasma.emit(FetchClientState.create())
+      window.plasma.emit({type: 'watchKeys', value: 'ctrl', action: 'keydown', global: true}, (c) => {
+        this.executeToAllCells = true
+        this.update()
+      })
+      window.plasma.emit({type: 'watchKeys', value: 'ctrl', action: 'keyup', global: true}, (c) => {
+        this.executeToAllCells = false
+        this.update()
+      })
     })
     this.getCellTabClass = () => {
       return this.state.cells.length > 3 ? '' : 'flexAutoGrow'
@@ -119,23 +147,29 @@
       <div class='cell-outputs'>
         <each cell in {this.state.cells}>
           <ui-cell-output
-            cell={cell}
-            executeToAll={this.onExecuteToAll}
-            executeToFocused={this.onExecuteToFocused} />
+            cell={cell} />
         </each>
       </div>
     </div>
-    <div if={this.hasSelectedCell()} class='command-input'>
-      <div if={!this.state.runningCommand} class='scripts common'>
+    <div class='command-input' >
+      <div if={!this.executeToAllCells} class='scripts cell'>
+        <each script in {this.getFocusedCellScripts()}>
+          <div class='cellscript' onclick={this.onCellScriptClick(script)}>{script}</div>
+        </each>
+      </div>
+      <div if={this.executeToAllCells} class='scripts common'>
         <each script in {this.getCommonCellScripts()}>
           <div class='cellscript' onclick={this.onCommonScriptClick(script)}>{script}</div>
         </each>
       </div>
-      <ui-command-input
-        executeToAll={this.onExecuteToAll}
-        executeToFocused={this.onExecuteToFocused}
-        terminateAll={this.onTerminateAll}
-        prop-value={this.state.runningCommand} />
+      <ui-command-input cid='input'
+        enterValue={this.onExecute}
+        prop-executeToAllCells={this.executeToAllCells}
+        prop-runningCommand={this.state.runningCommand} />
+      <button if={this.state.runningCommand} els='terminateBtn'
+        onclick={this.onTerminateAll}>
+        <i class="material-icons">block</i>
+      </button>
     </div>
   </div>
 </ui-devshell>

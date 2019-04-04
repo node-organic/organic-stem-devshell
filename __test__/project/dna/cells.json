@@ -30,5 +30,29 @@
     "cwd": "cells/crons",
     "cellInfo": "v1",
     "cellKind": "cron"
+  },
+  "crons2": {
+    "groups": ["backend"],
+    "cwd": "cells/crons",
+    "cellInfo": "v1",
+    "cellKind": "cron"
+  },
+  "crons3": {
+    "groups": ["backend"],
+    "cwd": "cells/crons",
+    "cellInfo": "v1",
+    "cellKind": "cron"
+  },
+  "crons4": {
+    "groups": ["backend"],
+    "cwd": "cells/crons",
+    "cellInfo": "v1",
+    "cellKind": "cron"
+  },
+  "crons5-veeeeeeeeeeeeeeeeeeery-long": {
+    "groups": ["backend"],
+    "cwd": "cells/crons",
+    "cellInfo": "v1",
+    "cellKind": "cron"
   }
 }
