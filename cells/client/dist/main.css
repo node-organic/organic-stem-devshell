@@ -1252,8 +1252,8 @@ iframe.heightSet{overflow:hidden}
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
 body {
-  background-color: black;
-  color: white;
+  background-color: #282c34;
+  color: #aeb1b8;
 }
 .wrapper {
   display: grid;
@@ -1343,6 +1343,17 @@ body {
   color: white;
 }
 
+.command-input .scripts.cell .cellscript {
+  padding: 10px;
+  background-color: lightgrey;
+  color: black;
+}
+
+.command-input .scripts.cell .cellscript:hover {
+  background-color: grey;
+  color: white;
+}
+
 ui-devshell {
   display: block;
 }
@@ -1421,6 +1432,9 @@ ui-cell-tab:hover {
 ui-cell-tab div.focused {
   border-bottom: 10px solid green;
 }
+ui-cell-tab div.blured {
+  border-bottom: 10px solid gray;
+}
 ui-cell-output {
   display: block;
   -webkit-box-flex: 1;
@@ -1430,24 +1444,31 @@ ui-cell-output {
 ui-xterm.hidden {
   display: none;
 }
-ui-cell-output .scripts {
+ui-cell-output .oneline {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
-ui-cell-output .cellscript {
+ui-cell-output .stop {
   padding: 2px;
   background-color: grey;
   margin-top: 5px;
   margin-right: 10px;
 }
-ui-cell-output .cellscript:hover {
+ui-cell-output .stop:hover {
   background-color: white;
   color: black;
 }
 ui-xterm {
   display: block;
-  background-color: black;
+  background-color: #282c34;
   border: 1px solid grey;
 }
 ui-xterm .container {
@@ -3752,4 +3773,9 @@ ui-command-input input {
 
 ui-command-input .hidden {
   display: none;
+}
+
+ui-command-input .runningCommand {
+  -ms-flex-item-align: center;
+      align-self: center;
 }
