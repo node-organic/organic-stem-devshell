@@ -25,15 +25,16 @@ module.exports = class CellInfoRefreshOrganelle {
   watchClientStateForChanges (c) {
     c.cells.forEach((cell) => {
       let packagejson_path = path.join(c.cwd, cell.cwd, 'package.json')
-      let watcher = fs.watch(packagejson_path, async () => {
-        try {
+      try {
+        let watcher = fs.watch(packagejson_path, async () => {
           cell.scripts = (await readJSON(packagejson_path)).scripts
           this.plasma.emit(ChangeClientState.create(c))
-        } catch (e) {
-          console.error(e)
-        }
-      })
-      this.watchers.push(watcher)
+        })
+        this.watchers.push(watcher)
+        console.info('[watching]', packagejson_path)
+      } catch (e) {
+        // ignore exception
+      }
     })
   }
 }

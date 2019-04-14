@@ -30,6 +30,9 @@
     "terminals": {
       "source": "./plasma/terminals",
       "PRJROOT": "{$PRJROOT}"
+    },
+    "cell-info-refresh": {
+      "source": "./plasma/cell-info-refresh"
     }
   }
 }

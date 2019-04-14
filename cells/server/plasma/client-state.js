@@ -107,14 +107,18 @@ module.exports = class ClientStateOrganelle {
         }
       })
     }
-    // if a new command is set -> terminate all running commands and run new command to selected cells
     if (newState.runningCommand !== this.currentState.runningCommand) {
+      let selectedCells = _.filter(this.currentState.cells, 'selected')
+      if (selectedCells.length === 0) {
+        newState.runningCommand = ''
+      }
+      // if a new command is set -> terminate all running commands and run new command to selected cells
       if (this.currentState.runningCommand) {
         this.plasma.emit(TerminateAll.create())
       }
       this.plasma.emit(RunAll.create({
         value: newState.runningCommand,
-        cells: _.filter(this.currentState.cells, 'selected')
+        cells: selectedCells
       }))
     }
     if (newState.groups && newState.cells) {

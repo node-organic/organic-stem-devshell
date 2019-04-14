@@ -2,6 +2,10 @@
   "name": "apiv1",
   "scripts": {
     "develop": "node index",
-    "test": "echo missing"
+    "test": "echo missing",
+    "run-cmd1": "run cmd",
+    "echo-asd": "echo asd",
+    "veeeeeeeeeeeeery-looooooooooooong-ls": "ls -la",
+    "terminal-exit": "exit"
   }
 }

@@ -10,7 +10,7 @@
     "domready": "^1.0.8",
     "material-design-icons": "^3.0.1",
     "organic-oval": "github:node-organic/organic-oval#v5.0.0-web-components",
-    "organic-stem-cell": "^2.0.3",
+    "organic-stem-cell": "^3.0.1",
     "socket.io-client": "^2.1.1",
     "xterm": "^2.9.2"
   },

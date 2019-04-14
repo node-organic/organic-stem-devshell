@@ -1,4 +1,3 @@
-const CELL_MODE = process.argv[2]
 const Cell = require('organic-stem-cell')
 const path = require('path')
 
@@ -12,8 +11,5 @@ let cellInstance = new Cell({
 if (module.parent) {
   module.exports = cellInstance
 } else {
-  cellInstance.start(CELL_MODE)
+  cellInstance.start()
 }
-process.on('unhandledRejection', error => {
-  console.error(error)
-})

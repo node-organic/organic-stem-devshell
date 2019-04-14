@@ -1,6 +1,9 @@
 {
   "name": "crons",
   "scripts": {
-    "develop": "node index"
+    "develop": "node index",
+    "test": "echo missing",
+    "run-cmd1": "run cmd",
+    "custom-cmd": "echo custom"
   }
 }

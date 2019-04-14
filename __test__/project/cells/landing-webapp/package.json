@@ -1,6 +1,7 @@
 {
   "name": "landing-webapp",
   "scripts": {
-    "develop": "node index"
+    "develop": "node index",
+    "veeeeeeeeeeeeery-looooooooooooong-ls": "ls -la"
   }
 }

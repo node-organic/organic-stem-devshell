@@ -55,6 +55,13 @@
   color: black;
 }
 
+.cellscript {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .command-input .scripts.common .cellscript {
   padding: 10px;
   background-color: white;

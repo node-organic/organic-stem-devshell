@@ -66,7 +66,6 @@
       }
     }
     this.onExecute = (value) => {
-      console.log(this.executeToAllCells, value)
       if (this.executeToAllCells) {
         this.onExecuteToAll(value)
       } else {
@@ -113,11 +112,11 @@
     })
     this.on('mounted', () => {
       window.plasma.emit(FetchClientState.create())
-      window.plasma.emit({type: 'watchKeys', value: 'ctrl', action: 'keydown', global: true}, (c) => {
+      window.plasma.emit({type: 'watchKeys', value: 'alt', action: 'keydown', global: true}, (c) => {
         this.executeToAllCells = true
         this.update()
       })
-      window.plasma.emit({type: 'watchKeys', value: 'ctrl', action: 'keyup', global: true}, (c) => {
+      window.plasma.emit({type: 'watchKeys', value: 'alt', action: 'keyup', global: true}, (c) => {
         this.executeToAllCells = false
         this.update()
       })
@@ -152,16 +151,6 @@
       </div>
     </div>
     <div class='command-input' >
-      <div if={!this.executeToAllCells} class='scripts cell'>
-        <each script in {this.getFocusedCellScripts()}>
-          <div class='cellscript' onclick={this.onCellScriptClick(script)}>{script}</div>
-        </each>
-      </div>
-      <div if={this.executeToAllCells} class='scripts common'>
-        <each script in {this.getCommonCellScripts()}>
-          <div class='cellscript' onclick={this.onCommonScriptClick(script)}>{script}</div>
-        </each>
-      </div>
       <ui-command-input cid='input'
         enterValue={this.onExecute}
         prop-executeToAllCells={this.executeToAllCells}
@@ -170,6 +159,21 @@
         onclick={this.onTerminateAll}>
         <i class="material-icons">block</i>
       </button>
+      <div if={!this.executeToAllCells} class='scripts cell'>
+        <each script in {this.getFocusedCellScripts()}>
+          <div class='cellscript' onclick={this.onCellScriptClick(script)}>{script}</div>
+        </each>
+      </div>
+      <div if={this.executeToAllCells} class='scripts common'>
+        <each script in {this.getCommonCellScripts()}>
+          <div class='cellscript' onclick={this.onCommonScriptClick(script)}>
+              <i class='material-icons'>
+                check_circle
+              </i>
+              {script}
+          </div>
+        </each>
+      </div>
     </div>
   </div>
 </ui-devshell>
