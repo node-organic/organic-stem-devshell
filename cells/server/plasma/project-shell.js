@@ -5,6 +5,8 @@ const terminate = require('terminate')
 const {
   CommandInput,
   CommandOutput,
+  RequestScripts,
+  Execute
 } = require('lib/chemicals/project-shell')
 
 module.exports = class ProjectShellOrganelle {
@@ -16,9 +18,21 @@ module.exports = class ProjectShellOrganelle {
     this.plasma.on(CommandInput.type, (c) => {
       this.child.write(c.char)
     })
+    this.plasma.on(Execute.type, (c) => {
+      this.child.write(c.value + '\r')
+    })
+    this.plasma.on(RequestScripts.type, (c, callback) => {
+      try {
+        let packagejson = require(path.join(this.projectRoot, 'package.json'))
+        callback(null, { scripts: packagejson.scripts })
+      } catch (e) {
+        // ignore
+      }
+    })
     this.plasma.on('kill', () => {
       terminate(this.child.pid)
     })
+    this.scripts = []
     this.startShell()
   }
 

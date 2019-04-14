@@ -3,14 +3,17 @@
     require('./index.css')
     require('../xterm')
     require('els')(this)
+    const _ = require('lodash')
     const {
       CommandOutput,
-      CommandInput
+      CommandInput,
+      RequestScripts,
+      Execute
     } = require('lib/chemicals/project-shell')
+    this.scripts = []
     this.handleKeypress = (char) => {
       window.plasma.emit(CommandInput.create({
-        char: char,
-        cell: this.props.cell
+        char: char
       }))
     }
     this.xtermReady = () => {
@@ -35,7 +38,28 @@
       window.plasma.on(CommandOutput.type, (c) => {
         this.els('xterm').component.write(c.chunk)
       })
+      window.plasma.emit(RequestScripts.create(), (err, c) => {
+        this.scripts = c.scripts
+        this.update()
+      })
     })
+    this.onScriptClick = (script) => {
+      return () => {
+        this.execute('npm run ' + script)
+      }
+    }
+    this.execute = (value) => {
+      window.plasma.emit(Execute.create({
+        value: value
+      }))
+    }
   </script>
+  <div class='scripts'>
+    <each script in {_.keys(this.scripts)}>
+      <div class='script' onclick={this.onScriptClick(script)}>
+          {script}
+      </div>
+    </each>
+  </div>
   <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} />
 </ui-project-shell>
