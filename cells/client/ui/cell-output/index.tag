@@ -11,7 +11,7 @@
       ChangeCellState
     } = require('lib/chemicals')
     require('./index.css')
-    require('./xterm')
+    require('../xterm')
     require('els')(this)
     this.xtermReady = () => {
       if (!this.props.cell.focused) {

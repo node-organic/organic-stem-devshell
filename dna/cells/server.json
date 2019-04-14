@@ -33,6 +33,10 @@
     },
     "cell-info-refresh": {
       "source": "./plasma/cell-info-refresh"
+    },
+    "project-shell": {
+      "source": "./plasma/project-shell",
+      "PRJROOT": "{$PRJROOT}"
     }
   }
 }

@@ -6,3 +6,6 @@ ui-xterm {
 ui-xterm .container {
   min-height: 400px;
 }
+ui-xterm.hidden {
+  display: none;
+}

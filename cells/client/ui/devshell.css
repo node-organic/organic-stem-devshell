@@ -1,25 +1,30 @@
 .wrapper {
-  display: grid;
-  grid-template-columns: 40px auto auto 40px;
-  grid-template-rows: auto auto auto auto auto;
+  display: flex;
+  flex-direction: column;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
 .project {
-  grid-column: 2 / 4;
-  grid-row: 1;
+  display: flex;
+}
+
+.project .projectShellBtn {
+  background: none;
+  color: white;
+  border: none;
+}
+
+.projectShell {
 }
 
 .groups {
-  grid-column: 2 / 4;
-  grid-row: 2;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
 }
 
 .cells {
-  grid-column: 2 / 4;
-  grid-row: 3;
 }
 .cell-tabs {
   display: flex;
@@ -30,8 +35,6 @@
 }
 
 .command-input {
-  grid-column: 2 / 4;
-  grid-row: 4;
   display: flex;
 }
 

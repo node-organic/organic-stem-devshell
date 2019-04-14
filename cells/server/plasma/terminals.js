@@ -28,13 +28,13 @@ module.exports = class TerminalsOrganelle {
     })
     this.plasma.on(TerminateAll.type, (c) => {
       this.runningCommands.forEach((r) => {
-        terminate(r.child.pid, 'SIGINT')
+        terminate(r.child.pid)
       })
     })
     this.plasma.on(TerminateCommand.type, (c) => {
       this.runningCommands.forEach((r) => {
         if (r.cell.name === c.cell.name) {
-          terminate(r.child.pid, 'SIGINT')
+          terminate(r.child.pid)
         }
       })
     })

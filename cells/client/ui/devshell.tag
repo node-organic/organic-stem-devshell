@@ -6,6 +6,7 @@
     require('./cell-tab')
     require('./cell-output')
     require('./command-input')
+    require('./project-shell')
 
     const _ = require('lodash')
 
@@ -124,10 +125,18 @@
     this.getCellTabClass = () => {
       return this.state.cells.length > 3 ? '' : 'flexAutoGrow'
     }
+    this.projectShellFocused = false
+    this.toggleProjectShell = () => {
+      this.projectShellFocused = !this.projectShellFocused
+      this.update()
+    }
   </script>
   <div if={this.state.cwd} class='wrapper'>
     <div class='project'>
-      <h1>{this.state.cwd.replace(this.state.userhome, '~')}</h1>
+      <button class='projectShellBtn' onclick={this.toggleProjectShell}>[shell]</button><h1>{this.state.cwd.replace(this.state.userhome, '~')}</h1>
+    </div>
+    <div class='projectShell'>
+      <ui-project-shell prop-focused={this.projectShellFocused} />
     </div>
     <div class='groups'>
       <each group in {this.state.groups}>
