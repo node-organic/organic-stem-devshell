@@ -5,23 +5,24 @@ module.exports = class CombokeysOrganelle {
     require('combokeys/plugins/global-bind')(combokeys)
     this.handlersMap = {}
     plasma.on({type: 'watchKeys'}, (c, callback) => {
-      if (!this.handlersMap[c.value]) {
-        let trigger = this.makeTriggerFn(c.value)
+      let handlerKey = c.value + c.action
+      if (!this.handlersMap[handlerKey]) {
+        let trigger = this.makeTriggerFn(handlerKey)
         if (!c.global) {
           combokeys.bind(c.value, trigger, c.action)
         } else {
           combokeys.bindGlobal(c.value, trigger, c.action)
         }
-        this.handlersMap[c.value] = [callback]
+        this.handlersMap[handlerKey] = [callback]
       } else {
-        this.handlersMap[c.value].push(callback)
+        this.handlersMap[handlerKey].push(callback)
       }
     })
   }
 
-  makeTriggerFn (value) {
+  makeTriggerFn (key) {
     return (e) => {
-      this.handlersMap[value].forEach(f => f(e))
+      this.handlersMap[key].forEach(f => f(e))
     }
   }
 }

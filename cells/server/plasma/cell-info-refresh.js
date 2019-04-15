@@ -32,7 +32,6 @@ module.exports = class CellInfoRefreshOrganelle {
           this.plasma.emit(ChangeClientState.create(c))
         })
         this.watchers.push(watcher)
-        console.info('[watching]', packagejson_path)
       } catch (e) {
         // ignore exception
       }
