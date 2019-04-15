@@ -55,6 +55,12 @@
         this.els('xterm').component.scrollToBottom()
       }
     })
+    window.plasma.emit({type: 'watchKeys', value: 'ctrl+shift+c'}, (e) => {
+      if (this.props.cell.focused) {
+        e.preventDefault()
+        this.onTerminateCellCommands()
+      }
+    })
   </script>
   <div class='oneline'>
     <div if={this.props.cell.commandRunning} class='stop' onclick={this.onTerminateCellCommands}>
