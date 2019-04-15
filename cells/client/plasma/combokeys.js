@@ -3,16 +3,25 @@ module.exports = class CombokeysOrganelle {
   constructor (plasma, dna) {
     let combokeys = new Combokeys(document.documentElement)
     require('combokeys/plugins/global-bind')(combokeys)
-    plasma.on({type: 'watchKeys'}, function (c, callback) {
-      let trigger = function (e) {
-        plasma.emit({type: 'keycombo', value: c.value})
-        callback(e)
-      }
-      if (!c.global) {
-        combokeys.bind(c.value, trigger, c.action)
+    this.handlersMap = {}
+    plasma.on({type: 'watchKeys'}, (c, callback) => {
+      if (!this.handlersMap[c.value]) {
+        let trigger = this.makeTriggerFn(c.value)
+        if (!c.global) {
+          combokeys.bind(c.value, trigger, c.action)
+        } else {
+          combokeys.bindGlobal(c.value, trigger, c.action)
+        }
+        this.handlersMap[c.value] = [callback]
       } else {
-        combokeys.bindGlobal(c.value, trigger, c.action)
+        this.handlersMap[c.value].push(callback)
       }
     })
+  }
+
+  makeTriggerFn (value) {
+    return (e) => {
+      this.handlersMap[value].forEach(f => f(e))
+    }
   }
 }

@@ -22,6 +22,9 @@
     this.write = function (chunk) {
       this.xterm.write(chunk)
     }
+    this.scrollToBottom = function (chunk) {
+      this.xterm.scrollToBottom()
+    }
   </script>
   <div els='container' class='container'></div>
 </ui-xterm>
