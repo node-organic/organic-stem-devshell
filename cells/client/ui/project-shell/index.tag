@@ -8,12 +8,19 @@
       CommandOutput,
       CommandInput,
       RequestScripts,
-      Execute
+      Execute,
+      Resize
     } = require('lib/chemicals/project-shell')
     this.scripts = []
     this.handleKeypress = (char) => {
       window.plasma.emit(CommandInput.create({
         char: char
+      }))
+    }
+    this.handleResize = (e) => {
+      window.plasma.emit(Resize.create({
+        rows: e.rows,
+        cols: e.cols
       }))
     }
     this.xtermReady = () => {
@@ -61,5 +68,5 @@
       </div>
     </each>
   </div>
-  <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} />
+  <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} onxtermresize={this.handleResize} />
 </ui-project-shell>

@@ -12,7 +12,8 @@
       "port": "@cell-ports.server",
       "transportChemicalsShape": {
         "transportType": "socketio"
-      }
+      },
+      "storeIO": "IO"
     },
     "combokeys-organelle": {
       "source": "./plasma/combokeys"

@@ -6,6 +6,7 @@
     "build": "echo done"
   },
   "dependencies": {
+    "chokidar": "^2.1.5",
     "dateformat": "^3.0.3",
     "express": "^4.16.3",
     "http-proxy": "^1.17.0",

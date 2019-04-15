@@ -13,7 +13,8 @@ const {
   CommandTerminated,
   TerminateAll,
   AllRunningCommandsTerminated,
-  TerminateCommand
+  TerminateCommand,
+  Resize
 } = require('lib/chemicals/terminals')
 
 module.exports = class TerminalsOrganelle {
@@ -28,13 +29,13 @@ module.exports = class TerminalsOrganelle {
     })
     this.plasma.on(TerminateAll.type, (c) => {
       this.runningCommands.forEach((r) => {
-        terminate(r.child.pid)
+        terminate(r.child.pid, 'SIGINT')
       })
     })
     this.plasma.on(TerminateCommand.type, (c) => {
       this.runningCommands.forEach((r) => {
         if (r.cell.name === c.cell.name) {
-          terminate(r.child.pid)
+          terminate(r.child.pid, 'SIGINT')
         }
       })
     })
@@ -46,6 +47,13 @@ module.exports = class TerminalsOrganelle {
       this.runningCommands.forEach((r) => {
         if (r.cell.name === c.cell.name) {
           r.child.write(c.char)
+        }
+      })
+    })
+    this.plasma.on(Resize.type, (c) => {
+      this.runningCommands.forEach((r) => {
+        if (r.cell.name === c.cell.name) {
+          r.child.resize(c.cols, c.rows)
         }
       })
     })
@@ -64,8 +72,8 @@ module.exports = class TerminalsOrganelle {
       let cwd = path.join(this.projectRoot, cell.cwd)
       let child = pty.spawn(cmd, args, {
         name: cell.name,
-        cols: 80,
-        rows: 24,
+        cols: 800,
+        rows: 240,
         cwd: cwd,
         env: process.env
       })

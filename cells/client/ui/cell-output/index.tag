@@ -5,7 +5,8 @@
       CommandInput,
       CommandOutput,
       CommandTerminated,
-      CommandStarted
+      CommandStarted,
+      Resize
     } = require('lib/chemicals/terminals')
     const {
       ChangeCellState
@@ -28,6 +29,15 @@
       window.plasma.emit(CommandInput.create({
         char: char,
         cell: this.props.cell
+      }))
+    }
+    this.handleResize = (e) => {
+
+        console.log('RESIZE')
+      window.plasma.emit(Resize.create({
+        cell: this.props.cell,
+        rows: e.rows,
+        cols: e.cols
       }))
     }
     this.on('updated', () => {
@@ -70,5 +80,5 @@
       port: {this.props.cell.port} | mount point: {this.props.cell.mountPoint}
     </div>
   </div>
-  <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} />
+  <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} onxtermresize={this.handleResize} />
 </ui-cell-output>

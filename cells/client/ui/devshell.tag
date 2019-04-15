@@ -21,6 +21,7 @@
     } = require('lib/chemicals/terminals')
 
     this.executeToAllCells = false
+    this.connectionError = false
 
     this.onCellSelected = (cell) => {
       cell.selected = !cell.selected
@@ -121,6 +122,12 @@
         this.executeToAllCells = false
         this.update()
       })
+      window.plasma.on('IO', (c) => {
+        c.io.on('disconnect', () => {
+          this.connectionError = true
+          this.update()
+        })
+      })
     })
     this.getCellTabClass = () => {
       return this.state.cells.length > 3 ? '' : 'flexAutoGrow'
@@ -131,7 +138,10 @@
       this.update()
     }
   </script>
-  <div if={this.state.cwd} class='wrapper'>
+  <div if={this.connectionError} class='wrapper'>
+    <h1>Connection to server lost...</h1>
+  </div>
+  <div if={!this.connectionError && this.state.cwd} class='wrapper'>
     <div class='project'>
       <button class='projectShellBtn' onclick={this.toggleProjectShell}>[shell]</button><h1>{this.state.cwd.replace(this.state.userhome, '~')}</h1>
     </div>

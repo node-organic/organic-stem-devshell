@@ -6,7 +6,8 @@ const {
   CommandInput,
   CommandOutput,
   RequestScripts,
-  Execute
+  Execute,
+  Resize
 } = require('lib/chemicals/project-shell')
 
 module.exports = class ProjectShellOrganelle {
@@ -17,6 +18,9 @@ module.exports = class ProjectShellOrganelle {
     this.projectRoot = path.resolve(dna.PRJROOT)
     this.plasma.on(CommandInput.type, (c) => {
       this.child.write(c.char)
+    })
+    this.plasma.on(Resize.type, (c) => {
+      this.child.resize(c.cols, c.rows)
     })
     this.plasma.on(Execute.type, (c) => {
       this.child.write(c.value + '\r')
@@ -40,8 +44,8 @@ module.exports = class ProjectShellOrganelle {
     let cwd = path.join(this.projectRoot)
     let child = pty.spawn('bash', [], {
       name: this.projectRoot,
-      cols: 80,
-      rows: 24,
+      cols: 800,
+      rows: 240,
       cwd: cwd,
       env: process.env
     })

@@ -9,6 +9,7 @@ const readFile = require('util').promisify(fs.readFile)
 const readJSON = async function (filepath) {
   return JSON.parse((await readFile(filepath)).toString())
 }
+const chokidar = require('chokidar')
 
 module.exports = class CellInfoRefreshOrganelle {
   constructor (plasma, dna) {
@@ -27,7 +28,7 @@ module.exports = class CellInfoRefreshOrganelle {
     c.cells.forEach((cell) => {
       let packagejson_path = path.join(c.cwd, cell.cwd, 'package.json')
       try {
-        let watcher = fs.watch(packagejson_path, async () => {
+        let watcher = chokidar.watch(packagejson_path).on('change', async () => {
           cell.scripts = (await readJSON(packagejson_path)).scripts
           this.plasma.emit(ChangeClientState.create(c))
         })

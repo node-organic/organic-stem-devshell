@@ -5,6 +5,7 @@
     require('els')(this)
     const fit = require('xterm/dist/addons/fit/fit')
     const XTerm = require('xterm/dist/xterm')
+    XTerm.applyAddon(fit)
     this.on('mounted', () => {
       let xterm = new XTerm({
         cols: 80,
@@ -13,6 +14,7 @@
       this.xterm = xterm
       xterm.open(this.els('container'), false)
       xterm.fit()
+      this.emit('xtermresize', {cols: xterm.cols, rows: xterm.rows})
       xterm.on('data', (c) => {
         this.emit('keypressed', c)
       })
