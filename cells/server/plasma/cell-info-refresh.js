@@ -23,6 +23,7 @@ module.exports = class CellInfoRefreshOrganelle {
   }
 
   watchClientStateForChanges (c) {
+    this.watchers.forEach((w) => w.close())
     c.cells.forEach((cell) => {
       let packagejson_path = path.join(c.cwd, cell.cwd, 'package.json')
       try {
