@@ -86,14 +86,14 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "../../../organic-plasma-socketio-channel/env/client.js":
-/*!********************************************************************************************!*\
-  !*** /home/outbounder/projects/node-organic/organic-plasma-socketio-channel/env/client.js ***!
-  \********************************************************************************************/
+/***/ "../../node_modules/organic-plasma-socketio-channel/env/client.js":
+/*!*******************************************************************************************************************************!*\
+  !*** /home/outbounder/projects/node-organic/organic-stem-devshell/node_modules/organic-plasma-socketio-channel/env/client.js ***!
+  \*******************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const io = __webpack_require__(/*! socket.io-client */ \"./node_modules/socket.io-client/lib/index.js\")\n\nmodule.exports = class SocketIOClientChannel {\n  constructor (plasma, dna) {\n    if (!dna.port && !dna.endpoint) throw new Error('port or endpoint required in dna')\n    this.idMarker = Math.random()\n    this.plasma = plasma\n    this.dna = dna\n    let connectStr = `http://localhost:${dna.port}`\n    if (dna.endpoint) {\n      connectStr = dna.endpoint\n    }\n    this.io = io(connectStr, {\n      transports: ['websocket']\n    })\n    this.io.on('chemical', (c, callback) => {\n      Object.defineProperty(c, this.idMarker, {enumerable: false, value: true})\n      this.plasma.emit(c, callback)\n    })\n    this.plasma.on(dna.transportChemicalsShape, this.transportChemical, this)\n    if (dna.emitReady) {\n      this.io.on('connect', () => {\n        plasma.emit({type: dna.emitReady})\n      })\n    }\n    if (dna.storeIO) {\n      plasma.store({type: dna.storeIO, io: this.io})\n    }\n  }\n\n  transportChemical (c, callback) {\n    if (c[this.idMarker]) return\n    this.io.emit('chemical', c, callback)\n  }\n}\n\n\n//# sourceURL=webpack:////home/outbounder/projects/node-organic/organic-plasma-socketio-channel/env/client.js?");
+eval("const io = __webpack_require__(/*! socket.io-client */ \"./node_modules/socket.io-client/lib/index.js\")\n\nmodule.exports = class SocketIOClientChannel {\n  constructor (plasma, dna) {\n    if (!dna.port && !dna.endpoint) throw new Error('port or endpoint required in dna')\n    this.idMarker = Math.random()\n    this.plasma = plasma\n    this.dna = dna\n    let connectStr = `http://localhost:${dna.port}`\n    if (dna.endpoint) {\n      connectStr = dna.endpoint\n    }\n    this.io = io(connectStr, {\n      transports: ['websocket']\n    })\n    this.io.on('chemical', (c, callback) => {\n      Object.defineProperty(c, this.idMarker, {enumerable: false, value: true})\n      this.plasma.emit(c, callback)\n    })\n    this.plasma.on(dna.transportChemicalsShape, this.transportChemical, this)\n    if (dna.emitReady) {\n      this.io.on('connect', () => {\n        plasma.emit({type: dna.emitReady})\n      })\n    }\n    if (dna.storeIO) {\n      plasma.store({type: dna.storeIO, io: this.io})\n    }\n  }\n\n  transportChemical (c, callback) {\n    if (c[this.idMarker]) return\n    this.io.emit('chemical', c, callback)\n  }\n}\n\n\n//# sourceURL=webpack:////home/outbounder/projects/node-organic/organic-stem-devshell/node_modules/organic-plasma-socketio-channel/env/client.js?");
 
 /***/ }),
 
@@ -1239,7 +1239,7 @@ eval("module.exports = toArray\n\nfunction toArray(list, index) {\n    var array
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("(function () {window.DNA = {\"groups\":[\"default\"],\"mountPoint\":\"/\",\"cwd\":\"cells/client\",\"cellKind\":\"webCell\",\"cellInfo\":\"v1\",\"build\":{\"socketio-channel\":{\"source\":__webpack_require__(/*! /home/outbounder/projects/node-organic/organic-stem-devshell/node_modules/organic-plasma-socketio-channel/env/client.js */ \"../../../organic-plasma-socketio-channel/env/client.js\"),\"port\":8787,\"transportChemicalsShape\":{\"transportType\":\"socketio\"},\"storeIO\":\"IO\"},\"combokeys-organelle\":{\"source\":__webpack_require__(/*! ./plasma/combokeys.js */ \"./plasma/combokeys.js\")},\"cell-ready\":{\"source\":__webpack_require__(/*! ./plasma/cell-ready.js */ \"./plasma/cell-ready.js\")}}}})()\n\n//# sourceURL=webpack:///(webpack)-inject-plugin/dist/webpack-inject-plugin.module.js?");
+eval("(function () {window.DNA = {\"groups\":[\"default\"],\"mountPoint\":\"/\",\"cwd\":\"cells/client\",\"cellKind\":\"webCell\",\"cellInfo\":\"v1\",\"build\":{\"socketio-channel\":{\"source\":__webpack_require__(/*! /home/outbounder/projects/node-organic/organic-stem-devshell/node_modules/organic-plasma-socketio-channel/env/client.js */ \"../../node_modules/organic-plasma-socketio-channel/env/client.js\"),\"port\":8787,\"transportChemicalsShape\":{\"transportType\":\"socketio\"},\"storeIO\":\"IO\"},\"combokeys-organelle\":{\"source\":__webpack_require__(/*! ./plasma/combokeys.js */ \"./plasma/combokeys.js\")},\"cell-ready\":{\"source\":__webpack_require__(/*! ./plasma/cell-ready.js */ \"./plasma/cell-ready.js\")}}}})()\n\n//# sourceURL=webpack:///(webpack)-inject-plugin/dist/webpack-inject-plugin.module.js?");
 
 /***/ }),
 
