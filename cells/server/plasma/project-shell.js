@@ -42,12 +42,14 @@ module.exports = class ProjectShellOrganelle {
 
   startShell () {
     let cwd = path.join(this.projectRoot)
+    let envCopy = Object.assign({}, process.env)
+    delete envCopy['CELL_MODE']
     let child = pty.spawn('bash', [], {
       name: this.projectRoot,
       cols: 800,
       rows: 240,
       cwd: cwd,
-      env: process.env
+      env: envCopy
     })
     child.on('data', (chunk) => {
       this.plasma.emit(CommandOutput.create({

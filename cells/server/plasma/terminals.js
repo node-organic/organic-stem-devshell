@@ -70,12 +70,14 @@ module.exports = class TerminalsOrganelle {
       let cmd = parts.shift()
       let args = parts
       let cwd = path.join(this.projectRoot, cell.cwd)
+      let envCopy = Object.assign({}, process.env)
+      delete envCopy['CELL_MODE']
       let child = pty.spawn(cmd, args, {
         name: cell.name,
         cols: 800,
         rows: 240,
         cwd: cwd,
-        env: process.env
+        env: envCopy
       })
       let runningCommand = RunningCommand.create({
         cell: cell,
