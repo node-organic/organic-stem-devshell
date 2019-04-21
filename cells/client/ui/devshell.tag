@@ -114,12 +114,8 @@
     })
     this.on('mounted', () => {
       window.plasma.emit(FetchClientState.create())
-      window.plasma.emit({type: 'watchKeys', value: 'alt', action: 'keydown', global: true}, (c) => {
-        this.executeToAllCells = true
-        this.update()
-      })
-      window.plasma.emit({type: 'watchKeys', value: 'alt', action: 'keyup', global: true}, (c) => {
-        this.executeToAllCells = false
+      window.plasma.emit({type: 'watchKeys', value: 'ctrl+alt+x', global: true}, (c) => {
+        this.executeToAllCells = !this.executeToAllCells
         this.update()
       })
       window.plasma.on('IO', (c) => {

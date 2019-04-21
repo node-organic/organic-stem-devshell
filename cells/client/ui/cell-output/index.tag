@@ -65,7 +65,7 @@
         this.els('xterm').component.scrollToBottom()
       }
     })
-    window.plasma.emit({type: 'watchKeys', value: 'ctrl+shift+c'}, (e) => {
+    window.plasma.emit({type: 'watchKeys', value: 'ctrl+shift+c', global: true}, (e) => {
       if (this.props.cell.focused) {
         e.preventDefault()
         this.onTerminateCellCommands()
