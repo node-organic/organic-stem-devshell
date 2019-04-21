@@ -28,7 +28,13 @@ module.exports = class CellInfoRefreshOrganelle {
     c.cells.forEach((cell) => {
       let packagejson_path = path.join(c.cwd, cell.cwd, 'package.json')
       try {
-        let watcher = chokidar.watch(packagejson_path).on('change', async () => {
+        let watcher = chokidar.watch(packagejson_path, {
+          awaitWriteFinish: {
+            stabilityThreshold: 1000,
+            pollInterval: 100
+          }
+        })
+        watcher.on('change', async () => {
           cell.scripts = (await readJSON(packagejson_path)).scripts
           this.plasma.emit(ChangeClientState.create(c))
         })
