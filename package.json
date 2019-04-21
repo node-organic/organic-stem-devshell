@@ -6,7 +6,7 @@
     "devshell": "./bin/devshell.js"
   },
   "scripts": {
-    "test": "jest",
+    "test": "ava",
     "develop": "angel repo cells -- npm run develop",
     "develop-sample": "PRJROOT=${PWD}/__test__/project npm run develop",
     "build": "angel repo cells -- npm run build",

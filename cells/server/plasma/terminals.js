@@ -66,9 +66,8 @@ module.exports = class TerminalsOrganelle {
 
   executeCommand (value) {
     return (cell) => {
-      let parts = value.split(' ')
-      let cmd = parts.shift()
-      let args = parts
+      let cmd = 'bash'
+      let args = ['-c', value]
       let cwd = path.join(this.projectRoot, cell.cwd)
       let envCopy = Object.assign({}, process.env)
       delete envCopy['CELL_MODE']

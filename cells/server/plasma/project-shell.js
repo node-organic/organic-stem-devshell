@@ -44,7 +44,7 @@ module.exports = class ProjectShellOrganelle {
     let cwd = path.join(this.projectRoot)
     let envCopy = Object.assign({}, process.env)
     delete envCopy['CELL_MODE']
-    let child = pty.spawn('bash', [], {
+    let child = pty.spawn('sh', [], {
       name: this.projectRoot,
       cols: 800,
       rows: 240,
