@@ -13,7 +13,8 @@
     const {
       FetchClientState,
       ClientState,
-      ChangeClientState
+      ChangeClientState,
+      FetchReleasedState
     } = require('lib/chemicals')
     const {
       TerminateAll,
@@ -133,13 +134,28 @@
       this.projectShellFocused = !this.projectShellFocused
       this.update()
     }
+    let fetchingReleasedState = false
+    this.refreshReleasedState = () => {
+      window.plasma.emit(FetchReleasedState.create(), () => {
+        fetchingReleasedState = false
+        this.update()
+      })
+      fetchingReleasedState = true
+      this.update()
+    }
   </script>
   <div if={this.connectionError} class='wrapper'>
     <h1>Connection to server lost...</h1>
   </div>
   <div if={!this.connectionError && this.state.cwd} class='wrapper'>
     <div class='project'>
-      <button class='projectShellBtn' onclick={this.toggleProjectShell}>[shell]</button><h1>{this.state.cwd.replace(this.state.userhome, '~')}</h1>
+      <button class='projectShellBtn' onclick={this.toggleProjectShell}>[shell]</button>
+      <h1>{this.state.cwd.replace(this.state.userhome, '~')}</h1>
+      <button if={!fetchingReleasedState} onclick={this.refreshReleasedState} class='releasedSyncBtn'>
+        <i class='material-icons'>
+          sync
+        </i>
+      </button>
     </div>
     <div class='projectShell'>
       <ui-project-shell prop-focused={this.projectShellFocused} />

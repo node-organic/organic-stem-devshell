@@ -15,6 +15,7 @@
     "organic-plasma-socketio-channel": "^1.0.0",
     "organic-socketio-server": "^2.0.1",
     "organic-stem-cell": "^3.0.1",
+    "p-iteration": "^1.1.8",
     "socket.io": "^2.1.0",
     "terminate": "^2.1.0",
     "userhome": "^1.0.0"

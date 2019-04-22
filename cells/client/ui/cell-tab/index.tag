@@ -39,5 +39,8 @@
       </i>
     </div>
     <span class='cell-name'>{this.props.cell.name}</span>
+    <i if={this.props.cell.released !== undefined} class='material-icons releasedStatus'>
+      {this.props.cell.released ? 'done' : 'cloud_upload'}
+    </i>
   </div>
 </ui-cell-tab>

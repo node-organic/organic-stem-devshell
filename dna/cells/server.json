@@ -37,6 +37,10 @@
     "project-shell": {
       "source": "./plasma/project-shell",
       "PRJROOT": "{$PRJROOT}"
+    },
+    "cell-released-status": {
+      "source": "./plasma/cell-released-status",
+      "PRJROOT": "{$PRJROOT}"
     }
   }
 }
