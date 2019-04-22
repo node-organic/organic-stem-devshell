@@ -1279,6 +1279,12 @@ body {
   border: none;
 }
 
+.project .releasedSyncBtn {
+  background: none;
+  color: white;
+  border: none;
+}
+
 .projectShell {
 }
 
@@ -1460,6 +1466,10 @@ ui-cell-tab div.focused {
 }
 ui-cell-tab div.blured {
   border-bottom: 10px solid gray;
+}
+ui-cell-tab .releasedStatus {
+  display: inline;
+  margin-left: 5px;
 }
 ui-cell-output {
   display: block;
