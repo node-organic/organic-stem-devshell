@@ -22,6 +22,8 @@
     this.onKeyUp = (e) => {
       if (e.keyCode === 13) {
         let cmd = this.els('input').value
+        let foundIndex = commands_history.indexOf(cmd)
+        if (foundIndex !== -1) commands_history.splice(foundIndex, 1)
         commands_history.push(cmd)
         commands_history = _.uniq(commands_history)
         curHistoryIndex = null

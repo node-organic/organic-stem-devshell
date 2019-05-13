@@ -14,6 +14,7 @@ const {
   TerminateAll,
   AllRunningCommandsTerminated,
   TerminateCommand,
+  RestartCommands,
   Resize
 } = require('lib/chemicals/terminals')
 
@@ -39,16 +40,29 @@ module.exports = class TerminalsOrganelle {
         }
       })
     })
+    this.plasma.on(RestartCommands.type, (c) => {
+      this.runningCommands.forEach((r) => {
+        if (r.cell.name === c.cell.name) {
+          terminate(r.child.pid, 'SIGINT', () => {
+            let cmd = this.executeCommand(r.value)(r.cell)
+            this.runningCommands.push(cmd)
+          })
+        }
+      })
+    })
     this.plasma.on(RunCommand.type, (c) => {
       let cmd = this.executeCommand(c.value)(c.cell)
       this.runningCommands.push(cmd)
     })
     this.plasma.on(CommandInput.type, (c) => {
-      this.runningCommands.forEach((r) => {
+      let lastRunningCommandIndex = -1
+      this.runningCommands.forEach((r, index) => {
         if (r.cell.name === c.cell.name) {
-          r.child.write(c.char)
+          lastRunningCommandIndex = index
         }
       })
+      if (lastRunningCommandIndex === -1) return
+      this.runningCommands[lastRunningCommandIndex].child.write(c.char)
     })
     this.plasma.on(Resize.type, (c) => {
       this.runningCommands.forEach((r) => {

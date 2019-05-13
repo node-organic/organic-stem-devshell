@@ -7,6 +7,7 @@ ui-cell-output .oneline {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-end;
 }
 
 ui-cell-output .stop {
@@ -14,9 +15,22 @@ ui-cell-output .stop {
   background-color: grey;
   margin-top: 5px;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 ui-cell-output .stop:hover {
+  background-color: white;
+  color: black;
+}
+
+ui-cell-output .restart {
+  padding: 2px;
+  background-color: grey;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+ui-cell-output .restart:hover {
   background-color: white;
   color: black;
 }

@@ -44,14 +44,16 @@ module.exports = class ClientStateOrganelle {
       this.currentState.cells.forEach(cell => {
         if (cell.name === c.cell.name) {
           cell.commandRunning = true
+          cell.runningCommandsCount += 1
         }
       })
       this.plasma.emit(this.currentState)
     })
     this.plasma.on(CommandTerminated.type, (c) => {
       this.currentState.cells.forEach(cell => {
-        if (cell.name === c.cell.name && !c.cellHasMoreCommands) {
-          cell.commandRunning = false
+        if (cell.name === c.cell.name) {
+          cell.runningCommandsCount -= 1
+          cell.commandRunning = c.cellHasMoreCommands
         }
       })
       this.plasma.emit(this.currentState)

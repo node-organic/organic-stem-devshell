@@ -2,6 +2,7 @@
   <script>
     const {
       TerminateCommand,
+      RestartCommands,
       CommandInput,
       CommandOutput,
       CommandTerminated,
@@ -49,13 +50,20 @@
     this.onTerminateCellCommands = () => {
       window.plasma.emit(TerminateCommand.byCell(this.props.cell))
     }
+    this.onRestartCellCommands = () => {
+      window.plasma.emit(RestartCommands.byCell(this.props.cell))
+    }
 
     this.on('mounted', () => {
       window.plasma.on(CommandStarted.byCell(this.props.cell), (c) => {
+        this.props.cell.runningCommandsCount += 1
         this.els('xterm').component.write(c.chunk)
       })
       window.plasma.on(CommandOutput.byCell(this.props.cell), (c) => {
         this.els('xterm').component.write(c.chunk)
+      })
+      window.plasma.on(CommandTerminated.byCell(this.props.cell), (c) => {
+        this.props.cell.runningCommandsCount -= 1
       })
     })
     window.plasma.emit({type: 'watchKeys', value: 'ctrl+space'}, () => {
@@ -71,11 +79,14 @@
     })
   </script>
   <div class='oneline'>
-    <div if={this.props.cell.commandRunning} class='stop' onclick={this.onTerminateCellCommands}>
-      <i class="material-icons">block</i>
-    </div>
     <div>
       port: {this.props.cell.port} | mount point: {this.props.cell.mountPoint}
+    </div>
+    <div if={this.props.cell.commandRunning} class='stop' onclick={this.onTerminateCellCommands}>
+      <i class="material-icons">block</i> {this.props.cell.runningCommandsCount}
+    </div>
+    <div if={this.props.cell.runningCommandsCount === 1} class='restart' onclick={this.onRestartCellCommands}>
+      <i class="material-icons">loop</i>
     </div>
   </div>
   <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} onxtermresize={this.handleResize} />
