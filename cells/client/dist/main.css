@@ -1489,6 +1489,9 @@ ui-cell-output .oneline {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 
 ui-cell-output .stop {
@@ -1496,9 +1499,22 @@ ui-cell-output .stop {
   background-color: grey;
   margin-top: 5px;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 ui-cell-output .stop:hover {
+  background-color: white;
+  color: black;
+}
+
+ui-cell-output .restart {
+  padding: 2px;
+  background-color: grey;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+ui-cell-output .restart:hover {
   background-color: white;
   color: black;
 }
