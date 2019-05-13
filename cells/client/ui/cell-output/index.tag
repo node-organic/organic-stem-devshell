@@ -20,10 +20,10 @@
       }
     }
     this.show = function () {
-      this.shadowRoot.classList.remove('hidden')
+      this.el.classList.remove('hidden')
     }
     this.hide = function () {
-      this.shadowRoot.classList.add('hidden')
+      this.el.classList.add('hidden')
     }
     this.handleKeypress = (char) => {
       window.plasma.emit(CommandInput.create({
@@ -32,8 +32,6 @@
       }))
     }
     this.handleResize = (e) => {
-
-        console.log('RESIZE')
       window.plasma.emit(Resize.create({
         cell: this.props.cell,
         rows: e.rows,

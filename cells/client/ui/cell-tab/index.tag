@@ -7,21 +7,21 @@
       CommandTerminated,
       CommandOutput
     } = require('lib/chemicals/terminals')
-    this.state.hasOutput = false
+    this.hasOutput = false
     this.getCheckboxClasses = () => {
       return [
         this.props.cell.selected ? 'selected': '',
         this.props.cell.commandRunning ? 'running': '',
-        this.state.hasOutput && !this.props.cell.focused ? 'hasOutput' : ''
+        this.hasOutput && !this.props.cell.focused ? 'hasOutput' : ''
       ].join(' ')
     }
     this.on('mounted', () => {
       window.plasma.on(CommandOutput.byCell(this.props.cell), () => {
-        this.state.hasOutput = true
+        this.hasOutput = true
         this.update()
       })
-      this.shadowRoot.parentNode.onclick = (e) => {
-        this.state.hasOutput = false
+      this.el.onclick = (e) => {
+        this.hasOutput = false
         if (e.target === this.els('selectedCheck')) {
           e.preventDefault()
           e.stopPropagation()

@@ -144,6 +144,9 @@
       this.update()
     }
   </script>
+  <div if={!this.state.cwd} class='wrapper'>
+    <h1>Loading...</h1>
+  </div>
   <div if={this.connectionError} class='wrapper'>
     <h1>Connection to server lost...</h1>
   </div>

@@ -1,10 +1,10 @@
 module.exports = function (component) {
   component.els = function (input) {
-    if (!component.shadowRoot) return
+    if (!component.el) return
     if (input) {
-      return component.shadowRoot.querySelector('[els="' + input + '"')
+      return component.el.querySelector('[els="' + input + '"')
     } else {
-      return component.shadowRoot.querySelectorAll('[els]')
+      return component.el.querySelectorAll('[els]')
     }
   }
 }

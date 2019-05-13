@@ -75,7 +75,7 @@ module.exports = webcell({
           use: {
             loader: 'babel-loader',
             options: {
-              plugins: ['babel-plugin-transform-react-jsx']
+              plugins: [ require.resolve('@babel/plugin-transform-react-jsx') ]
             }
           }
         },
@@ -83,7 +83,7 @@ module.exports = webcell({
           test: /\.tag$/,
           exclude: /node_modules/,
           use: [
-            { loader: 'organic-oval/webpack/oval-loader' }
+            { loader: require.resolve('organic-oval/webpack/oval-loader') }
           ]
         }
       ]

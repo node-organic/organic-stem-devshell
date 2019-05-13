@@ -29,10 +29,10 @@
       }
     }
     this.show = function () {
-      this.shadowRoot.classList.remove('hidden')
+      this.el.classList.remove('hidden')
     }
     this.hide = function () {
-      this.shadowRoot.classList.add('hidden')
+      this.el.classList.add('hidden')
     }
     this.on('updated', () => {
       if (this.props.focused) {
