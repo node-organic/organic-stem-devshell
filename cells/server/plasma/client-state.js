@@ -19,6 +19,11 @@ const {
   TerminateCommand
 } = require('lib/chemicals/terminals')
 
+const {
+  RunSerialCommand,
+  TerminateSerialCommand
+} = require('lib/chemicals/serial-commands')
+
 const extractUniqueGroups = require('lib/cells-to-unique-groups')
 
 module.exports = class ClientStateOrganelle {
@@ -43,8 +48,8 @@ module.exports = class ClientStateOrganelle {
     this.plasma.on(CommandStarted.type, (c) => {
       this.currentState.cells.forEach(cell => {
         if (cell.name === c.cell.name) {
-          cell.commandRunning = true
-          cell.runningCommandsCount += 1
+          cell.runningCommandsCount = c.runningCommandsCount
+          cell.commandRunning = c.runningCommandsCount !== 0
         }
       })
       this.plasma.emit(this.currentState)
@@ -52,8 +57,8 @@ module.exports = class ClientStateOrganelle {
     this.plasma.on(CommandTerminated.type, (c) => {
       this.currentState.cells.forEach(cell => {
         if (cell.name === c.cell.name) {
-          cell.runningCommandsCount -= 1
-          cell.commandRunning = c.cellHasMoreCommands
+          cell.runningCommandsCount = c.runningCommandsCount
+          cell.commandRunning = c.runningCommandsCount !== 0
         }
       })
       this.plasma.emit(this.currentState)
@@ -109,19 +114,31 @@ module.exports = class ClientStateOrganelle {
         }
       })
     }
-    if (newState.runningCommand !== this.currentState.runningCommand) {
+    if (newState.runningCommand !== this.currentState.runningCommand || newState.executeType !== this.currentState.executeType) {
       let selectedCells = _.filter(this.currentState.cells, 'selected')
       if (selectedCells.length === 0) {
         newState.runningCommand = ''
       }
       // if a new command is set -> terminate all running commands and run new command to selected cells
       if (this.currentState.runningCommand) {
-        this.plasma.emit(TerminateAll.create())
+        if (this.currentState.executeType === 'serial') {
+          this.plasma.emit(TerminateSerialCommand.create())
+        } else {
+          this.plasma.emit(TerminateAll.create())
+        }
       }
-      this.plasma.emit(RunAll.create({
-        value: newState.runningCommand,
-        cells: selectedCells
-      }))
+      if (newState.executeType === 'parallel') {
+        this.plasma.emit(RunAll.create({
+          value: newState.runningCommand,
+          cells: selectedCells
+        }))
+      }
+      if (newState.executeType === 'serial') {
+        this.plasma.emit(RunSerialCommand.create({
+          value: newState.runningCommand,
+          cells: selectedCells
+        }))
+      }
     }
     if (newState.groups && newState.cells) {
       newState.groups.forEach(group => {

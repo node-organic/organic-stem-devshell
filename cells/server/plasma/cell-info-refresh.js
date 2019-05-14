@@ -18,13 +18,25 @@ module.exports = class CellInfoRefreshOrganelle {
     this.plasma.on(ClientState.type, this.watchClientStateForChanges, this)
     this.watchers = []
     this.plasma.on('kill', () => {
-      this.watchers.forEach((w) => w.close())
-      this.watchers = []
+      this.cleanWatchers()
     })
   }
 
+  cleanWatchers () {
+    this.watchers.forEach((w) => {
+      if (w.ready) {
+        w.close()
+      } else {
+        w.on('ready', () => {
+          w.close()
+        })
+      }
+    })
+    this.watchers = []
+  }
+
   watchClientStateForChanges (c) {
-    this.watchers.forEach((w) => w.close())
+    this.cleanWatchers()
     c.cells.forEach((cell) => {
       let packagejson_path = path.join(c.cwd, cell.cwd, 'package.json')
       try {
@@ -37,6 +49,9 @@ module.exports = class CellInfoRefreshOrganelle {
         watcher.on('change', async () => {
           cell.scripts = (await readJSON(packagejson_path)).scripts
           this.plasma.emit(ChangeClientState.create(c))
+        })
+        watcher.on('ready', () => {
+          watcher.ready = true
         })
         this.watchers.push(watcher)
       } catch (e) {

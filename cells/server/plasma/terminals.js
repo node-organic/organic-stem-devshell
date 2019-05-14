@@ -26,7 +26,7 @@ module.exports = class TerminalsOrganelle {
     this.runningCommands = []
     this.projectRoot = path.resolve(dna.PRJROOT)
     this.plasma.on(RunAll.type, (c) => {
-      this.runningCommands = c.cells.map(this.executeCommand(c.value))
+      c.cells.map(this.executeCommand(c.value))
     })
     this.plasma.on(TerminateAll.type, (c) => {
       this.runningCommands.forEach((r) => {
@@ -44,15 +44,13 @@ module.exports = class TerminalsOrganelle {
       this.runningCommands.forEach((r) => {
         if (r.cell.name === c.cell.name) {
           terminate(r.child.pid, 'SIGINT', () => {
-            let cmd = this.executeCommand(r.value)(r.cell)
-            this.runningCommands.push(cmd)
+            this.executeCommand(r.value)(r.cell)
           })
         }
       })
     })
     this.plasma.on(RunCommand.type, (c) => {
-      let cmd = this.executeCommand(c.value)(c.cell)
-      this.runningCommands.push(cmd)
+      this.executeCommand(c.value)(c.cell)
     })
     this.plasma.on(CommandInput.type, (c) => {
       let lastRunningCommandIndex = -1
@@ -76,6 +74,16 @@ module.exports = class TerminalsOrganelle {
         terminate(r.child.pid)
       })
     })
+  }
+
+  getRunningCommandsCount (cell) {
+    let result = 0
+    for (let i = 0; i < this.runningCommands.length; i++) {
+      if (this.runningCommands[i].cell.name === cell.name) {
+        result += 1
+      }
+    }
+    return result
   }
 
   executeCommand (value) {
@@ -109,22 +117,21 @@ module.exports = class TerminalsOrganelle {
           cell: cell,
           chunk: '\n\r' + dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss') + ' <| terminated. \n\r'
         }))
-        let cellHasMoreCommands = false
-        this.runningCommands.forEach(r => {
-          if (r.cell.name === cell.name) cellHasMoreCommands = true
-        })
         this.plasma.emit(CommandTerminated.create({
           cell: cell,
           statusCode: statusCode,
-          cellHasMoreCommands: cellHasMoreCommands
+          commandValue: value,
+          runningCommandsCount: this.getRunningCommandsCount(cell)
         }))
         if (this.runningCommands.length === 0) {
           this.plasma.emit(AllRunningCommandsTerminated.create())
         }
       })
+      this.runningCommands.push(runningCommand)
       this.plasma.emit(CommandStarted.create({
         cell: cell,
-        chunk: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss') + ' >| ' + value + '\n\r'
+        chunk: dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss') + ' >| ' + value + '\n\r',
+        runningCommandsCount: this.getRunningCommandsCount(cell)
       }))
       return runningCommand
     }

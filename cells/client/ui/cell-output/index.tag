@@ -56,17 +56,19 @@
 
     this.on('mounted', () => {
       window.plasma.on(CommandStarted.byCell(this.props.cell), (c) => {
-        this.props.cell.runningCommandsCount += 1
+        this.props.cell.runningCommandsCount = c.cell.runningCommandsCount
         this.els('xterm').component.write(c.chunk)
+        this.update()
       })
       window.plasma.on(CommandOutput.byCell(this.props.cell), (c) => {
         this.els('xterm').component.write(c.chunk)
       })
       window.plasma.on(CommandTerminated.byCell(this.props.cell), (c) => {
-        this.props.cell.runningCommandsCount -= 1
+        this.props.cell.runningCommandsCount = c.cell.runningCommandsCount
+        this.update()
       })
     })
-    window.plasma.emit({type: 'watchKeys', value: 'ctrl+space'}, () => {
+    window.plasma.emit({type: 'watchKeys', value: 'ctrl+space', global: true}, () => {
       if (this.props.cell.focused) {
         this.els('xterm').component.scrollToBottom()
       }
@@ -77,10 +79,21 @@
         this.onTerminateCellCommands()
       }
     })
+    this.handleCellnameClick = (e) => {
+      let el = this.els('cellname')
+      console.log(el)
+      if (el && window.getSelection && document.createRange) {
+        let selection = window.getSelection()
+        let range = document.createRange()
+        range.selectNodeContents(el)
+        selection.removeAllRanges()
+        selection.addRange(range)
+      }
+    }
   </script>
   <div class='oneline'>
     <div>
-      port: {this.props.cell.port} | mount point: {this.props.cell.mountPoint}
+      name: <span els='cellname' onclick={this.handleCellnameClick}>{this.props.cell.name}</span> | port: {this.props.cell.port} | mount point: {this.props.cell.mountPoint}
     </div>
     <div if={this.props.cell.commandRunning} class='stop' onclick={this.onTerminateCellCommands}>
       <i class="material-icons">block</i> {this.props.cell.runningCommandsCount}

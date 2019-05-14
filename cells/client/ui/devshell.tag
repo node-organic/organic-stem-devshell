@@ -20,8 +20,18 @@
       TerminateAll,
       RunCommand
     } = require('lib/chemicals/terminals')
+    const {
+      TerminateSerialCommand
+    } = require('lib/chemicals/serial-commands')
 
-    this.executeToAllCells = false
+
+    const ExecuteCellTypes = {
+      none: 'none',
+      parallel: 'parallel',
+      serial: 'serial'
+    }
+
+    this.executeToAllCellsType = ExecuteCellTypes.none
     this.connectionError = false
 
     this.onCellSelected = (cell) => {
@@ -69,39 +79,43 @@
       }
     }
     this.onExecute = (value) => {
-      if (this.executeToAllCells) {
-        this.onExecuteToAll(value)
-      } else {
-        this.onExecuteToFocused(value)
-      }
-    }
-    this.onExecuteToAll = function (value) {
-      window.plasma.emit(ChangeClientState.create({
-        runningCommand: value
-      }))
-    }
-    this.onExecuteToFocused = (value) => {
-      this.state.cells.forEach((cell) => {
-        if (cell.focused) {
-          window.plasma.emit(RunCommand.create({
-            value: value,
-            cell: cell
+      switch (this.executeToAllCellsType) {
+        case ExecuteCellTypes.parallel:
+          window.plasma.emit(ChangeClientState.create({
+            runningCommand: value,
+            executeType: 'parallel'
           }))
-        }
-      })
-    }
-    this.onCommonScriptClick = (script) => {
-      return (e) => {
-        this.onExecuteToAll('npm run ' + script)
+        break
+        case ExecuteCellTypes.serial:
+        window.plasma.emit(ChangeClientState.create({
+          runningCommand: value,
+          executeType: 'serial'
+        }))
+        break
+        case ExecuteCellTypes.none:
+        default:
+          this.state.cells.forEach((cell) => {
+            if (cell.focused) {
+              window.plasma.emit(RunCommand.create({
+                value: value,
+                cell: cell
+              }))
+            }
+          })
+        break
       }
     }
     this.onCellScriptClick = (script) => {
       return (e) => {
-        this.onExecuteToFocused('npm run ' + script)
+        this.onExecute('npm run ' + script)
       }
     }
-    this.onTerminateAll = function (e) {
-      window.plasma.emit(TerminateAll.create())
+    this.onTerminateAll = (e) => {
+      if (this.state.executeType === 'serial') {
+        window.plasma.emit(TerminateSerialCommand.create())
+      } else {
+        window.plasma.emit(TerminateAll.create())
+      }
     }
     this.hasSelectedCell = () => {
       let result = false
@@ -116,7 +130,19 @@
     this.on('mounted', () => {
       window.plasma.emit(FetchClientState.create())
       window.plasma.emit({type: 'watchKeys', value: 'ctrl+alt+x', global: true}, (c) => {
-        this.executeToAllCells = !this.executeToAllCells
+        if (this.executeToAllCellsType !== ExecuteCellTypes.parallel) {
+          this.executeToAllCellsType = ExecuteCellTypes.parallel
+        } else {
+          this.executeToAllCellsType = ExecuteCellTypes.none
+        }
+        this.update()
+      })
+      window.plasma.emit({type: 'watchKeys', value: 'ctrl+alt+z', global: true}, (c) => {
+        if (this.executeToAllCellsType !== ExecuteCellTypes.serial) {
+          this.executeToAllCellsType = ExecuteCellTypes.serial
+        } else {
+          this.executeToAllCellsType = ExecuteCellTypes.none
+        }
         this.update()
       })
       window.plasma.on('IO', (c) => {
@@ -185,25 +211,38 @@
       </div>
     </div>
     <div class='command-input' >
-      <ui-command-input cid='input'
-        enterValue={this.onExecute}
-        prop-executeToAllCells={this.executeToAllCells}
-        prop-runningCommand={this.state.runningCommand} />
+      <ui-command-input cid='input' enterValue={this.onExecute} />
+      <span if={this.state.runningCommand} class='runningCommand'>
+        <i if={this.state.executeType === ExecuteCellTypes.parallel} class="material-icons">list</i>
+        <i if={this.state.executeType === ExecuteCellTypes.serial} class="material-icons">sort</i>
+      </span>
+      <div if={this.state.runningCommand} class='runningCommand'>{this.state.runningCommand}</div>
       <button if={this.state.runningCommand} els='terminateBtn'
         onclick={this.onTerminateAll}>
         <i class="material-icons">block</i>
       </button>
-      <div if={!this.executeToAllCells} class='scripts cell'>
+      <span class='runningCommand'>
+        <i if={this.executeToAllCellsType === ExecuteCellTypes.none} class="material-icons">keyboard_arrow_right</i>
+        <i if={this.executeToAllCellsType === ExecuteCellTypes.parallel} class="material-icons">list</i>
+        <i if={this.executeToAllCellsType === ExecuteCellTypes.serial} class="material-icons">sort</i>
+      </span>
+      <div if={this.executeToAllCellsType === ExecuteCellTypes.none} class='scripts cell'>
         <each script in {this.getFocusedCellScripts()}>
           <div class='cellscript' onclick={this.onCellScriptClick(script)}>{script}</div>
         </each>
       </div>
-      <div if={this.executeToAllCells} class='scripts common'>
+      <div if={this.executeToAllCellsType === ExecuteCellTypes.parallel} class='scripts common'>
         <each script in {this.getCommonCellScripts()}>
-          <div class='cellscript' onclick={this.onCommonScriptClick(script)}>
-              <i class='material-icons'>
-                check_circle
-              </i>
+          <div class='cellscript' onclick={this.onCellScriptClick(script)}>
+              <i class='material-icons'>list</i>
+              {script}
+          </div>
+        </each>
+      </div>
+      <div if={this.executeToAllCellsType === ExecuteCellTypes.serial} class='scripts common'>
+        <each script in {this.getCommonCellScripts()}>
+          <div class='cellscript' onclick={this.onCellScriptClick(script)}>
+              <i class='material-icons'>sort</i>
               {script}
           </div>
         </each>

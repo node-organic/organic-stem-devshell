@@ -24,7 +24,3 @@ ui-command-input input {
 ui-command-input .hidden {
   display: none;
 }
-
-ui-command-input .runningCommand {
-  align-self: center;
-}

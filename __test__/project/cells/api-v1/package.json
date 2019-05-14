@@ -6,6 +6,7 @@
     "run-cmd1": "run cmd",
     "echo-asd": "echo asd",
     "veeeeeeeeeeeeery-looooooooooooong-ls": "ls -la",
-    "terminal-exit": "exit"
+    "terminal-exit": "exit",
+    "release": "sleep 1 && echo released"
   }
 }

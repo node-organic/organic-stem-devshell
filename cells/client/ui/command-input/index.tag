@@ -8,7 +8,7 @@
     const UP = 38
     const DOWN = 40
 
-    window.plasma.emit({type: 'watchKeys', value: 'ctrl+space'}, () => {
+    window.plasma.emit({type: 'watchKeys', value: 'ctrl+space', global: true}, () => {
       this.els('input').focus()
       this.isTyping = true
     })
@@ -57,12 +57,7 @@
       if (this.isTyping) this.els('input').focus()
     })
   </script>
-  <span if={this.props.runningCommand}><i class="material-icons">last_page</i></span>
-  <div if={this.props.runningCommand} class='runningCommand'>{this.props.runningCommand}</div>
-  <span if={!this.props.executeToAllCells}><i class="material-icons">keyboard_arrow_right</i></span>
-  <span if={this.props.executeToAllCells}><i class="material-icons">last_page</i></span>
   <input type='text' els='input'
     onkeyup={this.onKeyUp}
-    onkeydown={this.onKeyDown}
-    />
+    onkeydown={this.onKeyDown} />
 </ui-command-input>

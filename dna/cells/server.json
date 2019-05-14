@@ -41,6 +41,9 @@
     "cell-released-status": {
       "source": "./plasma/cell-released-status",
       "PRJROOT": "{$PRJROOT}"
+    },
+    "serial-commands": {
+      "source": "./plasma/serial-commands"
     }
   }
 }

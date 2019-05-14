@@ -1,6 +1,7 @@
 {
   "name": "apiv2",
   "scripts": {
-    "develop": "node index"
+    "develop": "node index",
+    "release": "sleep 2 && echo released"
   }
 }
