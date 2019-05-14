@@ -1337,15 +1337,15 @@ body {
 }
 
 .command-input .cellscript {
-  padding: 2px;
-  background-color: grey;
-  margin-top: 5px;
+  padding: 5px;
+  background-color: lightgrey;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .command-input .cellscript:hover {
-  background-color: white;
-  color: black;
+  background-color: grey;
+  color: white;
 }
 
 .cellscript {
@@ -1362,28 +1362,15 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-}
-
-.command-input .scripts.common .cellscript {
-  padding: 10px;
-  background-color: white;
-  color: black;
-}
-
-.command-input .scripts.common .cellscript:hover {
-  background-color: grey;
-  color: white;
-}
-
-.command-input .scripts.cell .cellscript {
   padding: 10px;
   background-color: lightgrey;
   color: black;
 }
 
-.command-input .scripts.cell .cellscript:hover {
-  background-color: grey;
-  color: white;
+.command-input .runningCommand {
+  -ms-flex-item-align: center;
+      align-self: center;
+  margin-right: 5px;
 }
 
 ui-devshell {
@@ -1729,11 +1716,6 @@ ui-command-input input {
 
 ui-command-input .hidden {
   display: none;
-}
-
-ui-command-input .runningCommand {
-  -ms-flex-item-align: center;
-      align-self: center;
 }
 ui-project-shell .scripts {
   display: -webkit-box;
