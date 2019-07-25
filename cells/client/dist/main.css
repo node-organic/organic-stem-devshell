@@ -1273,19 +1273,56 @@ body {
   display: flex;
 }
 
-.project .projectShellBtn {
+.projectShellBtn {
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.projectShellBtnIcon {
+  color: #aeb1b8;
+  font-size: 72px;
+}
+
+.projectShellBtnIcon:hover {
+  color: white;
+}
+
+.releasedSyncBtnIcon {
+  color: #aeb1b8;
+  font-size: 48px;
+  cursor: pointer;
+}
+
+.releasedSyncBtnIcon:hover {
+  color: white;
+}
+
+.releasedSyncBtn {
   background: none;
   color: white;
   border: none;
 }
 
-.project .releasedSyncBtn {
-  background: none;
-  color: white;
-  border: none;
+.projectShell .scripts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
-.projectShell {
+.projectShell .script {
+  padding: 5px;
+  background-color: grey;
+  margin: 10px;
+  color: white;
+  font-size: 1.3em;
+  cursor: pointer;
+}
+
+.projectShell .script:hover {
+  background-color: white;
+  color: black;
 }
 
 .groups {
@@ -1298,6 +1335,19 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  font-size: 0.8em;
+}
+
+.groups div ui-cell-group {
+  padding: 2px;
+}
+
+.virtualgroups {
+  font-size: 1.2em;
+}
+
+.virtualgroups ui-cell-group span.selected {
+  border-bottom: 5px solid green;
 }
 
 .cells {
@@ -1313,6 +1363,10 @@ body {
           flex-direction: row;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+}
+
+.cell-tabs .two-em {
+  font-size: 48px;
 }
 
 .cell-outputs {
@@ -1376,6 +1430,39 @@ body {
 ui-devshell {
   display: block;
 }
+
+split-pane {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  width: 100%;
+}
+
+vsplit-pane {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+
+pane-align-center {
+  -ms-flex-item-align: center;
+      align-self: center;
+}
+
+pane-enlarged {
+  -webkit-box-flex: 2;
+      -ms-flex-positive: 2;
+          flex-grow: 2;
+}
 ui-cell-group {
   display: block;
   padding: 10px;
@@ -1397,13 +1484,9 @@ ui-cell-group:hover {
 ui-cell-group span {
   font-size: 1.5em;
 }
-
-ui-cell-group span.selected {
-  border-bottom: 10px solid green;
-}
 ui-cell-tab {
   display: block;
-  padding: 15px;
+  padding: 5px;
   margin: 3px;
   border-radius: 3px;
   background-color: gray;
@@ -1413,6 +1496,7 @@ ui-cell-tab {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  cursor: pointer;
 }
 ui-cell-tab.flexAutoGrow {
   -webkit-box-flex: 1;
@@ -1449,10 +1533,9 @@ ui-cell-tab:hover {
   background-color: grey;
 }
 ui-cell-tab div.focused {
-  border-bottom: 10px solid green;
+  border-bottom: 6px solid green;
 }
 ui-cell-tab div.blured {
-  border-bottom: 10px solid gray;
 }
 ui-cell-tab .releasedStatus {
   display: inline;
@@ -1476,9 +1559,13 @@ ui-cell-output .oneline {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  font-size: 2em;
+  padding: 10px;
+}
+
+.oneline .large {
+  font-size: 48px;
+  padding: 5px;
 }
 
 ui-cell-output .stop {
@@ -1487,6 +1574,7 @@ ui-cell-output .stop {
   margin-top: 5px;
   margin-right: 10px;
   margin-left: 10px;
+  cursor: pointer;
 }
 
 ui-cell-output .stop:hover {
@@ -1499,6 +1587,7 @@ ui-cell-output .restart {
   background-color: grey;
   margin-top: 5px;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 ui-cell-output .restart:hover {
@@ -1717,21 +1806,4 @@ ui-command-input input {
 ui-command-input .hidden {
   display: none;
 }
-ui-project-shell .scripts {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
 
-ui-project-shell .script {
-  padding: 5px;
-  background-color: grey;
-  margin: 10px;
-  color: white;
-  font-size: 1.3em;
-}
-
-ui-project-shell .script:hover {
-  background-color: white;
-  color: black;
-}
