@@ -1,16 +1,1 @@
-ui-project-shell .scripts {
-  display: flex;
-}
 
-ui-project-shell .script {
-  padding: 5px;
-  background-color: grey;
-  margin: 10px;
-  color: white;
-  font-size: 1.3em;
-}
-
-ui-project-shell .script:hover {
-  background-color: white;
-  color: black;
-}

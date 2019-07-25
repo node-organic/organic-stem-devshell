@@ -7,12 +7,17 @@ A tool to ease development of organic [distributed] systems.
 ## features & todo
 
 - [x] automatically parse dna in cwd and present cells & cell groups
-- [x] execute a command towards all selected cells
+- [x] execute a command in parallel towards all selected cells
 - [x] terminate a command previously executed towards all selected cells
 - [x] running/not running status indicator
 - [x] execute a command towards the focused cell
 - [x] new output status indicator per cell
 - [x] run commands towards the repo as well
+- [x] execute a command sequentially towards all selected cells
+- [] shortcuts
+  * `ctrl+space` - scrolls to bottom & focuses input
+  * `ctrl+alt+x` - toggles execution in parallel mode
+  * `ctrl+alt+z` - toggles execution in sequential mode 
 - ? all commands output combined in single output tab
 - ? kill port/process tool
 - ? browse dna tool

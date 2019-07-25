@@ -1,12 +1,13 @@
 ui-cell-tab {
   display: block;
-  padding: 15px;
+  padding: 5px;
   margin: 3px;
   border-radius: 3px;
   background-color: gray;
   color: black;
   white-space: nowrap;
   user-select: none;
+  cursor: pointer;
 }
 ui-cell-tab.flexAutoGrow {
   flex-grow: 1;
@@ -44,11 +45,10 @@ ui-cell-tab:hover {
 }
 
 ui-cell-tab div.focused {
-  border-bottom: 10px solid green;
+  border-bottom: 6px solid green;
 }
 
 ui-cell-tab div.blured {
-  border-bottom: 10px solid gray;
 }
 
 ui-cell-tab .releasedStatus {

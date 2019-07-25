@@ -9,25 +9,69 @@
   display: flex;
 }
 
-.project .projectShellBtn {
+.projectShellBtn {
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.projectShellBtnIcon {
+  color: #aeb1b8;
+  font-size: 72px;
+}
+
+.projectShellBtnIcon:hover {
+  color: white;
+}
+
+.releasedSyncBtnIcon {
+  color: #aeb1b8;
+  font-size: 48px;
+  cursor: pointer;
+}
+.releasedSyncBtnIcon:hover {
+  color: white;
+}
+
+.releasedSyncBtn {
   background: none;
   color: white;
   border: none;
 }
 
-.project .releasedSyncBtn {
-  background: none;
-  color: white;
-  border: none;
+.projectShell .scripts {
+  display: flex;
 }
 
-.projectShell {
+.projectShell .script {
+  padding: 5px;
+  background-color: grey;
+  margin: 10px;
+  color: white;
+  font-size: 1.3em;
+  cursor: pointer;
+}
+
+.projectShell .script:hover {
+  background-color: white;
+  color: black;
 }
 
 .groups {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  font-size: 0.8em;
+}
+.groups div ui-cell-group {
+  padding: 2px;
+}
+.virtualgroups {
+  font-size: 1.2em;
+}
+.virtualgroups ui-cell-group span.selected {
+  border-bottom: 5px solid green;
 }
 
 .cells {
@@ -36,6 +80,9 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+.cell-tabs .two-em {
+  font-size: 48px;
 }
 .cell-outputs {
 }
@@ -81,4 +128,26 @@
 
 ui-devshell {
   display: block;
+}
+
+
+
+split-pane {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+vsplit-pane {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+pane-align-center {
+  align-self: center;
+}
+
+pane-enlarged {
+  flex-grow: 2;
 }

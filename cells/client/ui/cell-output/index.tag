@@ -92,6 +92,7 @@
     }
   </script>
   <div class='oneline'>
+    <i class='material-icons large'>rounded_corner</i>
     <div>
       name: <span els='cellname' onclick={this.handleCellnameClick}>{this.props.cell.name}</span> | port: {this.props.cell.port} | mount point: {this.props.cell.mountPoint}
     </div>

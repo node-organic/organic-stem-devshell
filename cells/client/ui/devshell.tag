@@ -23,6 +23,10 @@
     const {
       TerminateSerialCommand
     } = require('lib/chemicals/serial-commands')
+    const {
+      RequestScripts,
+      Execute: ProjectExecute
+    } = require('lib/chemicals/project-shell')
 
 
     const ExecuteCellTypes = {
@@ -33,6 +37,7 @@
 
     this.executeToAllCellsType = ExecuteCellTypes.none
     this.connectionError = false
+    this.scripts = []
 
     this.onCellSelected = (cell) => {
       cell.selected = !cell.selected
@@ -104,6 +109,8 @@
           })
         break
       }
+      this.executeToAllCellsType = ExecuteCellTypes.none
+      this.update()
     }
     this.onCellScriptClick = (script) => {
       return (e) => {
@@ -129,6 +136,10 @@
     })
     this.on('mounted', () => {
       window.plasma.emit(FetchClientState.create())
+      window.plasma.emit(RequestScripts.create(), (err, c) => {
+        this.scripts = c.scripts
+        this.update()
+      })
       window.plasma.emit({type: 'watchKeys', value: 'ctrl+alt+x', global: true}, (c) => {
         if (this.executeToAllCellsType !== ExecuteCellTypes.parallel) {
           this.executeToAllCellsType = ExecuteCellTypes.parallel
@@ -169,6 +180,51 @@
       fetchingReleasedState = true
       this.update()
     }
+    this.onProjectScriptClick = (script) => {
+      return () => {
+        if (!this.projectShellFocused) {
+          this.projectShellFocused = true
+          this.update()
+        }
+        window.plasma.emit(ProjectExecute.create({
+          value: 'npm run ' + script
+        }))
+      }
+    }
+    this.getCellsPerGroup = function (group) {
+      let result = []
+      this.state.cells.forEach(function (cell) {
+        if (cell.groups[0] === group.name) {
+          result.push(cell)
+        }
+      })
+      return result
+    }
+    this.isGroupVirtual = function (group) {
+      let result = []
+      this.state.cells.forEach(function (cell) {
+        if (cell.groups[0] === group.name) {
+          result.push(cell)
+        }
+      })
+      return result.length === 0
+    }
+    this.getCellGroups = function () {
+      let result = []
+      this.state.groups.forEach((group) => {
+        if (this.isGroupVirtual(group)) return
+        result.push(group)
+      })
+      return result
+    }
+    this.getCellVirtualGroups = function () {
+      let result = []
+      this.state.groups.forEach((group) => {
+        if (!this.isGroupVirtual(group)) return
+        result.push(group)
+      })
+      return result
+    }
   </script>
   <div if={!this.state.cwd} class='wrapper'>
     <h1>Loading...</h1>
@@ -178,75 +234,101 @@
   </div>
   <div if={!this.connectionError && this.state.cwd} class='wrapper'>
     <div class='project'>
-      <button class='projectShellBtn' onclick={this.toggleProjectShell}>[shell]</button>
+      <button class='projectShellBtn' onclick={this.toggleProjectShell}>
+        <i class='material-icons projectShellBtnIcon'>donut_large</i>
+      </button>
       <h1>{this.state.cwd.replace(this.state.userhome, '~')}</h1>
       <button if={!fetchingReleasedState} onclick={this.refreshReleasedState} class='releasedSyncBtn'>
-        <i class='material-icons'>
+        <i class='material-icons releasedSyncBtnIcon'>
           sync
         </i>
       </button>
     </div>
     <div class='projectShell'>
       <ui-project-shell prop-focused={this.projectShellFocused} />
-    </div>
-    <div class='groups'>
-      <each group in {this.state.groups}>
-        <ui-cell-group key={group.name} group={group} onclick={this.onCellGroupSelected(group)} />
-      </each>
-    </div>
-    <div class='cells'>
-      <div class='cell-tabs'>
-        <each cell in {this.state.cells}>
-          <ui-cell-tab cell={cell}
-            class={this.getCellTabClass()}
-            selected={this.onCellSelected}
-            focused={this.onCellFocused} />
-        </each>
-      </div>
-      <div class='cell-outputs'>
-        <each cell in {this.state.cells}>
-          <ui-cell-output
-            cell={cell} />
-        </each>
-      </div>
-    </div>
-    <div class='command-input' >
-      <ui-command-input cid='input' enterValue={this.onExecute} />
-      <span if={this.state.runningCommand} class='runningCommand'>
-        <i if={this.state.executeType === ExecuteCellTypes.parallel} class="material-icons">list</i>
-        <i if={this.state.executeType === ExecuteCellTypes.serial} class="material-icons">sort</i>
-      </span>
-      <div if={this.state.runningCommand} class='runningCommand'>{this.state.runningCommand}</div>
-      <button if={this.state.runningCommand} els='terminateBtn'
-        onclick={this.onTerminateAll}>
-        <i class="material-icons">block</i>
-      </button>
-      <span class='runningCommand'>
-        <i if={this.executeToAllCellsType === ExecuteCellTypes.none} class="material-icons">keyboard_arrow_right</i>
-        <i if={this.executeToAllCellsType === ExecuteCellTypes.parallel} class="material-icons">list</i>
-        <i if={this.executeToAllCellsType === ExecuteCellTypes.serial} class="material-icons">sort</i>
-      </span>
-      <div if={this.executeToAllCellsType === ExecuteCellTypes.none} class='scripts cell'>
-        <each script in {this.getFocusedCellScripts()}>
-          <div class='cellscript' onclick={this.onCellScriptClick(script)}>{script}</div>
-        </each>
-      </div>
-      <div if={this.executeToAllCellsType === ExecuteCellTypes.parallel} class='scripts common'>
-        <each script in {this.getCommonCellScripts()}>
-          <div class='cellscript' onclick={this.onCellScriptClick(script)}>
-              <i class='material-icons'>list</i>
-              {script}
-          </div>
-        </each>
-      </div>
-      <div if={this.executeToAllCellsType === ExecuteCellTypes.serial} class='scripts common'>
-        <each script in {this.getCommonCellScripts()}>
-          <div class='cellscript' onclick={this.onCellScriptClick(script)}>
-              <i class='material-icons'>sort</i>
+      <div class='scripts'>
+        <each script in {_.keys(this.scripts)}>
+          <div class='script' onclick={this.onProjectScriptClick(script)}>
               {script}
           </div>
         </each>
       </div>
     </div>
+    <vsplit-pane>
+      <div class='groups virtualgroups'>
+        <each group in {this.getCellVirtualGroups()}>
+          <ui-cell-group key={group.name} group={group} onclick={this.onCellGroupSelected(group)} />
+        </each>
+      </div>
+      <div class='groups'>
+        <each group in {this.getCellGroups()}>
+          <div>
+            <ui-cell-group key={group.name} group={group} onclick={this.onCellGroupSelected(group)} />
+            <div class='cell-tabs'>
+              <each cell in {this.getCellsPerGroup(group)}>
+                <ui-cell-tab cell={cell}
+                  class={this.getCellTabClass()}
+                  selected={this.onCellSelected}
+                  focused={this.onCellFocused} />
+              </each>
+            </div>
+          </div>
+        </each>
+      </div>
+      <div class='cells'>
+        <div class='cell-outputs'>
+          <each cell in {this.state.cells}>
+            <ui-cell-output
+              cell={cell} />
+          </each>
+        </div>
+      </div>
+      <div class='command-input'>
+        <vsplit-pane>
+          <split-pane>
+            <div if={this.executeToAllCellsType === ExecuteCellTypes.none} class='scripts cell'>
+              <each script in {this.getFocusedCellScripts()}>
+                <div class='cellscript' onclick={this.onCellScriptClick(script)}>{script}</div>
+              </each>
+            </div>
+            <div if={this.executeToAllCellsType === ExecuteCellTypes.parallel} class='scripts common'>
+              <each script in {this.getCommonCellScripts()}>
+                <div class='cellscript' onclick={this.onCellScriptClick(script)}>
+                    <i class='material-icons'>list</i>
+                    {script}
+                </div>
+              </each>
+            </div>
+            <div if={this.executeToAllCellsType === ExecuteCellTypes.serial} class='scripts common'>
+              <each script in {this.getCommonCellScripts()}>
+                <div class='cellscript' onclick={this.onCellScriptClick(script)}>
+                    <i class='material-icons'>sort</i>
+                    {script}
+                </div>
+              </each>
+            </div>
+            <split-pane>
+              <div if={this.state.runningCommand} class='runningCommand'>
+                <i if={this.state.executeType === ExecuteCellTypes.parallel} class="material-icons">list</i>
+                <i if={this.state.executeType === ExecuteCellTypes.serial} class="material-icons">sort</i>
+              </div>
+              <div if={this.state.runningCommand} class='runningCommand'>{this.state.runningCommand}</div>
+              <button if={this.state.runningCommand} els='terminateBtn'
+                onclick={this.onTerminateAll}>
+                <i class="material-icons">block</i>
+              </button>
+            </split-pane>
+          </split-pane>
+          <split-pane>
+            <span class='runningCommand'>
+              <i if={this.executeToAllCellsType === ExecuteCellTypes.none} class="material-icons">keyboard_arrow_right</i>
+              <i if={this.executeToAllCellsType === ExecuteCellTypes.parallel} class="material-icons">list</i>
+              <i if={this.executeToAllCellsType === ExecuteCellTypes.serial} class="material-icons">sort</i>
+            </span>
+            <ui-command-input cid='input' enterValue={this.onExecute} />
+          </split-pane>
+        </vsplit-pane>
+      </div>
+    </vsplit-pane>
   </div>
 </ui-devshell>
