@@ -16,29 +16,33 @@ module.exports = class CellInfoRefreshOrganelle {
     this.plasma = plasma
     this.dna = dna
     this.plasma.on(ClientState.type, this.watchClientStateForChanges, this)
-    this.watchers = []
+    this.watchedMap = {
+      // 'packagejson_path': Watcher
+    }
     this.plasma.on('kill', () => {
       this.cleanWatchers()
     })
   }
 
   cleanWatchers () {
-    this.watchers.forEach((w) => {
+    for (let p in this.watchedMap) {
+      let w = this.watchedMap[p]
       if (w.ready) {
         w.close()
+        delete this.watchedMap[p]
       } else {
         w.on('ready', () => {
           w.close()
+          delete this.watchedMap[p]
         })
       }
-    })
-    this.watchers = []
+    }
   }
 
   watchClientStateForChanges (c) {
-    this.cleanWatchers()
     c.cells.forEach((cell) => {
       let packagejson_path = path.join(c.cwd, cell.cwd, 'package.json')
+      if (this.watchedMap[packagejson_path]) return // skip for watched paths
       try {
         let watcher = chokidar.watch(packagejson_path, {
           awaitWriteFinish: {
@@ -53,9 +57,10 @@ module.exports = class CellInfoRefreshOrganelle {
         watcher.on('ready', () => {
           watcher.ready = true
         })
-        this.watchers.push(watcher)
+        this.watchedMap[packagejson_path] = watcher
       } catch (e) {
         // ignore exception
+        console.log(e)
       }
     })
   }
