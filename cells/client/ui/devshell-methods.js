@@ -2,10 +2,26 @@ const {
   FetchReleasedState
 } = require('lib/chemicals')
 
+const ExecuteCellTypes = require('./execute-cell-types')
+
+const _ = require('lodash')
+
 /**
  * @this {devshell} component
  */
 module.exports = function () {
+  this.clearFocusedCellOutput = () => {
+    window.plasma.emit('clearterminal')
+  }
+  this.executeFocusedCellScriptByIndex = (index) => {
+    let scripts = null
+    if (this.executeToAllCellsType === ExecuteCellTypes.none) {
+      scripts = this.getFocusedCellScripts()
+    } else {
+      scripts = this.getCommonCellScripts()
+    }
+    this.onExecute({ cmd: 'npm run ' + scripts[index] })
+  }
   this.hasSelectedCell = () => {
     let result = false
     this.state.cells.forEach(c => {
@@ -14,12 +30,20 @@ module.exports = function () {
     return result
   }
   this.getFocusedCell = () => {
-    for (let i = 0; i < this.state.cells.length; i++) {
-      let c = this.state.cells[i]
-      if (c.focused) {
-        return c
-      }
-    }
+    return _.find(this.state.cells, 'focused')
+  }
+  this.getFocusedCellScripts = () => {
+    let focusedCell = this.getFocusedCell()
+    if (!focusedCell) return []
+    return _.keys(focusedCell.scripts)
+  }
+  this.getCommonCellScripts = () => {
+    let filter = _.filter(this.state.cells, 'selected')
+    let arr = _.map(filter, (c) => {
+      return _.keys(c.scripts)
+    })
+    let result = _.intersection.apply(_, arr)
+    return result
   }
   this.getCellTabClass = () => {
     return this.state.cells.length > 3 ? '' : 'flexAutoGrow'

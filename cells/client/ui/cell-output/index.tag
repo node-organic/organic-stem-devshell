@@ -77,6 +77,11 @@
           this.els('xterm').component.gainFocus()
         }
       })
+      window.plasma.on('clearterminal', (c) => {
+        if (this.props.cell.focused) {
+          this.els('xterm').component.clear()
+        }
+      })
     })
     window.plasma.emit(
       WatchKeys.create({ 

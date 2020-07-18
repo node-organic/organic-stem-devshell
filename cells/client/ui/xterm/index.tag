@@ -8,6 +8,9 @@
     this.gainFocus = () => {
       this.xterm.focus()
     }
+    this.clear = () => {
+      this.xterm.clear()
+    }
     this.on('mounted', () => {
       const xterm = new Terminal()
       xterm.attachCustomKeyEventHandler((event) => {

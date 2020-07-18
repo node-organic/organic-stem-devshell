@@ -96,6 +96,20 @@ module.exports = class FrontCommands {
             })
           }
           break
+        case 'r':
+        case 'run':
+          let index = null
+          try {
+            index = parseInt(parts[1])
+          } catch (e) {}
+          if (index !== null) {
+            c.devshell.executeFocusedCellScriptByIndex(index)
+            return true
+          }
+          break
+        case 'clear':
+          c.devshell.clearFocusedCellOutput()
+          return true
       }
       if (needsChange) {
         this.plasma.emit(ChangeClientState.create(c.devshell.state))

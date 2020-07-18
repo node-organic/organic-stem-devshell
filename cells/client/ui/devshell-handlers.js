@@ -37,22 +37,6 @@ module.exports = function () {
     })
     window.plasma.emit(ChangeClientState.create(this.state))
   }
-  this.getFocusedCell = () => {
-    return _.find(this.state.cells, 'focused')
-  }
-  this.getFocusedCellScripts = () => {
-    let focusedCell = this.getFocusedCell()
-    if (!focusedCell) return []
-    return _.keys(focusedCell.scripts)
-  }
-  this.getCommonCellScripts = () => {
-    let filter = _.filter(this.state.cells, 'selected')
-    let arr = _.map(filter, (c) => {
-      return _.keys(c.scripts)
-    })
-    let result = _.intersection.apply(_, arr)
-    return result
-  }
   this.onCellGroupSelected = (group) => {
     return () => {
       // cant use the group as reference

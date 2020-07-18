@@ -8,6 +8,8 @@
     require('./command-input')
     require('./project-shell')
 
+    const CellScripts = require('./cell-scripts')
+
     const _ = require('lodash')
     const {
       ClientState,
@@ -17,6 +19,9 @@
       RequestScripts,
       Scripts
     } = require('lib/chemicals/project-shell')
+    const {
+      RunCellCommand
+    } = require('../plasma/front-commands')
 
     require('els')(this)
 
@@ -105,27 +110,7 @@
       <div class='command-input'>
         <vsplit-pane>
           <split-pane>
-            <div if={this.executeToAllCellsType === ExecuteCellTypes.none} class='scripts cell'>
-              <each script in {this.getFocusedCellScripts()}>
-                <div class='cellscript' onclick={this.onCellScriptClick(script)}>{script}</div>
-              </each>
-            </div>
-            <div if={this.executeToAllCellsType === ExecuteCellTypes.parallel} class='scripts common'>
-              <each script in {this.getCommonCellScripts()}>
-                <div class='cellscript' onclick={this.onCellScriptClick(script)}>
-                    <i class='material-icons'>list</i>
-                    {script}
-                </div>
-              </each>
-            </div>
-            <div if={this.executeToAllCellsType === ExecuteCellTypes.serial} class='scripts common'>
-              <each script in {this.getCommonCellScripts()}>
-                <div class='cellscript' onclick={this.onCellScriptClick(script)}>
-                    <i class='material-icons'>sort</i>
-                    {script}
-                </div>
-              </each>
-            </div>
+            <CellScripts prop-devshell={this} />
             <split-pane>
               <div if={this.state.runningCommand} class='runningCommand'>
                 <i if={this.state.executeType === ExecuteCellTypes.parallel} class="material-icons">list</i>

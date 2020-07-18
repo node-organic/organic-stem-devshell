@@ -95,32 +95,6 @@
   flex-grow: 1;
 }
 
-.command-input .scripts {
-  display: flex;
-}
-
-.command-input .cellscript {
-  padding: 5px;
-  background-color: lightgrey;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.command-input .cellscript:hover {
-  background-color: grey;
-  color: white;
-}
-
-.cellscript {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  background-color: lightgrey;
-  color: black;
-}
-
 .command-input .runningCommand {
   align-self: center;
   margin-right: 5px;

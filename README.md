@@ -24,7 +24,8 @@ A tool to ease development of organic [distributed] systems.
   * `f <term>` - focuses the first matching cell by `term`
   * `df` - blurs focused cell
   * `x` - terminates all commands running on focused cell
-  * `ft` - focuses at the terminal of a focused cell
+  * `r <number>` - runs a script from the currently visible ones by index number
+  * `clear` - clears the focused cell output
 - ? all commands output combined in single output tab
 - ? kill port/process tool
 - ? browse dna tool
