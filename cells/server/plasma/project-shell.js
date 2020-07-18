@@ -6,6 +6,7 @@ const {
   CommandInput,
   CommandOutput,
   RequestScripts,
+  Scripts,
   Execute,
   Resize
 } = require('lib/chemicals/project-shell')
@@ -25,10 +26,10 @@ module.exports = class ProjectShellOrganelle {
     this.plasma.on(Execute.type, (c) => {
       this.child.write(c.value + '\r')
     })
-    this.plasma.on(RequestScripts.type, (c, callback) => {
+    this.plasma.on(RequestScripts.type, (c) => {
       try {
         let packagejson = require(path.join(this.projectRoot, 'package.json'))
-        callback(null, { scripts: packagejson.scripts })
+        this.plasma.emit(Scripts.create({ scripts: packagejson.scripts }))
       } catch (e) {
         // ignore
       }

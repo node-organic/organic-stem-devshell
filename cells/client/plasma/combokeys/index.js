@@ -13,7 +13,6 @@ module.exports = class CombokeysOrganelle {
         if (!c.global) {
           combokeys.bind(c.value, trigger, c.action)
         } else {
-          console.log(c.value)
           combokeys.bindGlobal(c.value, trigger, c.action)
         }
         this.handlersMap[handlerKey] = [c.callback]

@@ -14,7 +14,8 @@
       FetchClientState
     } = require('lib/chemicals')
     const {
-      RequestScripts
+      RequestScripts,
+      Scripts
     } = require('lib/chemicals/project-shell')
 
     require('els')(this)
@@ -33,12 +34,13 @@
     window.plasma.on(ClientState.type, (c) => {
       this.setState(c)
     })
+    window.plasma.on(Scripts.type, (c) => {
+      this.scripts = c.scripts
+      this.update()
+    })
     this.on('mounted', () => {
       window.plasma.emit(FetchClientState.create())
-      window.plasma.emit(RequestScripts.create(), (err, c) => {
-        this.scripts = c.scripts
-        this.update()
-      })
+      window.plasma.emit(RequestScripts.create())
       require('./devshell-shortcut-keys.js').call(this)
     })
     
