@@ -67,15 +67,13 @@ module.exports = function () {
       window.plasma.emit(ChangeClientState.create(this.state))
     }
   }
-  this.onExecute = (c) => {
+  this.onExecute = async (c) => {
     let value = c.cmd
-    if (c.ctrlKey) {
-      window.plasma.emit(RunFrontCommand.create({
-        value: value,
-        devshell: this
-      }))
-      return
-    }
+    let result = await window.plasma.emitOnce(RunFrontCommand.create({
+      value: value,
+      devshell: this
+    }))
+    if (result) return
     switch (this.executeToAllCellsType) {
       case ExecuteCellTypes.parallel:
         window.plasma.emit(ChangeClientState.create({

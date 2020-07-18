@@ -17,8 +17,16 @@ ui-command-input span {
 ui-command-input input {
   flex-grow: 1;
   font-size: 2em;
+  padding: 2px;
   background-color: gray;
   border: 1px solid black;
+}
+
+ui-command-input input:focus {
+  flex-grow: 1;
+  font-size: 2em;
+  background-color: gray;
+  border: 1px solid green;
 }
 
 ui-command-input .hidden {

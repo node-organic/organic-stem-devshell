@@ -27,11 +27,7 @@ module.exports = class FrontCommands {
           if (cell) {
             window.plasma.emit(TerminateCommand.byCell(cell))
           }
-          break
-        case 'ft':
-        case 'focusterminal':
-          window.plasma.emit('focusterminal')
-          break
+          return true
         case 'df':
         case 'defocus':
           cells.forEach(c => {
@@ -53,6 +49,11 @@ module.exports = class FrontCommands {
               c.focused = false
             }
           })
+          if (needsChange) {
+            setTimeout(function () {
+              window.plasma.emit('focusterminal')
+            }, 200)
+          }
           break
         case 's':
         case 'select':
@@ -98,6 +99,7 @@ module.exports = class FrontCommands {
       }
       if (needsChange) {
         this.plasma.emit(ChangeClientState.create(c.devshell.state))
+        return true
       }
     })
   }
