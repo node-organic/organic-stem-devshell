@@ -6,7 +6,6 @@
     "devshell": "./bin/devshell.js"
   },
   "scripts": {
-    "test": "ava",
     "develop": "angel repo cells -- npm run develop",
     "develop-sample": "PRJROOT=${PWD}/__test__/project npm run develop",
     "build": "angel repo cells -- npm run build",
@@ -29,19 +28,14 @@
   "devDependencies": {
     "angelabilities-package-scripts": "^1.0.0",
     "angelscripts-help": "^0.2.0",
-    "angelscripts-monorepo": "^3.0.0",
-    "angelscripts-monorepo-common-modules": "^1.0.0",
+    "angelscripts-monorepo": "^3.1.0",
+    "angelscripts-monorepo-common-modules": "^2.0.0",
     "eslint": "^4.18.2",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
-    "organic-angel": "^0.3.2"
-  },
-  "stackUpgrades": {
-    "organic-stem-core-template": "1.0.0",
-    "organic-stem-socketio-server-cell-template": "1.0.0",
-    "organic-stem-oval-spa-cell-template": "1.0.0"
+    "organic-angel": "^0.4.0"
   }
 }

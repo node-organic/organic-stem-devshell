@@ -1,10 +1,7 @@
 const Cell = require('organic-stem-cell')
-const path = require('path')
 
 let cellInstance = new Cell({
-  dnaSourcePaths: [
-    path.resolve(__dirname, '../../dna')
-  ],
+  dnaLoader: require('lib/load-root-dna'),
   buildBranch: 'cells.server.build',
   cellRoot: __dirname
 })

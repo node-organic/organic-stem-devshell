@@ -16,9 +16,7 @@ const localModules = ['web_modules', 'node_modules', 'lib'].map((v) => {
 })
 
 module.exports = webcell({
-  dnaSourcePaths: [
-    path.resolve(__dirname, '../../dna')
-  ],
+  dnaLoader: require('lib/load-root-dna'),
   selectBranch: 'cells.client'
 }, function (dna) {
   return {

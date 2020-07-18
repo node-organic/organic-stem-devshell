@@ -1,20 +1,17 @@
 <ui-xterm>
   <script>
     require('./index.css')
-    require('xterm/dist/xterm.css')
+    require('xterm/css/xterm.css')
     require('els')(this)
-    const fit = require('xterm/dist/addons/fit/fit')
-    const XTerm = require('xterm/dist/xterm')
-    XTerm.applyAddon(fit)
+    const {FitAddon} = require('xterm-addon-fit')
+    const {Terminal} = require('xterm')
     this.on('mounted', () => {
-      let xterm = new XTerm({
-        cols: 80,
-        rows: 24
-      })
+      let xterm = new Terminal()
       this.xterm = xterm
+      xterm.loadAddon(fitAddon)
       xterm.open(this.els('container'), false)
       xterm.fit()
-      this.emit('xtermresize', {cols: xterm.cols, rows: xterm.rows})
+      // this.emit('xtermresize', {cols: xterm.cols, rows: xterm.rows})
       xterm.on('data', (c) => {
         this.emit('keypressed', c)
       })

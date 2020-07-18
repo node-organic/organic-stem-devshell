@@ -37,6 +37,7 @@ $ npm run develop-sample
 ## use
 
 ```
+cd /organic-monorepo-project-folder
 npm i node-organic/organic-stem-devshell
 npx devshell
 ```

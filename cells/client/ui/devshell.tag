@@ -132,6 +132,7 @@
       return result
     }
     window.plasma.on(ClientState.type, (c) => {
+      console.log('got client state', c)
       this.setState(c)
     })
     this.on('mounted', () => {
