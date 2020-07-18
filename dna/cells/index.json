@@ -1,0 +1,7 @@
+{
+  "cellsInfo": "v1",
+  "cellPaths": [
+    "cells/client",
+    "cells/server"
+  ]
+}

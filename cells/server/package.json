@@ -10,18 +10,17 @@
     "dateformat": "^3.0.3",
     "express": "^4.16.3",
     "http-proxy": "^1.17.0",
-    "node-pty": "^0.8.1",
-    "organic-express-server": "^0.1.0",
-    "organic-plasma-socketio-channel": "^1.0.0",
+    "node-pty": "^0.9.0",
+    "organic-express-server": "^1.0.0",
     "organic-socketio-server": "^2.0.1",
-    "organic-stem-cell": "^3.0.1",
+    "organic-stem-cell": "^5.0.0",
     "p-iteration": "^1.1.8",
     "socket.io": "^2.1.0",
     "terminate": "^2.1.0",
     "userhome": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.17.5",
+    "nodemon": "^2.0.4",
     "organic-dna-cells-info": "^2.0.0"
   },
   "nodemonConfig": {

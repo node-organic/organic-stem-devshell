@@ -1,21 +1,27 @@
 <ui-xterm>
   <script>
     require('./index.css')
-    require('xterm/dist/xterm.css')
+    require('xterm/css/xterm.css')
     require('els')(this)
-    const fit = require('xterm/dist/addons/fit/fit')
-    const XTerm = require('xterm/dist/xterm')
-    XTerm.applyAddon(fit)
+    const {FitAddon} = require('xterm-addon-fit')
+    const {Terminal} = require('xterm')
+    this.gainFocus = () => {
+      this.xterm.focus()
+    }
     this.on('mounted', () => {
-      let xterm = new XTerm({
-        cols: 80,
-        rows: 24
+      const xterm = new Terminal()
+      xterm.attachCustomKeyEventHandler((event) => {
+        if (event.ctrlKey && event.key === ' ') {
+          return false // allow global ctrl+space
+        }
       })
+      const fitAddon = new FitAddon()
       this.xterm = xterm
+      xterm.loadAddon(fitAddon)
       xterm.open(this.els('container'), false)
-      xterm.fit()
+      fitAddon.fit()
       this.emit('xtermresize', {cols: xterm.cols, rows: xterm.rows})
-      xterm.on('data', (c) => {
+      xterm.onData((c) => {
         this.emit('keypressed', c)
       })
       this.shouldRender = false

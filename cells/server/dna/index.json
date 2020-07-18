@@ -21,7 +21,8 @@
       "reactOnConnection": "SocketIOConnection",
       "transportChemicalsShape": {
         "transportType": "socketio"
-      }
+      },
+      "log": true
     },
     "client-state": {
       "source": "./plasma/client-state",

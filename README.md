@@ -18,6 +18,13 @@ A tool to ease development of organic [distributed] systems.
   * `ctrl+space` - scrolls to bottom & focuses input
   * `ctrl+alt+x` - toggles execution in parallel mode
   * `ctrl+alt+z` - toggles execution in sequential mode 
+- [] front commands - inputed via `ctrl+enter` on the command input
+  * `s <term>` - selects all cells or cell groups including `term`
+  * `ds` | `ds <term>` - deselects all cells or those including `term`
+  * `f <term>` - focuses the first matching cell by `term`
+  * `df` - blurs focused cell
+  * `x` - terminates all commands running on focused cell
+  * `ft` - focuses at the terminal of a focused cell
 - ? all commands output combined in single output tab
 - ? kill port/process tool
 - ? browse dna tool
@@ -37,6 +44,7 @@ $ npm run develop-sample
 ## use
 
 ```
+cd /organic-monorepo-project-folder
 npm i node-organic/organic-stem-devshell
 npx devshell
 ```

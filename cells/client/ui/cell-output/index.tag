@@ -12,6 +12,10 @@
     const {
       ChangeCellState
     } = require('lib/chemicals')
+    const {
+      WatchKeys
+    } = require('plasma/combokeys/chemicals')
+
     require('./index.css')
     require('../xterm')
     require('els')(this)
@@ -67,18 +71,36 @@
         this.props.cell.runningCommandsCount = c.cell.runningCommandsCount
         this.update()
       })
+      window.plasma.on('focusterminal', (c) => {
+        if (this.props.cell.focused) {
+          this.els('xterm').component.scrollToBottom()
+          this.els('xterm').component.gainFocus()
+        }
+      })
     })
-    window.plasma.emit({type: 'watchKeys', value: 'ctrl+space', global: true}, () => {
-      if (this.props.cell.focused) {
-        this.els('xterm').component.scrollToBottom()
-      }
-    })
-    window.plasma.emit({type: 'watchKeys', value: 'ctrl+shift+c', global: true}, (e) => {
-      if (this.props.cell.focused) {
-        e.preventDefault()
-        this.onTerminateCellCommands()
-      }
-    })
+    window.plasma.emit(
+      WatchKeys.create({ 
+        value: 'ctrl+space', 
+        global: true, 
+        callback: () => {
+          if (this.props.cell.focused) {
+            this.els('xterm').component.scrollToBottom()
+          }
+        }
+      })
+    )
+    window.plasma.emit(
+      WatchKeys.create({ 
+        value: 'ctrl+shift+c',
+        global: true, 
+        callback: () => {
+          if (this.props.cell.focused) {
+            e.preventDefault()
+            this.onTerminateCellCommands()
+          }
+        }
+      })
+    )
     this.handleCellnameClick = (e) => {
       let el = this.els('cellname')
       console.log(el)
@@ -103,5 +125,7 @@
       <i class="material-icons">loop</i>
     </div>
   </div>
-  <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} onxtermresize={this.handleResize} />
+  <ui-xterm els='xterm' ready={this.xtermReady} 
+    keypressed={this.handleKeypress} 
+    onxtermresize={this.handleResize} />
 </ui-cell-output>

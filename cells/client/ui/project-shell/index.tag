@@ -44,5 +44,7 @@
       })
     })
   </script>
-  <ui-xterm els='xterm' ready={this.xtermReady} keypressed={this.handleKeypress} onxtermresize={this.handleResize} />
+  <ui-xterm els='xterm' ready={this.xtermReady} 
+    keypressed={this.handleKeypress} 
+    onxtermresize={this.handleResize} />
 </ui-project-shell>
