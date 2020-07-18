@@ -27,7 +27,14 @@
       RequestScripts,
       Execute: ProjectExecute
     } = require('lib/chemicals/project-shell')
+    const {
+      WatchKeys
+    } = require('plasma/combokeys/chemicals')
+    const {
+      RunFrontCommand
+    } = require('plasma/front-commands')
 
+    require('els')(this)
 
     const ExecuteCellTypes = {
       none: 'none',
@@ -83,7 +90,15 @@
         window.plasma.emit(ChangeClientState.create(this.state))
       }
     }
-    this.onExecute = (value) => {
+    this.onExecute = (c) => {
+      let value = c.cmd
+      if (c.ctrlKey) {
+        window.plasma.emit(RunFrontCommand.create({
+          value: value,
+          devshell: this
+        }))
+        return
+      }
       switch (this.executeToAllCellsType) {
         case ExecuteCellTypes.parallel:
           window.plasma.emit(ChangeClientState.create({
@@ -114,7 +129,7 @@
     }
     this.onCellScriptClick = (script) => {
       return (e) => {
-        this.onExecute('npm run ' + script)
+        this.onExecute({cmd: 'npm run ' + script})
       }
     }
     this.onTerminateAll = (e) => {
@@ -132,7 +147,6 @@
       return result
     }
     window.plasma.on(ClientState.type, (c) => {
-      console.log('got client state', c)
       this.setState(c)
     })
     this.on('mounted', () => {
@@ -141,22 +155,52 @@
         this.scripts = c.scripts
         this.update()
       })
-      window.plasma.emit({type: 'watchKeys', value: 'ctrl+alt+x', global: true}, (c) => {
-        if (this.executeToAllCellsType !== ExecuteCellTypes.parallel) {
-          this.executeToAllCellsType = ExecuteCellTypes.parallel
-        } else {
-          this.executeToAllCellsType = ExecuteCellTypes.none
-        }
-        this.update()
-      })
-      window.plasma.emit({type: 'watchKeys', value: 'ctrl+alt+z', global: true}, (c) => {
-        if (this.executeToAllCellsType !== ExecuteCellTypes.serial) {
-          this.executeToAllCellsType = ExecuteCellTypes.serial
-        } else {
-          this.executeToAllCellsType = ExecuteCellTypes.none
-        }
-        this.update()
-      })
+      window.plasma.emit(
+        WatchKeys.create({
+          value: 'ctrl+alt+x', 
+          global: true,
+          callback: (c) => {
+            if (this.executeToAllCellsType !== ExecuteCellTypes.parallel) {
+              this.executeToAllCellsType = ExecuteCellTypes.parallel
+            } else {
+              this.executeToAllCellsType = ExecuteCellTypes.none
+            }
+            this.update()
+          }
+        })
+      )
+      window.plasma.emit(
+        WatchKeys.create({
+          value: 'ctrl+alt+z', 
+          global: true, 
+          callback: (c) => {
+            if (this.executeToAllCellsType !== ExecuteCellTypes.serial) {
+              this.executeToAllCellsType = ExecuteCellTypes.serial
+            } else {
+              this.executeToAllCellsType = ExecuteCellTypes.none
+            }
+            this.update()
+          }
+        })
+      )
+      window.plasma.emit(
+        WatchKeys.create({
+          value: 'ctrl+space',
+          global: true,
+          callback: () => {
+            this.els('cmdinput').component.gainFocus()
+          }
+        })
+      )
+      window.plasma.emit(
+        WatchKeys.create({
+          value: 'escape',
+          global: true,
+          callback: () => {
+            this.els('cmdinput').component.looseFocus()
+          }
+        })
+      )
       window.plasma.on('IO', (c) => {
         c.io.on('disconnect', () => {
           this.connectionError = true
@@ -326,7 +370,7 @@
               <i if={this.executeToAllCellsType === ExecuteCellTypes.parallel} class="material-icons">list</i>
               <i if={this.executeToAllCellsType === ExecuteCellTypes.serial} class="material-icons">sort</i>
             </span>
-            <ui-command-input cid='input' enterValue={this.onExecute} />
+            <ui-command-input cid='input' els='cmdinput' enterValue={this.onExecute} />
           </split-pane>
         </vsplit-pane>
       </div>

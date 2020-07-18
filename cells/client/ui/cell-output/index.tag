@@ -12,6 +12,10 @@
     const {
       ChangeCellState
     } = require('lib/chemicals')
+    const {
+      WatchKeys
+    } = require('plasma/combokeys/chemicals')
+
     require('./index.css')
     require('../xterm')
     require('els')(this)
@@ -68,17 +72,29 @@
         this.update()
       })
     })
-    window.plasma.emit({type: 'watchKeys', value: 'ctrl+space', global: true}, () => {
-      if (this.props.cell.focused) {
-        this.els('xterm').component.scrollToBottom()
-      }
-    })
-    window.plasma.emit({type: 'watchKeys', value: 'ctrl+shift+c', global: true}, (e) => {
-      if (this.props.cell.focused) {
-        e.preventDefault()
-        this.onTerminateCellCommands()
-      }
-    })
+    window.plasma.emit(
+      WatchKeys.create({ 
+        value: 'ctrl+space', 
+        global: true, 
+        callback: () => {
+          if (this.props.cell.focused) {
+            this.els('xterm').component.scrollToBottom()
+          }
+        }
+      })
+    )
+    window.plasma.emit(
+      WatchKeys.create({ 
+        value: 'ctrl+shift+c', 
+        global: true, 
+        callback: () => {
+          if (this.props.cell.focused) {
+            e.preventDefault()
+            this.onTerminateCellCommands()
+          }
+        }
+      })
+    )
     this.handleCellnameClick = (e) => {
       let el = this.els('cellname')
       console.log(el)

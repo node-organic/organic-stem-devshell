@@ -2,32 +2,35 @@
   <script>
     require('./index.css')
     require('els')(this)
+    const {WatchKeys} = require('plasma/combokeys/chemicals')
     const _ = require('lodash')
     let commands_history = []
     let curHistoryIndex = null
     const UP = 38
     const DOWN = 40
 
-    window.plasma.emit({type: 'watchKeys', value: 'ctrl+space', global: true}, () => {
+    this.gainFocus = () => {
       this.els('input').focus()
       this.isTyping = true
-    })
-    window.plasma.emit({type: 'watchKeys', value: 'escape', global: true}, () => {
+    }
+    this.looseFocus = () => {
       this.els('input').blur()
       this.isTyping = false
-    })
+    }
     this.onKeyDown = (e) => {
       this.isTyping = true
     }
     this.onKeyUp = (e) => {
       if (e.keyCode === 13) {
         let cmd = this.els('input').value
-        let foundIndex = commands_history.indexOf(cmd)
-        if (foundIndex !== -1) commands_history.splice(foundIndex, 1)
-        commands_history.push(cmd)
-        commands_history = _.uniq(commands_history)
-        curHistoryIndex = null
-        this.emit('enterValue', cmd)
+        if (cmd !== '') {
+          let foundIndex = commands_history.indexOf(cmd)
+          if (foundIndex !== -1) commands_history.splice(foundIndex, 1)
+          commands_history.push(cmd)
+          commands_history = _.uniq(commands_history)
+          curHistoryIndex = null
+        }
+        this.emit('enterValue', {cmd, ctrlKey: e.ctrlKey})
         this.els('input').value = ''
       }
       if (e.keyCode === UP) {

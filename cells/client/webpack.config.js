@@ -11,7 +11,7 @@ const postcssCssnext = require('postcss-cssnext')
 const globalModules = ['node_modules'].map((v) => {
   return path.join(path.resolve(__dirname, '../'), v)
 })
-const localModules = ['web_modules', 'node_modules', 'lib'].map((v) => {
+const localModules = ['web_modules', 'node_modules', 'lib', './'].map((v) => {
   return path.join(__dirname, v)
 })
 

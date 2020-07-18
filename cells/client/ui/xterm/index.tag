@@ -7,6 +7,11 @@
     const {Terminal} = require('xterm')
     this.on('mounted', () => {
       const xterm = new Terminal()
+      xterm.attachCustomKeyEventHandler((event) => {
+        if (event.ctrlKey && event.key === ' ') {
+          return false // allow global ctrl+space
+        }
+      })
       const fitAddon = new FitAddon()
       this.xterm = xterm
       xterm.loadAddon(fitAddon)

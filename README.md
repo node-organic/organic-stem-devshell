@@ -18,6 +18,9 @@ A tool to ease development of organic [distributed] systems.
   * `ctrl+space` - scrolls to bottom & focuses input
   * `ctrl+alt+x` - toggles execution in parallel mode
   * `ctrl+alt+z` - toggles execution in sequential mode 
+- [] front commands - inputed via `ctrl+enter` on the command input
+  * `ds` | `deselect` - deselects all cells
+  * `s <term>` | `select <term>` - selects all cells or cell groups including `term`
 - ? all commands output combined in single output tab
 - ? kill port/process tool
 - ? browse dna tool
