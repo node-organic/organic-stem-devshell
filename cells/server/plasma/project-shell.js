@@ -44,6 +44,7 @@ module.exports = class ProjectShellOrganelle {
     let cwd = path.join(this.projectRoot)
     let envCopy = Object.assign({}, process.env)
     delete envCopy['CELL_MODE']
+    envCopy['COLORTERM'] = 'truecolor'
     let child = pty.spawn('sh', [], {
       name: this.projectRoot,
       cols: 800,

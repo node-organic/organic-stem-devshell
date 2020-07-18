@@ -93,6 +93,7 @@ module.exports = class TerminalsOrganelle {
       let cwd = path.join(this.projectRoot, cell.cwd)
       let envCopy = Object.assign({}, process.env)
       delete envCopy['CELL_MODE']
+      envCopy['COLORTERM'] = 'truecolor'
       let child = pty.spawn(cmd, args, {
         name: cell.name,
         cols: 800,

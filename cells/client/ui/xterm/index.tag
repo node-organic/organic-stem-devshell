@@ -6,13 +6,14 @@
     const {FitAddon} = require('xterm-addon-fit')
     const {Terminal} = require('xterm')
     this.on('mounted', () => {
-      let xterm = new Terminal()
+      const xterm = new Terminal()
+      const fitAddon = new FitAddon()
       this.xterm = xterm
       xterm.loadAddon(fitAddon)
       xterm.open(this.els('container'), false)
-      xterm.fit()
-      // this.emit('xtermresize', {cols: xterm.cols, rows: xterm.rows})
-      xterm.on('data', (c) => {
+      fitAddon.fit()
+      this.emit('xtermresize', {cols: xterm.cols, rows: xterm.rows})
+      xterm.onData((c) => {
         this.emit('keypressed', c)
       })
       this.shouldRender = false

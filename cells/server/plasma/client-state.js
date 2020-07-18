@@ -161,7 +161,6 @@ module.exports = class ClientStateOrganelle {
   }
 
   async fetch () {
-    console.log('Fetching client-state')
     if (this.currentState.resolved) return this.plasma.emit(this.currentState)
     let cells = await dnaToCells(this.currentState.cwd)
     let groups = extractUniqueGroups(cells)
@@ -170,7 +169,6 @@ module.exports = class ClientStateOrganelle {
       groups: groups,
       resolved: true
     }))
-    console.log('client state ready')
     this.plasma.emit(this.currentState)
   }
 }

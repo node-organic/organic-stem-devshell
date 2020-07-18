@@ -13,7 +13,8 @@
       "transportChemicalsShape": {
         "transportType": "socketio"
       },
-      "storeIO": "IO"
+      "storeIO": "IO",
+      "emitReady": "IOReady"
     },
     "combokeys-organelle": {
       "source": "./plasma/combokeys"
