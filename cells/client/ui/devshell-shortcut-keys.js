@@ -41,6 +41,7 @@ module.exports = function () {
       global: true,
       callback: () => {
         this.els('cmdinput').component.gainFocus()
+        window.scrollTo(0, document.body.scrollHeight)
       }
     })
   )

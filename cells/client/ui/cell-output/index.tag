@@ -71,6 +71,12 @@
         this.props.cell.runningCommandsCount = c.cell.runningCommandsCount
         this.update()
       })
+      window.plasma.on('focusterminal', (c) => {
+        if (this.props.cell.focused) {
+          this.els('xterm').component.scrollToBottom()
+          this.els('xterm').component.gainFocus()
+        }
+      })
     })
     window.plasma.emit(
       WatchKeys.create({ 
@@ -85,7 +91,7 @@
     )
     window.plasma.emit(
       WatchKeys.create({ 
-        value: 'ctrl+shift+c', 
+        value: 'ctrl+shift+c',
         global: true, 
         callback: () => {
           if (this.props.cell.focused) {

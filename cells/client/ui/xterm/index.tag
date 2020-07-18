@@ -5,6 +5,9 @@
     require('els')(this)
     const {FitAddon} = require('xterm-addon-fit')
     const {Terminal} = require('xterm')
+    this.gainFocus = () => {
+      this.xterm.focus()
+    }
     this.on('mounted', () => {
       const xterm = new Terminal()
       xterm.attachCustomKeyEventHandler((event) => {

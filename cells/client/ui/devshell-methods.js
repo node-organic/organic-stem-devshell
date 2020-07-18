@@ -13,6 +13,14 @@ module.exports = function () {
     })
     return result
   }
+  this.getFocusedCell = () => {
+    for (let i = 0; i < this.state.cells.length; i++) {
+      let c = this.state.cells[i]
+      if (c.focused) {
+        return c
+      }
+    }
+  }
   this.getCellTabClass = () => {
     return this.state.cells.length > 3 ? '' : 'flexAutoGrow'
   }
