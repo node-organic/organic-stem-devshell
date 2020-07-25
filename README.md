@@ -16,6 +16,7 @@ A tool to ease development of organic [distributed] systems.
 - [x] execute a command sequentially towards all selected cells
 - [] shortcuts
   * `ctrl+space` - scrolls to bottom & focuses input
+  * ` ctrl+` ` - switch to the terminal of a focused cell
   * `ctrl+alt+x` - toggles execution in parallel mode
   * `ctrl+alt+z` - toggles execution in sequential mode 
 - [] front commands - inputed via `ctrl+enter` on the command input

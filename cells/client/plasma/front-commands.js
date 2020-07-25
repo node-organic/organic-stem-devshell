@@ -37,42 +37,11 @@ module.exports = class FrontCommands {
           break
         case 'f':
         case 'focus':
-          cells.forEach(c => {
-            if (needsChange) {
-              c.focused = false
-              return
-            }
-            if (c.name.includes(parts[1])) {
-              c.focused = true
-              needsChange = true
-            } else {
-              c.focused = false
-            }
-          })
-          if (needsChange) {
-            setTimeout(function () {
-              window.plasma.emit('focusterminal')
-            }, 200)
-          }
+          needsChange = c.devshell.setFocusedCellByNameQuery(parts[1])
           break
         case 's':
         case 'select':
-          cells.forEach(c => {
-            if (!parts[1]) {
-              c.selected = true
-              needsChange = true
-            }
-            if (c.name.includes(parts[1])) {
-              c.selected = true
-              needsChange = true
-            }
-          })
-          groups.forEach(g => {
-            if (g.name.includes(parts[1])) {
-              g.selected = true
-              needsChange = true
-            }
-          })
+          needsChange = c.devshell.setSelectedCellsByNameQuery(parts[1])
           break
         case 'ds':
         case 'deselect':

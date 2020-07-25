@@ -13,9 +13,13 @@
     }
     this.on('mounted', () => {
       const xterm = new Terminal()
-      xterm.attachCustomKeyEventHandler((event) => {
-        if (event.ctrlKey && event.key === ' ') {
+      xterm.attachCustomKeyEventHandler((e) => {
+        if (e.ctrlKey && e.key === ' ') {
           return false // allow global ctrl+space
+        }
+        let isBrowserTabSwitcher = (e.ctrlKey || e.altKey) && e.keyCode >= 48 && e.keyCode <= 57
+        if (isBrowserTabSwitcher) {
+          return false
         }
       })
       const fitAddon = new FitAddon()

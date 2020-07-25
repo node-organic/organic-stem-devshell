@@ -1,6 +1,9 @@
 const {
   FetchReleasedState
 } = require('lib/chemicals')
+const {
+  ChangeClientState
+} = require('lib/chemicals')
 
 const ExecuteCellTypes = require('./execute-cell-types')
 
@@ -93,5 +96,59 @@ module.exports = function () {
       result.push(group)
     })
     return result
+  }
+  this.focusCellTerminal = function () {
+    let cell = this.getFocusedCell()
+    let needsChange = this.setFocusedCellByNameQuery(cell.name)
+    if (needsChange) {
+      window.plasma.emit(ChangeClientState.create(this.state))
+    }
+  }
+  this.defocusCellTerminal = function () {
+    let cell = this.getFocusedCell()
+    let needsChange = this.setFocusedCellByNameQuery(cell.name, false)
+    if (needsChange) {
+      window.plasma.emit(ChangeClientState.create(this.state))
+    }
+  }
+  this.setFocusedCellByNameQuery = function (nameQuery, focusValue = true) {
+    let found = null
+    this.state.cells.forEach(c => {
+      if (c.name.includes(nameQuery) && !found) {
+        found = c
+        c.focused = focusValue
+      }
+    })
+    if (found) {
+      this.state.cells.forEach(c => {
+        if (c !== found) {
+          c.focused = false
+        }
+      })
+      setTimeout(function () {
+        window.plasma.emit('focusterminal')
+      }, 200)
+    }
+    return found
+  }
+  this.setSelectedCellsByNameQuery = function (nameQuery) {
+    let needsChange = false
+    this.state.cells.forEach(c => {
+      if (!nameQuery) {
+        c.selected = true
+        needsChange = true
+      }
+      if (c.name.includes(nameQuery)) {
+        c.selected = true
+        needsChange = true
+      }
+    })
+    this.state.groups.forEach(g => {
+      if (g.name.includes(nameQuery)) {
+        g.selected = true
+        needsChange = true
+      }
+    })
+    return needsChange
   }
 }

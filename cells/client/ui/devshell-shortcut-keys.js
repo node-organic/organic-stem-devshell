@@ -41,16 +41,15 @@ module.exports = function () {
       global: true,
       callback: () => {
         this.els('cmdinput').component.gainFocus()
-        window.scrollTo(0, document.body.scrollHeight)
       }
     })
   )
   window.plasma.emit(
     WatchKeys.create({
-      value: 'escape',
+      value: 'ctrl+`',
       global: true,
       callback: () => {
-        this.els('cmdinput').component.looseFocus()
+        this.focusCellTerminal()
       }
     })
   )
