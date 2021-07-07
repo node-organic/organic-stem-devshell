@@ -99,6 +99,7 @@ module.exports = function () {
   }
   this.focusCellTerminal = function () {
     let cell = this.getFocusedCell()
+    if (!cell) return
     let needsChange = this.setFocusedCellByNameQuery(cell.name)
     if (needsChange) {
       window.plasma.emit(ChangeClientState.create(this.state))

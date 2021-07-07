@@ -129,7 +129,10 @@
               <i if={this.executeToAllCellsType === ExecuteCellTypes.parallel} class="material-icons">list</i>
               <i if={this.executeToAllCellsType === ExecuteCellTypes.serial} class="material-icons">sort</i>
             </span>
-            <ui-command-input cid='input' els='cmdinput' enterValue={this.onExecute} />
+            <ui-command-input cid='input' els='cmdinput' 
+              prop-cwd={this.state.cwd}
+              prop-focusedCell={this.getFocusedCell()}
+              enterValue={this.onExecute} />
           </split-pane>
         </vsplit-pane>
       </div>

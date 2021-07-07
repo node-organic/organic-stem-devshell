@@ -8,6 +8,7 @@
     let curHistoryIndex = null
     const UP = 38
     const DOWN = 40
+    const SPACE = 32
 
     this.gainFocus = () => {
       this.els('input').focus()
@@ -19,6 +20,9 @@
     }
     this.onKeyDown = (e) => {
       this.isTyping = true
+      if (e.keyCode === SPACE && e.shiftKey) {
+        e.preventDefault()
+      }
     }
     this.onKeyUp = (e) => {
       if (e.keyCode === 13) {
@@ -53,6 +57,27 @@
         }
       }
     }
+    this.onPaste = (e) => {
+      const pasted = (e.clipboardData || window.clipboardData).getData('text')
+      const cwd = this.props.cwd
+      const focusedCell = this.props.focusedCell
+      console.log(pasted, focusedCell.cwd)
+      if (focusedCell && pasted.startsWith(focusedCell.cwd)) { 
+        e.preventDefault()
+        const value = pasted.replace(focusedCell.cwd + '/', '').replace(cwd, '')
+        const inputField = this.els('input')
+        if (inputField.selectionStart) {
+          const startPos = inputField.selectionStart
+          const endPos = inputField.selectionEnd
+          inputField.value = inputField.value.substring(0, startPos) + value + 
+            inputField.value.substring(endPos, inputField.value.length)
+          inputField.selectionStart = startPos + value.length
+          inputField.selectionEnd = startPos + value.length
+        } else {
+          inputField.value += value;
+        }
+      }
+    }
     this.onTerminateAll = (e) => {
       this.emit('terminateAll')
     }
@@ -61,6 +86,7 @@
     })
   </script>
   <input type='text' els='input'
+    onpaste={this.onPaste}
     onkeyup={this.onKeyUp}
     onkeydown={this.onKeyDown} />
 </ui-command-input>

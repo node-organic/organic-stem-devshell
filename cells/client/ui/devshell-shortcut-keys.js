@@ -46,6 +46,15 @@ module.exports = function () {
   )
   window.plasma.emit(
     WatchKeys.create({
+      value: 'shift+space',
+      global: true,
+      callback: () => {
+        this.focusCellTerminal()
+      }
+    })
+  )
+  window.plasma.emit(
+    WatchKeys.create({
       value: 'ctrl+`',
       global: true,
       callback: () => {
