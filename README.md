@@ -14,12 +14,12 @@ A tool to ease development of organic [distributed] systems.
 - [x] new output status indicator per cell
 - [x] run commands towards the repo as well
 - [x] execute a command sequentially towards all selected cells
-- [] shortcuts
+- [x] shortcuts
   * `ctrl+space` - scrolls to bottom & focuses input
-  * ` ctrl+` ` - switch to the terminal of a focused cell
+  * `ctrl+` || `shift+space` - switch to the terminal of a focused cell
   * `ctrl+alt+x` - toggles execution in parallel mode
   * `ctrl+alt+z` - toggles execution in sequential mode 
-- [] front commands - inputed via `ctrl+enter` on the command input
+- [x] front commands - inputed via the command input
   * `s <term>` - selects all cells or cell groups including `term`
   * `ds` | `ds <term>` - deselects all cells or those including `term`
   * `f <term>` - focuses the first matching cell by `term`
@@ -27,6 +27,7 @@ A tool to ease development of organic [distributed] systems.
   * `x` - terminates all commands running on focused cell
   * `r <number>` - runs a script from the currently visible ones by index number
   * `clear` - clears the focused cell output
+- ? support non organic projects with minimum configuration
 - ? all commands output combined in single output tab
 - ? kill port/process tool
 - ? browse dna tool
