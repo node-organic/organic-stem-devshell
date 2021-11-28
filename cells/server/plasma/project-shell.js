@@ -21,6 +21,7 @@ module.exports = class ProjectShellOrganelle {
       this.child.write(c.char)
     })
     this.plasma.on(Resize.type, (c) => {
+      console.log('shell resize')
       this.child.resize(c.cols, c.rows)
     })
     this.plasma.on(Execute.type, (c) => {
@@ -28,7 +29,7 @@ module.exports = class ProjectShellOrganelle {
     })
     this.plasma.on(RequestScripts.type, (c) => {
       try {
-        let packagejson = require(path.join(this.projectRoot, 'package.json'))
+        const packagejson = require(path.join(this.projectRoot, 'package.json'))
         this.plasma.emit(Scripts.create({ scripts: packagejson.scripts }))
       } catch (e) {
         // ignore
@@ -42,11 +43,11 @@ module.exports = class ProjectShellOrganelle {
   }
 
   startShell () {
-    let cwd = path.join(this.projectRoot)
-    let envCopy = Object.assign({}, process.env)
-    delete envCopy['CELL_MODE']
-    envCopy['COLORTERM'] = 'truecolor'
-    let child = pty.spawn('sh', [], {
+    const cwd = path.join(this.projectRoot)
+    const envCopy = Object.assign({}, process.env)
+    delete envCopy.CELL_MODE
+    envCopy.COLORTERM = 'truecolor'
+    const child = pty.spawn('sh', [], {
       name: this.projectRoot,
       cols: 800,
       rows: 240,

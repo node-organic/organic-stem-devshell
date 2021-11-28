@@ -1,15 +1,15 @@
 {
   "name": "organic-stem-devshell",
-  "version": "3.14.0",
+  "version": "3.15.0",
   "description": "",
   "bin": {
-    "devshell": "./bin/devshell.js"
+    "devshell": "./bin/devshell.js",
+    "ddevshell": "./bin/ddevshell.js"
   },
   "scripts": {
     "develop": "angel repo cells -- npm run develop",
-    "develop-sample": "PRJROOT=${PWD}/__test__/project npm run develop",
-    "build": "angel repo cells -- npm run build",
-    "postinstall": "cd ./cells/server && npm install && cd ../node_modules/lib && npm install",
+    "build": "angel cells -- npm run build",
+    "postinstall": "npx angel cells -- npm i && npx angel packages -- npm i",
     "pack": "npm run build && git add --all ./ && git commit -m 'release build'",
     "re-install-modules": "rm -rf package-lock.json && rm -rf ./node_modules && npm i",
     "release-patch": "npm run pack && npm version patch && git push --tags && git push origin master",
@@ -18,24 +18,20 @@
   },
   "author": "Boris Filipov",
   "engines": {
-    "node": "10.15.3"
+    "node": ">= 10"
   },
   "license": "MIT",
   "dependencies": {
-    "opn": "^5.3.0",
-    "organic-plasma-socketio-channel": "^2.0.0"
+    "opn": "^6.0.0",
+    "organic-plasma-socketio-channel": "^2.0.1"
   },
   "devDependencies": {
-    "angelabilities-package-scripts": "^1.0.0",
-    "angelscripts-help": "^0.2.0",
-    "angelscripts-monorepo": "^3.1.0",
-    "angelscripts-monorepo-common-modules": "^2.0.0",
-    "eslint": "^4.18.2",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "organic-angel": "^0.4.0"
+    "angelabilities-package-scripts": "^2.0.1",
+    "angelscripts-help": "^1.0.1",
+    "angelscripts-monorepo-cells": "^5.0.0",
+    "angelscripts-monorepo-packages": "^1.0.0",
+    "eslint": "^7.0.0",
+    "eslint-config-standard": "^16.0.3",
+    "organic-angel": "^0.5.3"
   }
 }

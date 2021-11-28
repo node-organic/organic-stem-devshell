@@ -1,8 +1,8 @@
 <ui-command-input>
   <script>
     require('./index.css')
-    require('els')(this)
-    const {WatchKeys} = require('plasma/combokeys/chemicals')
+    require('client-lib/els')(this)
+    const {WatchKeys} = require('client-plasma/combokeys/chemicals')
     const _ = require('lodash')
     let commands_history = []
     let curHistoryIndex = null

@@ -2,7 +2,7 @@
   <script>
     require('./index.css')
     require('xterm/css/xterm.css')
-    require('els')(this)
+    require('client-lib/els')(this)
     const {FitAddon} = require('xterm-addon-fit')
     const {Terminal} = require('xterm')
     this.gainFocus = () => {
@@ -32,7 +32,12 @@
         this.emit('keypressed', c)
       })
       this.shouldRender = false
-      setTimeout( () => this.emit('ready') , 100)
+      setTimeout( () => {
+        this.emit('ready', {
+          cols: xterm.cols,
+          rows: xterm.rows
+        })
+      }, 100)
     })
     this.write = function (chunk) {
       this.xterm.write(chunk)

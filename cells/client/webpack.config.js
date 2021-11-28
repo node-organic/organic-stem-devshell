@@ -23,17 +23,17 @@ module.exports = webcell({
     entry: './index.js',
     mode: 'development',
     output: {
-      publicPath: dna.cells['client'].mountPoint || '/'
+      publicPath: dna.cells.client.mountPoint || '/'
     },
     devServer: {
       contentBase: path.resolve(__dirname, './dist'),
-      port: dna['cell-ports']['client']
+      port: dna['cell-ports'].client
     },
-    'resolve': {
-      'extensions': ['.webpack.js', '.web.js', '.tag', '.js'],
-      'modules': globalModules.concat(localModules).concat(['node_modules'])
+    resolve: {
+      extensions: ['.webpack.js', '.web.js', '.tag', '.js'],
+      modules: globalModules.concat(localModules).concat(['node_modules'])
     },
-    'plugins': [
+    plugins: [
       new HtmlWebpackPlugin({
         template: 'index.html',
         favicon: 'favicon.png'
@@ -43,8 +43,8 @@ module.exports = webcell({
         chunkFilename: '[id].css'
       })
     ],
-    'module': {
-      'rules': [
+    module: {
+      rules: [
         {
           test: /\.(eot|svg|ttf|woff|woff2)$/,
           use: 'file-loader?name=material-design-icons/iconfont/[name].[ext]'
@@ -73,7 +73,7 @@ module.exports = webcell({
           use: {
             loader: 'babel-loader',
             options: {
-              plugins: [ require.resolve('@babel/plugin-transform-react-jsx') ]
+              plugins: [require.resolve('@babel/plugin-transform-react-jsx')]
             }
           }
         },

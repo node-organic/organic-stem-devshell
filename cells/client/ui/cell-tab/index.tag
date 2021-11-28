@@ -1,7 +1,7 @@
 <ui-cell-tab>
   <script>
     require('./index.css')
-    require('els')(this)
+    require('client-lib/els')(this)
     const {
       CommandStarted,
       CommandTerminated,

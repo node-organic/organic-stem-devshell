@@ -1,7 +1,4 @@
 {
-  "groups": [
-    "default"
-  ],
   "mountPoint": "/",
   "cwd": "cells/server",
   "cellKind": "apiCell",

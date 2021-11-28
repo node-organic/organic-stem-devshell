@@ -1,0 +1,10 @@
+{
+  "name": "client-plasma",
+  "version": "0.0.0",
+  "dependencies": {
+    "combokeys": "^3.0.1",
+    "domready": "^1.0.8",
+    "lib": "file:../lib",
+    "socket.io-client": "^2.4.0"
+  }
+}

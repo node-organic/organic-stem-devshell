@@ -1606,8 +1606,6 @@ ui-xterm.hidden {
  */
 
 .xterm {
-    -webkit-font-feature-settings: "liga" 0;
-            font-feature-settings: "liga" 0;
     position: relative;
     -moz-user-select: none;
          user-select: none;
@@ -1740,6 +1738,10 @@ ui-xterm.hidden {
 
 .xterm-underline {
     text-decoration: underline;
+}
+
+.xterm-strikethrough {
+    text-decoration: line-through;
 }
 ui-command-input {
   display: -webkit-box;

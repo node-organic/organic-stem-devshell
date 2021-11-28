@@ -1,7 +1,4 @@
 {
-  "groups": [
-    "default"
-  ],
   "mountPoint": "/",
   "cwd": "cells/client",
   "cellKind": "webCell",
@@ -17,13 +14,13 @@
       "emitReady": "IOReady"
     },
     "combokeys-organelle": {
-      "source": "./plasma/combokeys"
+      "source": "client-plasma/combokeys"
     },
     "cell-ready": {
-      "source": "./plasma/cell-ready"
+      "source": "client-plasma/cell-ready"
     },
     "front-commands": {
-      "source": "./plasma/front-commands"
+      "source": "client-plasma/front-commands"
     }
   }
 }

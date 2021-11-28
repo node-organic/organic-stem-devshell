@@ -21,9 +21,9 @@
     } = require('lib/chemicals/project-shell')
     const {
       RunCellCommand
-    } = require('../plasma/front-commands')
+    } = require('client-plasma/front-commands')
 
-    require('els')(this)
+    require('client-lib/els')(this)
 
     const ExecuteCellTypes = require('./execute-cell-types')
 
@@ -98,6 +98,14 @@
             </div>
           </div>
         </each>
+        <div class='cell-tabs'>
+          <each cell in {this.getCellsNotInGroup()}>
+            <ui-cell-tab cell={cell}
+              class={this.getCellTabClass()}
+              selected={this.onCellSelected}
+              focused={this.onCellFocused} />
+          </each>
+        </div>
       </div>
       <div class='cells'>
         <div class='cell-outputs'>

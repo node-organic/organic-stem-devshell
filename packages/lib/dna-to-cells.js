@@ -1,22 +1,22 @@
 const loadDNA = require('organic-dna-repo-loader')
-const cellsinfo = require('organic-dna-cells-info')
+const { getAllCells } = require('organic-dna-cells-info')
 const {
   Cell
-} = require('lib/chemicals')
+} = require('./chemicals')
 const path = require('path')
 
 module.exports = async function (root, existingCells = []) {
-  let dna = await loadDNA({root: root})
+  const dna = await loadDNA({ root: root })
   if (!dna.cells) {
     throw new Error('failed to locate cells in ' + root + '/dna')
   }
-  let found_cells = cellsinfo(dna.cells)
-  let updated_cells = found_cells.map((cellInfo) => {
+  const found_cells = getAllCells(dna.cells)
+  const updated_cells = found_cells.map((cellInfo) => {
     let scripts = []
     let dependencies = {}
     if (cellInfo.dna.cwd) {
       try {
-        let packagejson = require(path.join(root, cellInfo.dna.cwd, 'package.json'))
+        const packagejson = require(path.join(root, cellInfo.dna.cwd, 'package.json'))
         scripts = packagejson.scripts
         dependencies = Object.assign({}, packagejson.dependencies, packagejson.devDependencies)
       } catch (e) {
@@ -24,7 +24,7 @@ module.exports = async function (root, existingCells = []) {
       }
     }
     let existingCell = {}
-    for (let i = 0; i < existingCells.length; i ++) {
+    for (let i = 0; i < existingCells.length; i++) {
       if (existingCells[i].name === cellInfo.name) {
         existingCell = existingCells[i]
       }

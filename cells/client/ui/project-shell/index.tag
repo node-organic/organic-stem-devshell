@@ -2,7 +2,7 @@
   <script>
     require('./index.css')
     require('../xterm')
-    require('els')(this)
+    require('client-lib/els')(this)
     const _ = require('lodash')
     const {
       CommandOutput,
@@ -20,10 +20,14 @@
         cols: e.cols
       }))
     }
-    this.xtermReady = () => {
+    this.xtermReady = (e) => {
       if (!this.props.focused) {
         this.hide()
       }
+      window.plasma.emit(Resize.create({
+        rows: e.rows,
+        cols: e.cols
+      }))
     }
     this.show = function () {
       this.el.classList.remove('hidden')

@@ -1,10 +1,10 @@
 const {
   Group
-} = require('lib/chemicals')
+} = require('./chemicals')
 const _ = require('lodash')
 
 module.exports = function (cells) {
-  let names = _.uniq(_.flatten(cells.map(v => v.groups)))
+  const names = _.uniq(_.flatten(cells.map(v => v.groups)))
   return names.map(name => {
     return Group.create({
       name: name,

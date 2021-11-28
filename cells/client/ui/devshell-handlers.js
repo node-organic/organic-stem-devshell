@@ -14,7 +14,7 @@ const {
 
 const {
   RunFrontCommand
-} = require('plasma/front-commands')
+} = require('client-plasma/front-commands')
 const {
   Execute: ProjectExecute
 } = require('lib/chemicals/project-shell')
@@ -52,8 +52,8 @@ module.exports = function () {
     }
   }
   this.onExecute = async (c) => {
-    let value = c.cmd
-    let result = await window.plasma.emitOnce(RunFrontCommand.create({
+    const value = c.cmd
+    const result = await window.plasma.emitOnce(RunFrontCommand.create({
       value: value,
       devshell: this
     }))

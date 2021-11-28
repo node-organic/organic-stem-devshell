@@ -1,6 +1,6 @@
 const {
   WatchKeys
-} = require('plasma/combokeys/chemicals')
+} = require('client-plasma/combokeys/chemicals')
 const ExecuteCellTypes = require('./execute-cell-types')
 
 /**

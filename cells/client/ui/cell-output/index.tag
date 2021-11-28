@@ -14,15 +14,20 @@
     } = require('lib/chemicals')
     const {
       WatchKeys
-    } = require('plasma/combokeys/chemicals')
+    } = require('client-plasma/combokeys/chemicals')
 
     require('./index.css')
     require('../xterm')
-    require('els')(this)
-    this.xtermReady = () => {
+    require('client-lib/els')(this)
+    this.xtermReady = (e) => {
       if (!this.props.cell.focused) {
         this.hide()
       }
+      window.plasma.emit(Resize.create({
+        cell: this.props.cell,
+        rows: e.rows,
+        cols: e.cols
+      }))
     }
     this.show = function () {
       this.el.classList.remove('hidden')
@@ -108,7 +113,6 @@
     )
     this.handleCellnameClick = (e) => {
       let el = this.els('cellname')
-      console.log(el)
       if (el && window.getSelection && document.createRange) {
         let selection = window.getSelection()
         let range = document.createRange()

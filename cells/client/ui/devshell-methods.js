@@ -72,6 +72,15 @@ module.exports = function () {
     })
     return result
   }
+  this.getCellsNotInGroup = function () {
+    let result = []
+    this.state.cells.forEach(function (cell) {
+      if (cell.groups.length === 0) {
+        result.push(cell)
+      }
+    })
+    return result
+  }
   this.isGroupVirtual = function (group) {
     let result = []
     this.state.cells.forEach(function (cell) {

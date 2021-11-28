@@ -1,6 +1,6 @@
 const Cell = require('organic-stem-cell')
 
-let cellInstance = new Cell({
+const cellInstance = new Cell({
   dnaLoader: require('lib/load-root-dna'),
   buildBranch: 'cells.server.build',
   cellRoot: __dirname

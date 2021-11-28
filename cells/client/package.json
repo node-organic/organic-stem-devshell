@@ -6,19 +6,19 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/plugin-transform-react-jsx": "^7.3.0",
-    "babel-loader": "^8.0.6",
-    "combokeys": "^3.0.1",
-    "domready": "^1.0.8",
+    "client-lib": "file:../../packages/client-lib",
+    "client-plasma": "file:../../packages/client-plasma",
+    "lib": "file:../../packages/lib",
     "material-design-icons": "^3.0.1",
     "organic-oval": "^6.0.0",
     "organic-stem-cell": "^5.0.0",
-    "socket.io-client": "^2.1.1",
     "xterm": "^4.8.1",
     "xterm-addon-fit": "^0.4.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",

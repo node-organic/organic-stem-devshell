@@ -23,6 +23,7 @@ module.exports = class TerminalsOrganelle {
     if (!dna.PRJROOT || dna.PRJROOT === 'undefined') throw new Error('missing dna.PRJROOT')
     this.plasma = plasma
     this.dna = dna
+    this.terminalSizes = {}
     this.runningCommands = []
     this.projectRoot = path.resolve(dna.PRJROOT)
     this.plasma.on(RunAll.type, (c) => {
@@ -68,6 +69,10 @@ module.exports = class TerminalsOrganelle {
           r.child.resize(c.cols, c.rows)
         }
       })
+      this.terminalSizes[c.cell.name] = {
+        cols: c.cols,
+        rows: c.rows
+      }
     })
     this.plasma.on('kill', () => {
       this.runningCommands.forEach((r) => {
@@ -88,20 +93,20 @@ module.exports = class TerminalsOrganelle {
 
   executeCommand (value) {
     return (cell) => {
-      let cmd = 'bash'
-      let args = ['-c', value]
-      let cwd = path.join(this.projectRoot, cell.cwd)
-      let envCopy = Object.assign({}, process.env)
-      delete envCopy['CELL_MODE']
-      envCopy['COLORTERM'] = 'truecolor'
-      let child = pty.spawn(cmd, args, {
+      const cmd = 'bash'
+      const args = ['-c', value]
+      const cwd = path.join(this.projectRoot, cell.cwd)
+      const envCopy = Object.assign({}, process.env)
+      delete envCopy.CELL_MODE
+      envCopy.COLORTERM = 'truecolor'
+      const child = pty.spawn(cmd, args, {
         name: cell.name,
-        cols: 800,
-        rows: 240,
+        cols: this.terminalSizes[cell.name].cols,
+        rows: this.terminalSizes[cell.name].rows,
         cwd: cwd,
         env: envCopy
       })
-      let runningCommand = RunningCommand.create({
+      const runningCommand = RunningCommand.create({
         cell: cell,
         child: child,
         value: value
