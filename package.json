@@ -7,7 +7,7 @@
     "ddevshell": "./bin/ddevshell.js"
   },
   "scripts": {
-    "develop": "angel repo cells -- npm run develop",
+    "develop": "angel cells -- npm run develop",
     "build": "angel cells -- npm run build",
     "postinstall": "cd ./cells/server && npm i && cd ../../packages/lib && npm i",
     "setup": "npx angel cells -- npm i && npx angel packages -- npm i",

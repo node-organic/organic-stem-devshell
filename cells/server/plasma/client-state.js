@@ -69,7 +69,7 @@ module.exports = class ClientStateOrganelle {
   change (newState) {
     if (newState.groups) {
       newState.groups.forEach(group => {
-        let groupHasBeenSelected = _.find(this.currentState.groups, (g) => {
+        const groupHasBeenSelected = _.find(this.currentState.groups, (g) => {
           return g.name === group.name && g.selected
         })
         // if group has been selected -> select its cells
@@ -92,7 +92,7 @@ module.exports = class ClientStateOrganelle {
     }
     if (newState.cells) {
       newState.cells.forEach(cell => {
-        let cellHasBeenSelected = _.find(this.currentState.cells, (c) => {
+        const cellHasBeenSelected = _.find(this.currentState.cells, (c) => {
           return c.name === cell.name && c.selected
         })
         // if cell has been selected and there is runningCommand -> run the command at cell
@@ -115,7 +115,7 @@ module.exports = class ClientStateOrganelle {
       })
     }
     if (newState.runningCommand !== this.currentState.runningCommand || newState.executeType !== this.currentState.executeType) {
-      let selectedCells = _.filter(this.currentState.cells, 'selected')
+      const selectedCells = _.filter(this.currentState.cells, 'selected')
       if (selectedCells.length === 0) {
         newState.runningCommand = ''
       }
@@ -162,8 +162,8 @@ module.exports = class ClientStateOrganelle {
 
   async fetch () {
     if (this.currentState.resolved) return this.plasma.emit(this.currentState)
-    let cells = await dnaToCells(this.currentState.cwd)
-    let groups = extractUniqueGroups(cells)
+    const cells = await dnaToCells(this.currentState.cwd)
+    const groups = extractUniqueGroups(cells)
     Object.assign(this.currentState, ClientState.create({
       cells: cells,
       groups: groups,

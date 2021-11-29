@@ -21,7 +21,6 @@ module.exports = class ProjectShellOrganelle {
       this.child.write(c.char)
     })
     this.plasma.on(Resize.type, (c) => {
-      console.log('shell resize')
       this.child.resize(c.cols, c.rows)
     })
     this.plasma.on(Execute.type, (c) => {
