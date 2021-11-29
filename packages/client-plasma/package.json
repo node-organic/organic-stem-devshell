@@ -1,6 +1,7 @@
 {
   "name": "client-plasma",
   "version": "0.0.0",
+  "private": true,
   "dependencies": {
     "combokeys": "^3.0.1",
     "domready": "^1.0.8",

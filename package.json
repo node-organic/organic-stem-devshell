@@ -23,16 +23,17 @@
   },
   "license": "MIT",
   "dependencies": {
-    "opn": "^6.0.0",
-    "organic-plasma-socketio-channel": "^2.0.1",
     "angelabilities-package-scripts": "^2.0.1",
     "angelscripts-help": "^1.0.1",
     "angelscripts-monorepo-cells": "^5.0.0",
     "angelscripts-monorepo-packages": "^1.0.0",
-    "organic-angel": "^0.5.3"
+    "opn": "^6.0.0",
+    "organic-angel": "^0.5.3",
+    "organic-plasma-socketio-channel": "^2.0.1"
   },
   "devDependencies": {
     "eslint": "^7.0.0",
-    "eslint-config-standard": "^16.0.3"
+    "eslint-config-standard": "^16.0.3",
+    "lerna": "^4.0.0"
   }
 }

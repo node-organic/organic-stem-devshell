@@ -1,6 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "develop": "CELL_MODE=_development nodemon ./index.js",
     "build": "echo done"

@@ -1,6 +1,7 @@
 {
   "name": "lib",
   "version": "1.0.0",
+  "private": true,
   "dependencies": {
     "organic-dna-cells-info": "^3.0.0",
     "organic-dna-repo-loader": "^2.1.0"

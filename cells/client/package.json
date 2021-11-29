@@ -1,6 +1,7 @@
 {
   "name": "client",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "develop": "webpack-dev-server",
     "build": "webpack"
