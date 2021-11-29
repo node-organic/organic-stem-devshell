@@ -7,10 +7,10 @@
     "ddevshell": "./bin/ddevshell.js"
   },
   "scripts": {
-    "develop": "angel cells -- npm run develop",
-    "build": "angel cells -- npm run build",
+    "develop": "npx lerna run develop --stream",
+    "build": "npx lerna run build --stream",
     "postinstall": "npx lerna bootstrap --scope=server",
-    "setup": "npx angel cells -- npm i && npx angel packages -- npm i",
+    "setup": "npx lerna bootstrap",
     "pack": "npm run build && git add --all ./ && git commit -m 'release build'",
     "re-install-modules": "rm -rf package-lock.json && rm -rf ./node_modules && npm i",
     "release-patch": "npm run pack && npm version patch && git push --tags && git push origin master",
