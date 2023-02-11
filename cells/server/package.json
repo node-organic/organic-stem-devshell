@@ -22,7 +22,7 @@
     "userhome": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.20",
     "organic-dna-cells-info": "^2.0.0"
   },
   "nodemonConfig": {
